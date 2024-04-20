@@ -26,6 +26,7 @@ public class GenreService : IGenreService
         {
             throw new GenreNotFoundException("Genre not found");
         }
+
         return genre;
     }
 
@@ -45,5 +46,17 @@ public class GenreService : IGenreService
     public void SaveGenre(Genre genre)
     {
         _genreRepository.SaveGenre(genre);
+    }
+
+    public IEnumerable<Movie> GetMoviesWithGenre(int genreId)
+    {
+        var genre = _genreRepository.GetGenreById(genreId);
+
+        if (genre == null)
+        {
+            throw new GenreNotFoundException($"Genre with id {genreId} not found");
+        }
+
+        return _genreRepository.GetMoviesWithGenre(genreId);
     }
 }

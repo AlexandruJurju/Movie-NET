@@ -9,4 +9,5 @@ public interface IGenreService
     void DeleteGenre(int id);
     void UpdateGenre(int id, Genre updatedGenre);
     void SaveGenre(Genre genre);
+    IEnumerable<Movie> GetMoviesWithGenre(int genreId);
 }

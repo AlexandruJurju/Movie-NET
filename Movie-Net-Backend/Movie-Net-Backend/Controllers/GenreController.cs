@@ -79,4 +79,20 @@ public class GenreController : ControllerBase
             return NotFound();
         }
     }
+
+    [HttpGet("{genreId}/movies")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
+    [ProducesResponseType(400)]
+    public IActionResult GetMoviesByGenre([FromRoute] int genreId)
+    {
+        try
+        {
+            var movies = _genreService.GetMoviesWithGenre(genreId);
+            return Ok(movies);
+        }
+        catch (Exception)
+        {
+            return NotFound();
+        }
+    }
 }

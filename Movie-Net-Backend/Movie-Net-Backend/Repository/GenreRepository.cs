@@ -1,4 +1,5 @@
-﻿using Movie_Net_Backend.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Repository.Interfaces;
 
@@ -39,5 +40,14 @@ public class GenreRepository : IGenreRepository
     {
         _appDbContext.Genres.Add(genre);
         _appDbContext.SaveChanges();
+    }
+
+    public IEnumerable<Movie> GetMoviesWithGenre(int genreId)
+    {
+        var genre = _appDbContext.Genres
+            .Include(g => g.Movies)
+            .FirstOrDefault(g => g.Id == genreId);
+
+        return genre.Movies;
     }
 }
