@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Movie_Net_Backend.Repository;
+using Movie_Net_Backend.Data;
+using Movie_Net_Backend.Service.Interfaces;
 
 namespace Movie_Net_Backend.Controllers;
 
@@ -7,17 +8,17 @@ namespace Movie_Net_Backend.Controllers;
 [Route("api/v1/[controller]")]
 public class MovieController : ControllerBase
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly IMovieService _movieService;
 
-    public MovieController(AppDbContext appDbContext)
+    public MovieController(IMovieService movieService)
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
+        _movieService = movieService ?? throw new ArgumentNullException(nameof(movieService));
     }
 
     [HttpGet]
     public IActionResult Get()
     {
-        var movies = _appDbContext.Movies.ToList();
+        var movies = _movieService.GetAllMovies();
         return Ok(movies);
     }
 }

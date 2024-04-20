@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Movie_Net_Backend.Repository;
+using Movie_Net_Backend.Data;
 
 #nullable disable
 

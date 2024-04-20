@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movie_Net_Backend.Model;
 
-namespace Movie_Net_Backend.Repository;
+namespace Movie_Net_Backend.Data;
 
 public class AppDbContext : DbContext
 {
