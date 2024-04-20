@@ -1,4 +1,5 @@
-﻿using Movie_Net_Backend.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Repository.Interfaces;
 
@@ -34,16 +35,25 @@ public class MovieRepository : IMovieRepository
         _appDbContext.Movies.Update(movie);
         _appDbContext.SaveChanges();
     }
-    
+
     public void SaveMovie(Movie movie)
     {
         _appDbContext.Movies.Add(movie);
         _appDbContext.SaveChanges();
     }
 
-    public void AddGenreToMovie(Movie movie, Genre genre)
+    public ICollection<Genre> GetGenresOfMovie(int movieId)
     {
-        
+        var movie = _appDbContext.Movies
+            .Include(m => m.Genres)
+            .FirstOrDefault(m => m.Id == movieId);
+
+        return movie.Genres;
     }
-    
+
+    public void RemoveGenreFromMovie(Movie movie, Genre genre)
+    {
+        movie.Genres.Remove(genre);
+        _appDbContext.SaveChanges();
+    }
 }

@@ -9,4 +9,7 @@ public interface IMovieService
     void DeleteMovie(int id);
     void UpdateMovie(int id, Movie updatedMovie);
     void SaveMovie(Movie movie);
+    void AddGenreToMovie(int movieId, int genreId);
+    ICollection<Genre> GetGenresOfMovie(int movieId);
+    void RemoveGenreFromMovie(int movieId, int genreId);
 }

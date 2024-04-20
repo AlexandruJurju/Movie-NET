@@ -80,4 +80,56 @@ public class MovieController : ControllerBase
             return NotFound();
         }
     }
+
+    [HttpPost("{movieId}/genres/{genreId}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult AddGenreToMovie([FromRoute] int movieId, [FromRoute] int genreId)
+    {
+        try
+        {
+            _movieService.AddGenreToMovie(movieId, genreId);
+            return Ok();
+        }
+        catch (MovieNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet("{movieId}/genres")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<Genre>))]
+    [ProducesResponseType(400)]
+    public IActionResult GetGenresByMovie([FromRoute] int movieId)
+    {
+        try
+        {
+            var genres = _movieService.GetGenresOfMovie(movieId);
+            return Ok(genres);
+        }
+        catch (Exception)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpDelete("{movieId}/genres/{genreId}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult RemoveGenreFromMovie([FromRoute] int movieId, [FromRoute] int genreId)
+    {
+        try
+        {
+            _movieService.RemoveGenreFromMovie(movieId, genreId);
+            return Ok();
+        }
+        catch (MovieNotFoundException)
+        {
+            return NotFound($"Movie with id {movieId} not found.");
+        }
+        catch (GenreNotFoundException)
+        {
+            return NotFound($"Genre with id {genreId} not found.");
+        }
+    }
 }

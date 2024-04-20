@@ -34,7 +34,7 @@ public class GenreRepository : IGenreRepository
         _appDbContext.Genres.Update(genre);
         _appDbContext.SaveChanges();
     }
-    
+
     public void SaveGenre(Genre genre)
     {
         _appDbContext.Genres.Add(genre);

@@ -9,4 +9,6 @@ public interface IMovieRepository
     Movie? GetMovieById(int id);
     void DeleteMovie(Movie movie);
     void UpdateMovie(Movie movie);
+    ICollection<Genre> GetGenresOfMovie(int movieId);
+    void RemoveGenreFromMovie(Movie movie, Genre genre);
 }
