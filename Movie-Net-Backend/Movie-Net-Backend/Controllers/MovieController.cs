@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interfaces;
 
@@ -17,6 +16,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(200,Type=typeof(IEnumerable<Movie>))]
     public IActionResult Get()
     {
         var movies = _movieService.GetAllMovies();
@@ -24,6 +24,8 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("{movieId}")]
+    [ProducesResponseType(200,Type=typeof(Movie))]
+    [ProducesResponseType(400)]
     public IActionResult Get([FromRoute] int movieId)
     {
         var movie = _movieService.GetMovieById(movieId);
@@ -37,6 +39,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(200)]
     public IActionResult Post([FromBody] Movie movie)
     {
         _movieService.SaveMovie(movie);
@@ -44,6 +47,8 @@ public class MovieController : ControllerBase
     }
 
     [HttpDelete("{movieId}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     public IActionResult Delete([FromRoute] int movieId)
     {
         var movie = _movieService.GetMovieById(movieId);
@@ -58,6 +63,8 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut("{movieId}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     public IActionResult Update([FromRoute] int movieId, [FromBody] Movie updatedMovie)
     {
         var existingMovie = _movieService.GetMovieById(movieId);

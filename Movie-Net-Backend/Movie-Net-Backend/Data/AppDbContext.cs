@@ -6,6 +6,7 @@ namespace Movie_Net_Backend.Data;
 public class AppDbContext : DbContext
 {
     public DbSet<Movie> Movies { get; set; }
+    public DbSet<Genre> Genres { get; set; }
 
     public AppDbContext(DbContextOptions options) : base(options)
     {

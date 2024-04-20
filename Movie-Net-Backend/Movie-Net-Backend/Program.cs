@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
 
 string connectionString = builder.Configuration.GetConnectionString("MySQLConnectionString")!;
 builder.Services.AddDbContext<AppDbContext>(

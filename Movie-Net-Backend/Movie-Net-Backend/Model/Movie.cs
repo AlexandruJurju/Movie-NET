@@ -24,4 +24,6 @@ public class Movie
     
     [Column("release_date")]
     public DateOnly ReleaseDate { get; set; }
+
+    public ICollection<Genre> Genres { get; set; }
 }
