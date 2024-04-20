@@ -41,11 +41,11 @@ public class GenreController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(200, Type = typeof(Genre))]
+    [ProducesResponseType(201, Type = typeof(Genre))]
     public IActionResult Post([FromBody] Genre genre)
     {
-        _genreService.SaveGenre(genre);
-        return Ok(genre);
+        var createdGenre = _genreService.SaveGenre(genre);
+        return CreatedAtAction(nameof(Post), new { id = createdGenre.Id }, createdGenre);
     }
 
     [HttpDelete("{genreId}")]

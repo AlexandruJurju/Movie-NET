@@ -8,6 +8,6 @@ public interface IGenreService
     Genre GetGenreById(int id);
     void DeleteGenre(int id);
     void UpdateGenre(int id, Genre updatedGenre);
-    void SaveGenre(Genre genre);
+    Genre SaveGenre(Genre genre);
     IEnumerable<Movie> GetMoviesWithGenre(int genreId);
 }

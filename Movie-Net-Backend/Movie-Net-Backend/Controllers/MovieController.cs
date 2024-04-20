@@ -41,11 +41,11 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(201)]
     public IActionResult Post([FromBody] Movie movie)
     {
-        _movieService.SaveMovie(movie);
-        return Ok(movie);
+        var createdMovie = _movieService.SaveMovie(movie);
+        return CreatedAtAction(nameof(Post), new { id = createdMovie.Id }, createdMovie);
     }
 
     [HttpDelete("{movieId}")]

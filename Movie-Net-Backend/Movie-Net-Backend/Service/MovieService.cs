@@ -1,29 +1,28 @@
-﻿using Movie_Net_Backend.Exceptions;
+﻿using Microsoft.EntityFrameworkCore;
+using Movie_Net_Backend.Data;
+using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
-using Movie_Net_Backend.Repository.Interfaces;
 using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
 public class MovieService : IMovieService
 {
-    private readonly IMovieRepository _movieRepository;
-    private readonly IGenreRepository _genreRepository;
+    private readonly AppDbContext _appDbContext;
 
-    public MovieService(IMovieRepository movieRepository, IGenreRepository genreRepository)
+    public MovieService(AppDbContext appDbContext)
     {
-        _movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
-        _genreRepository = genreRepository ?? throw new ArgumentNullException(nameof(genreRepository));
+        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
     }
 
     public IEnumerable<Movie> GetAllMovies()
     {
-        return _movieRepository.GetAllMovies();
+        return _appDbContext.Movies.ToList();
     }
 
     public Movie GetMovieById(int id)
     {
-        var movie = _movieRepository.GetMovieById(id);
+        var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == id);
         if (movie == null)
         {
             throw new MovieNotFoundException("Movie not found");
@@ -35,7 +34,8 @@ public class MovieService : IMovieService
     public void DeleteMovie(int id)
     {
         var movie = GetMovieById(id);
-        _movieRepository.DeleteMovie(movie);
+        _appDbContext.Movies.Remove(movie);
+        _appDbContext.SaveChanges();
     }
 
     public void UpdateMovie(int id, Movie updatedMovie)
@@ -45,18 +45,21 @@ public class MovieService : IMovieService
         existingMovie.Headline = updatedMovie.Headline;
         existingMovie.Overview = updatedMovie.Overview;
         existingMovie.ReleaseDate = updatedMovie.ReleaseDate;
-        _movieRepository.UpdateMovie(existingMovie);
+        _appDbContext.Movies.Update(existingMovie);
+        _appDbContext.SaveChanges();
     }
 
-    public void SaveMovie(Movie movie)
+    public Movie SaveMovie(Movie movie)
     {
-        _movieRepository.SaveMovie(movie);
+        _appDbContext.Movies.Add(movie);
+        _appDbContext.SaveChanges();
+        return movie;
     }
 
     public void AddGenreToMovie(int movieId, int genreId)
     {
-        var movie = _movieRepository.GetMovieById(movieId);
-        var genre = _genreRepository.GetGenreById(genreId);
+        var movie = GetMovieById(movieId);
+        var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
 
         if (movie == null)
         {
@@ -68,30 +71,33 @@ public class MovieService : IMovieService
             throw new GenreNotFoundException($"Genre with id {genreId} not found");
         }
 
-        if (movie.Genres == null)
-        {
-            movie.Genres = new List<Genre>();
-        }
-
         movie.Genres.Add(genre);
-        _movieRepository.UpdateMovie(movie);
+        _appDbContext.Movies.Update(movie);
+        _appDbContext.SaveChanges();
     }
 
     public ICollection<Genre> GetGenresOfMovie(int movieId)
     {
-        var movie = _movieRepository.GetMovieById(movieId);
+        var movie = _appDbContext.Movies
+            .Include(m => m.Genres)
+            .FirstOrDefault(m => m.Id == movieId);
+
         if (movie == null)
         {
             throw new MovieNotFoundException($"Movie with id {movieId} not found");
         }
 
-        return _movieRepository.GetGenresOfMovie(movieId);
+        return movie.Genres;
     }
 
     public void RemoveGenreFromMovie(int movieId, int genreId)
     {
-        var movie = _movieRepository.GetMovieById(movieId);
-        var genre = _genreRepository.GetGenreById(genreId);
+        // eager loading
+        var movie = _appDbContext.Movies
+            .Include(m => m.Genres)
+            .FirstOrDefault(m => m.Id == movieId);
+        
+        var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
 
         if (movie == null)
         {
@@ -103,6 +109,8 @@ public class MovieService : IMovieService
             throw new GenreNotFoundException($"Genre with id {genreId} not found");
         }
 
-        _movieRepository.RemoveGenreFromMovie(movie, genre);
+        movie.Genres.Remove(genre);
+        _appDbContext.Movies.Update(movie);
+        _appDbContext.SaveChanges();
     }
 }
