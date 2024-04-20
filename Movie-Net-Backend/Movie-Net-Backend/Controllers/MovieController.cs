@@ -29,15 +29,13 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Get([FromRoute] int movieId)
     {
-        try
-        {
-            var movie = _movieService.GetMovieById(movieId);
-            return Ok(movie);
-        }
-        catch (MovieNotFoundException)
+        var movie = _movieService.GetMovieById(movieId);
+        if (movie == null)
         {
             return NotFound();
         }
+
+        return Ok(movie);
     }
 
     [HttpPost]
@@ -53,32 +51,29 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Delete([FromRoute] int movieId)
     {
-        try
-        {
-            _movieService.DeleteMovie(movieId);
-            return Ok();
-        }
-        catch (MovieNotFoundException)
+        var movie = _movieService.GetMovieById(movieId);
+        if (movie == null)
         {
             return NotFound();
         }
-    }
 
+        _movieService.DeleteMovie(movieId);
+        return Ok();
+    }
 
     [HttpPut("{movieId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult Update([FromRoute] int movieId, [FromBody] Movie updatedMovie)
     {
-        try
-        {
-            _movieService.UpdateMovie(movieId, updatedMovie);
-            return Ok();
-        }
-        catch (MovieNotFoundException)
+        var existingMovie = _movieService.GetMovieById(movieId);
+        if (existingMovie == null)
         {
             return NotFound();
         }
+
+        _movieService.UpdateMovie(movieId, updatedMovie);
+        return Ok();
     }
 
     [HttpPost("{movieId}/genres/{genreId}")]
@@ -86,15 +81,15 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult AddGenreToMovie([FromRoute] int movieId, [FromRoute] int genreId)
     {
-        try
-        {
-            _movieService.AddGenreToMovie(movieId, genreId);
-            return Ok();
-        }
-        catch (MovieNotFoundException)
+        var movie = _movieService.GetMovieById(movieId);
+        if (movie == null)
         {
             return NotFound();
         }
+
+
+        _movieService.AddGenreToMovie(movieId, genreId);
+        return Ok();
     }
 
     [HttpGet("{movieId}/genres")]
@@ -102,15 +97,13 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult GetGenresByMovie([FromRoute] int movieId)
     {
-        try
-        {
-            var genres = _movieService.GetGenresOfMovie(movieId);
-            return Ok(genres);
-        }
-        catch (Exception)
+        var genres = _movieService.GetGenresOfMovie(movieId);
+        if (genres == null)
         {
             return NotFound();
         }
+
+        return Ok(genres);
     }
 
     [HttpDelete("{movieId}/genres/{genreId}")]
@@ -118,18 +111,13 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult RemoveGenreFromMovie([FromRoute] int movieId, [FromRoute] int genreId)
     {
-        try
-        {
-            _movieService.RemoveGenreFromMovie(movieId, genreId);
-            return Ok();
-        }
-        catch (MovieNotFoundException)
+        var movie = _movieService.GetMovieById(movieId);
+        if (movie == null)
         {
             return NotFound($"Movie with id {movieId} not found.");
         }
-        catch (GenreNotFoundException)
-        {
-            return NotFound($"Genre with id {genreId} not found.");
-        }
+
+        _movieService.RemoveGenreFromMovie(movieId, genreId);
+        return Ok();
     }
 }

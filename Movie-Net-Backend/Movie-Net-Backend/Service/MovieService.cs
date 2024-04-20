@@ -20,20 +20,20 @@ public class MovieService : IMovieService
         return _appDbContext.Movies.ToList();
     }
 
-    public Movie GetMovieById(int id)
+    public Movie? GetMovieById(int id)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == id);
-        if (movie == null)
-        {
-            throw new MovieNotFoundException("Movie not found");
-        }
-
         return movie;
     }
 
     public void DeleteMovie(int id)
     {
         var movie = GetMovieById(id);
+        if (movie == null)
+        {
+            return;
+        }
+
         _appDbContext.Movies.Remove(movie);
         _appDbContext.SaveChanges();
     }
@@ -41,6 +41,11 @@ public class MovieService : IMovieService
     public void UpdateMovie(int id, Movie updatedMovie)
     {
         var existingMovie = GetMovieById(id);
+        if (existingMovie == null)
+        {
+            return;
+        }
+
         existingMovie.Title = updatedMovie.Title;
         existingMovie.Headline = updatedMovie.Headline;
         existingMovie.Overview = updatedMovie.Overview;
@@ -76,7 +81,7 @@ public class MovieService : IMovieService
         _appDbContext.SaveChanges();
     }
 
-    public ICollection<Genre> GetGenresOfMovie(int movieId)
+    public ICollection<Genre>? GetGenresOfMovie(int movieId)
     {
         var movie = _appDbContext.Movies
             .Include(m => m.Genres)
@@ -84,7 +89,7 @@ public class MovieService : IMovieService
 
         if (movie == null)
         {
-            throw new MovieNotFoundException($"Movie with id {movieId} not found");
+            return null;
         }
 
         return movie.Genres;
@@ -96,19 +101,11 @@ public class MovieService : IMovieService
         var movie = _appDbContext.Movies
             .Include(m => m.Genres)
             .FirstOrDefault(m => m.Id == movieId);
-        
+
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
-
-        if (movie == null)
-        {
-            throw new MovieNotFoundException($"Movie with id {movieId} not found");
-        }
-
-        if (genre == null)
-        {
-            throw new GenreNotFoundException($"Genre with id {genreId} not found");
-        }
-
+        
+        // TODO: check for null
+        
         movie.Genres.Remove(genre);
         _appDbContext.Movies.Update(movie);
         _appDbContext.SaveChanges();

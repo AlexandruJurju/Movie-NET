@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Service.Interface;
@@ -20,20 +19,20 @@ public class GenreService : IGenreService
         return _appDbContext.Genres.ToList();
     }
 
-    public Genre GetGenreById(int id)
+    public Genre? GetGenreById(int id)
     {
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
-        if (genre == null)
-        {
-            throw new GenreNotFoundException("Genre not found");
-        }
-
         return genre;
     }
 
     public void DeleteGenre(int id)
     {
         var genre = GetGenreById(id);
+        if (genre == null)
+        {
+            return;
+        }
+
         _appDbContext.Genres.Remove(genre);
         _appDbContext.SaveChanges();
     }
@@ -41,6 +40,11 @@ public class GenreService : IGenreService
     public void UpdateGenre(int id, Genre updatedGenre)
     {
         var existingGenre = GetGenreById(id);
+        if (existingGenre == null)
+        {
+            return;
+        }
+
         existingGenre.Name = updatedGenre.Name;
         _appDbContext.Genres.Update(existingGenre);
         _appDbContext.SaveChanges();
@@ -53,7 +57,7 @@ public class GenreService : IGenreService
         return genre;
     }
 
-    public IEnumerable<Movie> GetMoviesWithGenre(int genreId)
+    public IEnumerable<Movie>? GetMoviesWithGenre(int genreId)
     {
         // use include for eager loading
         var genre = _appDbContext.Genres
@@ -62,7 +66,7 @@ public class GenreService : IGenreService
 
         if (genre == null)
         {
-            throw new GenreNotFoundException($"Genre with id {genreId} not found");
+            return null;
         }
 
         return genre.Movies;
