@@ -18,6 +18,23 @@ public class MovieService : IMovieService
         return _appDbContext.Movies.ToList();
     }
 
+    public Movie? GetMovieById(int id)
+    {
+        return _appDbContext.Movies.FirstOrDefault(m => m.Id == id);
+    }
+
+    public void DeleteMovie(Movie movie)
+    {
+        _appDbContext.Movies.Remove(movie);
+        _appDbContext.SaveChanges();
+    }
+
+    public void UpdateMovie(Movie movie)
+    {
+        _appDbContext.Movies.Update(movie);
+        _appDbContext.SaveChanges();
+    }
+    
     public void SaveMovie(Movie movie)
     {
         _appDbContext.Movies.Add(movie);

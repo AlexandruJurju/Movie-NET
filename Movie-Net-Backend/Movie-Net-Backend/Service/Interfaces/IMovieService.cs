@@ -6,4 +6,7 @@ public interface IMovieService
 {
     IEnumerable<Movie> GetAllMovies();
     void SaveMovie(Movie movie);
+    Movie? GetMovieById(int id);
+    void DeleteMovie(Movie movie);
+    void UpdateMovie(Movie movie);
 }
