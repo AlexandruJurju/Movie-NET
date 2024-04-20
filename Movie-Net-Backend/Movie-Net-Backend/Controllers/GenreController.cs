@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -20,8 +19,8 @@ public class GenreController : ControllerBase
     [ProducesResponseType(200, Type = typeof(IEnumerable<Genre>))]
     public IActionResult Get()
     {
-        var genres = _genreService.GetAllGenres();
-        return Ok(genres);
+        var genresResult = _genreService.GetAllGenres();
+        return Ok(genresResult);
     }
 
     [HttpGet("{genreId}")]
@@ -29,21 +28,26 @@ public class GenreController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Get([FromRoute] int genreId)
     {
-        var genre = _genreService.GetGenreById(genreId);
-        if (genre == null)
+        var genreResult = _genreService.GetGenreById(genreId);
+        if (genreResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(genreResult.Errors);
         }
 
-        return Ok(genre);
+        return Ok(genreResult.Value);
     }
 
     [HttpPost]
     [ProducesResponseType(201, Type = typeof(Genre))]
     public IActionResult Post([FromBody] Genre genre)
     {
-        var createdGenre = _genreService.SaveGenre(genre);
-        return CreatedAtAction(nameof(Post), new { id = createdGenre.Id }, createdGenre);
+        var createdGenreResult = _genreService.SaveGenre(genre);
+        if (createdGenreResult.IsFailed)
+        {
+            return BadRequest(createdGenreResult.Errors);
+        }
+
+        return CreatedAtAction(nameof(Post), new { id = createdGenreResult.Value.Id }, createdGenreResult.Value);
     }
 
     [HttpDelete("{genreId}")]
@@ -51,13 +55,12 @@ public class GenreController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Delete([FromRoute] int genreId)
     {
-        var genre = _genreService.GetGenreById(genreId);
-        if (genre == null)
+        var deleteResult = _genreService.DeleteGenre(genreId);
+        if (deleteResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(deleteResult.Errors);
         }
 
-        _genreService.DeleteGenre(genreId);
         return Ok();
     }
 
@@ -66,13 +69,12 @@ public class GenreController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Update([FromRoute] int genreId, [FromBody] Genre updatedGenre)
     {
-        var existingGenre = _genreService.GetGenreById(genreId);
-        if (existingGenre == null)
+        var updateResult = _genreService.UpdateGenre(genreId, updatedGenre);
+        if (updateResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(updateResult.Errors);
         }
 
-        _genreService.UpdateGenre(genreId, updatedGenre);
         return Ok();
     }
 
@@ -81,12 +83,12 @@ public class GenreController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult GetMoviesByGenre([FromRoute] int genreId)
     {
-        var movies = _genreService.GetMoviesWithGenre(genreId);
-        if (movies == null)
+        var moviesResult = _genreService.GetMoviesWithGenre(genreId);
+        if (moviesResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(moviesResult.Errors);
         }
 
-        return Ok(movies);
+        return Ok(moviesResult.Value);
     }
 }

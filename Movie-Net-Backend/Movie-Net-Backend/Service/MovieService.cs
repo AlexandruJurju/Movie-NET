@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentResults;
 using Movie_Net_Backend.Data;
-using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -20,94 +19,109 @@ public class MovieService : IMovieService
         return _appDbContext.Movies.ToList();
     }
 
-    public Movie? GetMovieById(int id)
+    public Result<Movie> GetMovieById(int id)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == id);
-        return movie;
-    }
 
-    public void DeleteMovie(int id)
-    {
-        var movie = GetMovieById(id);
         if (movie == null)
         {
-            return;
+            return Result.Fail("Movie is null");
         }
 
-        _appDbContext.Movies.Remove(movie);
-        _appDbContext.SaveChanges();
+        return Result.Ok(movie);
     }
 
-    public void UpdateMovie(int id, Movie updatedMovie)
+    public Result DeleteMovie(int id)
     {
-        var existingMovie = GetMovieById(id);
-        if (existingMovie == null)
+        var movieResult = GetMovieById(id);
+        if (movieResult.IsFailed)
         {
-            return;
+            return movieResult.ToResult();
         }
 
+        _appDbContext.Movies.Remove(movieResult.Value);
+        _appDbContext.SaveChanges();
+        return Result.Ok();
+    }
+
+    public Result UpdateMovie(int id, Movie updatedMovie)
+    {
+        var movieResult = GetMovieById(id);
+        if (movieResult.IsFailed)
+        {
+            return movieResult.ToResult();
+        }
+
+        var existingMovie = movieResult.Value;
         existingMovie.Title = updatedMovie.Title;
         existingMovie.Headline = updatedMovie.Headline;
         existingMovie.Overview = updatedMovie.Overview;
         existingMovie.ReleaseDate = updatedMovie.ReleaseDate;
         _appDbContext.Movies.Update(existingMovie);
         _appDbContext.SaveChanges();
+        return Result.Ok();
     }
 
-    public Movie SaveMovie(Movie movie)
+    public Result<Movie> SaveMovie(Movie movie)
     {
         _appDbContext.Movies.Add(movie);
         _appDbContext.SaveChanges();
-        return movie;
+        return Result.Ok(movie);
     }
 
-    public void AddGenreToMovie(int movieId, int genreId)
+    public Result AddGenreToMovie(int movieId, int genreId)
     {
-        var movie = GetMovieById(movieId);
+        var movieResult = GetMovieById(movieId);
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
 
-        if (movie == null)
+        if (movieResult.IsFailed)
         {
-            throw new MovieNotFoundException($"Movie with id {movieId} not found");
+            return movieResult.ToResult();
         }
 
         if (genre == null)
         {
-            throw new GenreNotFoundException($"Genre with id {genreId} not found");
+            return Result.Fail(new Error($"Genre with id {genreId} not found"));
         }
 
-        movie.Genres.Add(genre);
-        _appDbContext.Movies.Update(movie);
+        movieResult.Value.Genres.Add(genre);
+        _appDbContext.Movies.Update(movieResult.Value);
         _appDbContext.SaveChanges();
+
+        return Result.Ok();
     }
 
-    public ICollection<Genre>? GetGenresOfMovie(int movieId)
+    public Result<ICollection<Genre>> GetGenresOfMovie(int movieId)
     {
-        var movie = _appDbContext.Movies
-            .Include(m => m.Genres)
-            .FirstOrDefault(m => m.Id == movieId);
+        var movieResult = GetMovieById(movieId);
 
-        if (movie == null)
+        if (movieResult.IsFailed)
         {
-            return null;
+            return Result.Fail<ICollection<Genre>>(new Error("Movie not found"));
         }
 
-        return movie.Genres;
+        return Result.Ok(movieResult.Value.Genres);
     }
 
-    public void RemoveGenreFromMovie(int movieId, int genreId)
+    public Result RemoveGenreFromMovie(int movieId, int genreId)
     {
-        // eager loading
-        var movie = _appDbContext.Movies
-            .Include(m => m.Genres)
-            .FirstOrDefault(m => m.Id == movieId);
-
+        var movieResult = GetMovieById(movieId);
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
-        
-        // TODO: check for null
-        
-        movie.Genres.Remove(genre);
-        _appDbContext.Movies.Update(movie);
+
+        if (movieResult.IsFailed)
+        {
+            return movieResult.ToResult();
+        }
+
+        if (genre == null)
+        {
+            return Result.Fail(new Error($"Genre with id {genreId} not found"));
+        }
+
+        movieResult.Value.Genres.Remove(genre);
+        _appDbContext.Movies.Update(movieResult.Value);
         _appDbContext.SaveChanges();
+
+        return Result.Ok();
     }
 }

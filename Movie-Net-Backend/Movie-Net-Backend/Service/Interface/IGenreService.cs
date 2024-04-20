@@ -1,13 +1,14 @@
-﻿using Movie_Net_Backend.Model;
+﻿using FluentResults;
+using Movie_Net_Backend.Model;
 
 namespace Movie_Net_Backend.Service.Interface;
 
 public interface IGenreService
 {
     IEnumerable<Genre> GetAllGenres();
-    Genre? GetGenreById(int id);
-    void DeleteGenre(int id);
-    void UpdateGenre(int id, Genre updatedGenre);
-    Genre SaveGenre(Genre genre);
-    IEnumerable<Movie>? GetMoviesWithGenre(int genreId);
+    Result<Genre> GetGenreById(int id);
+    Result DeleteGenre(int id);
+    Result UpdateGenre(int id, Genre updatedGenre);
+    Result<Genre> SaveGenre(Genre genre);
+    Result<ICollection<Movie>> GetMoviesWithGenre(int genreId);
 }

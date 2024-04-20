@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Service.Interface;
@@ -19,45 +20,54 @@ public class GenreService : IGenreService
         return _appDbContext.Genres.ToList();
     }
 
-    public Genre? GetGenreById(int id)
+    public Result<Genre> GetGenreById(int id)
     {
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
-        return genre;
-    }
 
-    public void DeleteGenre(int id)
-    {
-        var genre = GetGenreById(id);
         if (genre == null)
         {
-            return;
+            return Result.Fail<Genre>(new Error("Genre not found"));
         }
 
-        _appDbContext.Genres.Remove(genre);
-        _appDbContext.SaveChanges();
+        return Result.Ok(genre);
     }
 
-    public void UpdateGenre(int id, Genre updatedGenre)
+    public Result DeleteGenre(int id)
     {
-        var existingGenre = GetGenreById(id);
-        if (existingGenre == null)
+        var genreResult = GetGenreById(id);
+        if (genreResult.IsFailed)
         {
-            return;
+            return genreResult.ToResult();
         }
 
+        _appDbContext.Genres.Remove(genreResult.Value);
+        _appDbContext.SaveChanges();
+        return Result.Ok();
+    }
+
+    public Result UpdateGenre(int id, Genre updatedGenre)
+    {
+        var genreResult = GetGenreById(id);
+        if (genreResult.IsFailed)
+        {
+            return genreResult.ToResult();
+        }
+
+        var existingGenre = genreResult.Value;
         existingGenre.Name = updatedGenre.Name;
         _appDbContext.Genres.Update(existingGenre);
         _appDbContext.SaveChanges();
+        return Result.Ok();
     }
 
-    public Genre SaveGenre(Genre genre)
+    public Result<Genre> SaveGenre(Genre genre)
     {
         _appDbContext.Genres.Add(genre);
         _appDbContext.SaveChanges();
-        return genre;
+        return Result.Ok(genre);
     }
 
-    public IEnumerable<Movie>? GetMoviesWithGenre(int genreId)
+    public Result<ICollection<Movie>> GetMoviesWithGenre(int genreId)
     {
         // use include for eager loading
         var genre = _appDbContext.Genres
@@ -66,9 +76,9 @@ public class GenreService : IGenreService
 
         if (genre == null)
         {
-            return null;
+            return Result.Fail<ICollection<Movie>>(new Error("Genre not found"));
         }
 
-        return genre.Movies;
+        return Result.Ok(genre.Movies);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -20,8 +19,8 @@ public class MovieController : ControllerBase
     [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
     public IActionResult Get()
     {
-        var movies = _movieService.GetAllMovies();
-        return Ok(movies);
+        var moviesResult = _movieService.GetAllMovies();
+        return Ok(moviesResult);
     }
 
     [HttpGet("{movieId}")]
@@ -29,21 +28,26 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Get([FromRoute] int movieId)
     {
-        var movie = _movieService.GetMovieById(movieId);
-        if (movie == null)
+        var movieResult = _movieService.GetMovieById(movieId);
+        if (movieResult.IsFailed)
         {
             return NotFound();
         }
 
-        return Ok(movie);
+        return Ok(movieResult.Value);
     }
 
     [HttpPost]
     [ProducesResponseType(201)]
     public IActionResult Post([FromBody] Movie movie)
     {
-        var createdMovie = _movieService.SaveMovie(movie);
-        return CreatedAtAction(nameof(Post), new { id = createdMovie.Id }, createdMovie);
+        var createdMovieResult = _movieService.SaveMovie(movie);
+        if (createdMovieResult.IsFailed)
+        {
+            return BadRequest(createdMovieResult.Errors);
+        }
+
+        return CreatedAtAction(nameof(Post), new { id = createdMovieResult.Value.Id }, createdMovieResult.Value);
     }
 
     [HttpDelete("{movieId}")]
@@ -51,13 +55,12 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Delete([FromRoute] int movieId)
     {
-        var movie = _movieService.GetMovieById(movieId);
-        if (movie == null)
+        var deleteResult = _movieService.DeleteMovie(movieId);
+        if (deleteResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(deleteResult.Errors);
         }
 
-        _movieService.DeleteMovie(movieId);
         return Ok();
     }
 
@@ -66,13 +69,12 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Update([FromRoute] int movieId, [FromBody] Movie updatedMovie)
     {
-        var existingMovie = _movieService.GetMovieById(movieId);
-        if (existingMovie == null)
+        var updateResult = _movieService.UpdateMovie(movieId, updatedMovie);
+        if (updateResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(updateResult.Errors);
         }
 
-        _movieService.UpdateMovie(movieId, updatedMovie);
         return Ok();
     }
 
@@ -81,14 +83,12 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult AddGenreToMovie([FromRoute] int movieId, [FromRoute] int genreId)
     {
-        var movie = _movieService.GetMovieById(movieId);
-        if (movie == null)
+        var addGenreResult = _movieService.AddGenreToMovie(movieId, genreId);
+        if (addGenreResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(addGenreResult.Errors);
         }
 
-
-        _movieService.AddGenreToMovie(movieId, genreId);
         return Ok();
     }
 
@@ -97,13 +97,13 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult GetGenresByMovie([FromRoute] int movieId)
     {
-        var genres = _movieService.GetGenresOfMovie(movieId);
-        if (genres == null)
+        var genresResult = _movieService.GetGenresOfMovie(movieId);
+        if (genresResult.IsFailed)
         {
-            return NotFound();
+            return NotFound(genresResult.Errors);
         }
 
-        return Ok(genres);
+        return Ok(genresResult.Value);
     }
 
     [HttpDelete("{movieId}/genres/{genreId}")]
@@ -111,13 +111,12 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult RemoveGenreFromMovie([FromRoute] int movieId, [FromRoute] int genreId)
     {
-        var movie = _movieService.GetMovieById(movieId);
-        if (movie == null)
+        var removeGenreResult = _movieService.RemoveGenreFromMovie(movieId, genreId);
+        if (removeGenreResult.IsFailed)
         {
-            return NotFound($"Movie with id {movieId} not found.");
+            return NotFound(removeGenreResult.Errors);
         }
 
-        _movieService.RemoveGenreFromMovie(movieId, genreId);
         return Ok();
     }
 }
