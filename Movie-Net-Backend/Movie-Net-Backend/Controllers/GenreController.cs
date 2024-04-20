@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
-using Movie_Net_Backend.Service.Interfaces;
+using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
 
@@ -28,18 +29,19 @@ public class GenreController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Get([FromRoute] int genreId)
     {
-        var genre = _genreService.GetGenreById(genreId);
-
-        if (genre == null)
+        try
+        {
+            var genre = _genreService.GetGenreById(genreId);
+            return Ok(genre);
+        }
+        catch (GenreNotFoundException)
         {
             return NotFound();
         }
-
-        return Ok(genre);
     }
 
     [HttpPost]
-    [ProducesResponseType(200,Type=typeof(Genre))]
+    [ProducesResponseType(200, Type = typeof(Genre))]
     public IActionResult Post([FromBody] Genre genre)
     {
         _genreService.SaveGenre(genre);
@@ -51,15 +53,15 @@ public class GenreController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Delete([FromRoute] int genreId)
     {
-        var genre = _genreService.GetGenreById(genreId);
-
-        if (genre == null)
+        try
+        {
+            _genreService.DeleteGenre(genreId);
+            return Ok();
+        }
+        catch (GenreNotFoundException)
         {
             return NotFound();
         }
-
-        _genreService.DeleteGenre(genre);
-        return Ok();
     }
 
     [HttpPut("{genreId}")]
@@ -67,16 +69,14 @@ public class GenreController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Update([FromRoute] int genreId, [FromBody] Genre updatedGenre)
     {
-        var existingGenre = _genreService.GetGenreById(genreId);
-        if (existingGenre == null)
+        try
+        {
+            _genreService.UpdateGenre(genreId, updatedGenre);
+            return Ok();
+        }
+        catch (GenreNotFoundException)
         {
             return NotFound();
         }
-
-        existingGenre.Name = updatedGenre.Name;
-
-        _genreService.UpdateGenre(existingGenre);
-
-        return Ok();
     }
 }

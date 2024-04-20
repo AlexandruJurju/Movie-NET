@@ -1,43 +1,52 @@
-﻿using Movie_Net_Backend.Data;
+﻿using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
-using Movie_Net_Backend.Service.Interfaces;
+using Movie_Net_Backend.Repository.Interfaces;
+using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
 public class MovieService : IMovieService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly IMovieRepository _movieRepository;
 
-    public MovieService(AppDbContext appDbContext)
+    public MovieService(IMovieRepository movieRepository)
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
+        _movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
     }
 
     public IEnumerable<Movie> GetAllMovies()
     {
-        return _appDbContext.Movies.ToList();
+        return _movieRepository.GetAllMovies();
     }
 
-    public Movie? GetMovieById(int id)
+    public Movie GetMovieById(int id)
     {
-        return _appDbContext.Movies.FirstOrDefault(m => m.Id == id);
+        var movie = _movieRepository.GetMovieById(id);
+        if (movie == null)
+        {
+            throw new MovieNotFoundException("Movie not found");
+        }
+        return movie;
     }
 
-    public void DeleteMovie(Movie movie)
+    public void DeleteMovie(int id)
     {
-        _appDbContext.Movies.Remove(movie);
-        _appDbContext.SaveChanges();
+        var movie = GetMovieById(id);
+        _movieRepository.DeleteMovie(movie);
     }
 
-    public void UpdateMovie(Movie movie)
+    public void UpdateMovie(int id, Movie updatedMovie)
     {
-        _appDbContext.Movies.Update(movie);
-        _appDbContext.SaveChanges();
+        var existingMovie = GetMovieById(id);
+        existingMovie.Title = updatedMovie.Title;
+        existingMovie.Headline = updatedMovie.Headline;
+        existingMovie.Overview = updatedMovie.Overview;
+        existingMovie.ReleaseDate = updatedMovie.ReleaseDate;
+        _movieRepository.UpdateMovie(existingMovie);
     }
-    
+
     public void SaveMovie(Movie movie)
     {
-        _appDbContext.Movies.Add(movie);
-        _appDbContext.SaveChanges();
+        _movieRepository.SaveMovie(movie);
     }
 }

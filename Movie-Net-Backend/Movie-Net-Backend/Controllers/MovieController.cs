@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
-using Movie_Net_Backend.Service.Interfaces;
+using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
 
@@ -16,7 +17,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(200,Type=typeof(IEnumerable<Movie>))]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
     public IActionResult Get()
     {
         var movies = _movieService.GetAllMovies();
@@ -24,18 +25,19 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("{movieId}")]
-    [ProducesResponseType(200,Type=typeof(Movie))]
+    [ProducesResponseType(200, Type = typeof(Movie))]
     [ProducesResponseType(400)]
     public IActionResult Get([FromRoute] int movieId)
     {
-        var movie = _movieService.GetMovieById(movieId);
-
-        if (movie == null)
+        try
+        {
+            var movie = _movieService.GetMovieById(movieId);
+            return Ok(movie);
+        }
+        catch (MovieNotFoundException)
         {
             return NotFound();
         }
-
-        return Ok(movie);
     }
 
     [HttpPost]
@@ -51,35 +53,31 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult Delete([FromRoute] int movieId)
     {
-        var movie = _movieService.GetMovieById(movieId);
-
-        if (movie == null)
+        try
+        {
+            _movieService.DeleteMovie(movieId);
+            return Ok();
+        }
+        catch (MovieNotFoundException)
         {
             return NotFound();
         }
-
-        _movieService.DeleteMovie(movie);
-        return Ok();
     }
+
 
     [HttpPut("{movieId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult Update([FromRoute] int movieId, [FromBody] Movie updatedMovie)
     {
-        var existingMovie = _movieService.GetMovieById(movieId);
-        if (existingMovie == null)
+        try
+        {
+            _movieService.UpdateMovie(movieId, updatedMovie);
+            return Ok();
+        }
+        catch (MovieNotFoundException)
         {
             return NotFound();
         }
-
-        existingMovie.Title = updatedMovie.Title;
-        existingMovie.Headline = updatedMovie.Headline;
-        existingMovie.Overview = updatedMovie.Overview;
-        existingMovie.ReleaseDate = updatedMovie.ReleaseDate;
-
-        _movieService.UpdateMovie(existingMovie);
-
-        return Ok();
     }
 }

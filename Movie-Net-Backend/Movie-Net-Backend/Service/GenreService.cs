@@ -1,43 +1,49 @@
-﻿using Movie_Net_Backend.Data;
+﻿using Movie_Net_Backend.Exceptions;
 using Movie_Net_Backend.Model;
-using Movie_Net_Backend.Service.Interfaces;
+using Movie_Net_Backend.Repository.Interfaces;
+using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
 public class GenreService : IGenreService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly IGenreRepository _genreRepository;
 
-    public GenreService(AppDbContext appDbContext)
+    public GenreService(IGenreRepository genreRepository)
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
+        _genreRepository = genreRepository ?? throw new ArgumentNullException(nameof(genreRepository));
     }
 
     public IEnumerable<Genre> GetAllGenres()
     {
-        return _appDbContext.Genres.ToList();
+        return _genreRepository.GetAllGenres();
     }
 
-    public Genre? GetGenreById(int genreId)
+    public Genre GetGenreById(int id)
     {
-        return _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
+        var genre = _genreRepository.GetGenreById(id);
+        if (genre == null)
+        {
+            throw new GenreNotFoundException("Genre not found");
+        }
+        return genre;
     }
 
-    public void DeleteGenre(Genre genre)
+    public void DeleteGenre(int id)
     {
-        _appDbContext.Genres.Remove(genre);
-        _appDbContext.SaveChanges();
+        var genre = GetGenreById(id);
+        _genreRepository.DeleteGenre(genre);
     }
 
-    public void UpdateGenre(Genre genre)
+    public void UpdateGenre(int id, Genre updatedGenre)
     {
-        _appDbContext.Genres.Update(genre);
-        _appDbContext.SaveChanges();
+        var existingGenre = GetGenreById(id);
+        existingGenre.Name = updatedGenre.Name;
+        _genreRepository.UpdateGenre(existingGenre);
     }
-    
+
     public void SaveGenre(Genre genre)
     {
-        _appDbContext.Genres.Add(genre);
-        _appDbContext.SaveChanges();
+        _genreRepository.SaveGenre(genre);
     }
 }

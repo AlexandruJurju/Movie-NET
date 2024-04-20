@@ -1,8 +1,8 @@
 ﻿using Movie_Net_Backend.Model;
 
-namespace Movie_Net_Backend.Service.Interfaces;
+namespace Movie_Net_Backend.Repository.Interfaces;
 
-public interface IMovieService
+public interface IMovieRepository
 {
     IEnumerable<Movie> GetAllMovies();
     void SaveMovie(Movie movie);
