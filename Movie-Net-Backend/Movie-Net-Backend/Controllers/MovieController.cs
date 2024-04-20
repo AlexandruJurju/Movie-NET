@@ -69,6 +69,7 @@ public class MovieController : ControllerBase
         existingMovie.Title = updatedMovie.Title;
         existingMovie.Headline = updatedMovie.Headline;
         existingMovie.Overview = updatedMovie.Overview;
+        existingMovie.ReleaseDate = updatedMovie.ReleaseDate;
 
         _movieService.UpdateMovie(existingMovie);
 
