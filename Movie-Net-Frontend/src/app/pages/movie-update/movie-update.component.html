@@ -1,21 +1,23 @@
-<form #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm)">
-  <div class="movie-details">
-    <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="movie-poster">
-    <div class="movie-info">
-      <h1 class="title">
-        <input type="text" [(ngModel)]="movie.title" name="title" placeholder="Title" required>
+<body class="d-flex justify-content-center align-items-center vh-100 m-0 bg-light text-center">
+<form #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm)" class="w-50 mx-auto bg-white p-3 rounded shadow-sm">
+  <div class="d-flex flex-column align-items-center">
+    <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="w-50">
+    <div class="text-center w-100">
+      <h1>
+        <input type="text" [(ngModel)]="movie.title" name="title" placeholder="Title" required class="form-control my-2">
       </h1>
-      <p class="release-date">
-        <input type="date" [(ngModel)]="movie.releaseDate" name="releaseDate" required>
+      <p>
+        <input type="date" [(ngModel)]="movie.releaseDate" name="releaseDate" required class="form-control my-2">
       </p>
-      <p class="headline">
-        <input type="text" [(ngModel)]="movie.headline" name="headline" placeholder="Headline" required>
+      <p>
+        <input type="text" [(ngModel)]="movie.headline" name="headline" placeholder="Headline" required class="form-control my-2">
       </p>
-      <p class="overview">
-        <textarea [(ngModel)]="movie.overview" name="overview" placeholder="Overview" required></textarea>
+      <p>
+        <textarea [(ngModel)]="movie.overview" name="overview" placeholder="Overview" required class="form-control my-2"></textarea>
       </p>
-      <button type="submit" class="submit-button">Update Movie</button>
-      <button type="button" class="delete-button" (click)="deleteMovieById(movie.id)">Delete Movie</button>
+      <button type="submit" class="btn btn-primary my-2 mx-1">Update Movie</button>
+      <button type="button" class="btn btn-danger my-2 mx-1" (click)="deleteMovieById(movie.id)">Delete Movie</button>
     </div>
   </div>
 </form>
+</body>
