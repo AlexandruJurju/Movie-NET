@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Movie} from "../../model/movie";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MovieService} from "../../service/movie.service";
@@ -13,7 +13,7 @@ import {FormsModule, NgForm} from "@angular/forms";
   templateUrl: './movie-edit.component.html',
   styleUrl: './movie-edit.component.css'
 })
-export class MovieEditComponent {
+export class MovieEditComponent implements OnInit {
   movie: Movie = {} as Movie;
 
   constructor(private movieService: MovieService,

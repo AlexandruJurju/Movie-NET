@@ -12,7 +12,7 @@ import {Movie} from "../../model/movie";
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
 })
-export class MovieDetailsComponent {
+export class MovieDetailsComponent implements OnInit{
   movie: Movie = {} as Movie;
 
   constructor(private movieService: MovieService,

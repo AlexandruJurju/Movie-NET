@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Genre} from "../../model/genre";
 import {GenreService} from "../../service/genre.service";
 import {NgForOf} from "@angular/common";
@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
   templateUrl: './genre-get.component.html',
   styleUrl: './genre-get.component.css'
 })
-export class GenreGetComponent {
+export class GenreGetComponent implements OnInit{
   genres: Genre[] = [];
   genreToDelete: Genre = {} as Genre;
 
@@ -28,8 +28,9 @@ export class GenreGetComponent {
     this.genreService.getAllGenres().subscribe(genres => this.genres = genres);
   }
 
+  // TODO: pass the whole object to page, not just the id, get rid of the call
   editGenre(genre: Genre): void {
-    //todo: Navigate to genre edit page
+    this.router.navigate(['/genre-edit', genre.id]);
   }
 
   deleteGenre(genreId: number): void {
