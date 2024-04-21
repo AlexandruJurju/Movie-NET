@@ -1,0 +1,20 @@
+<header class="main-header">
+  <!-- Main title -->
+  <div class="title-container">
+    <h1 class="main-title">{{ title }}</h1>
+  </div>
+
+  <nav class="nav-container">
+    <!-- Common navigation links -->
+    <a class="button" routerLink="/home" routerLinkActive="activebutton" ariaCurrentWhenActive="page">Home</a>
+
+    <!-- Conditional rendering based on user's authentication status -->
+    <a class="button" routerLink="/register" routerLinkActive="activebutton" ariaCurrentWhenActive="page">Register</a>
+    <a class="button" routerLink="/login" routerLinkActive="activebutton" ariaCurrentWhenActive="page">Login</a>
+
+    <div>
+      <a class="button" routerLink="/upload-movie" routerLinkActive="activebutton" ariaCurrentWhenActive="page">Add movies</a>
+      <a class="button" routerLink="/find-movies" routerLinkActive="activebutton" ariaCurrentWhenActive="page">Find Movies</a>
+    </div>
+  </nav>
+</header>
