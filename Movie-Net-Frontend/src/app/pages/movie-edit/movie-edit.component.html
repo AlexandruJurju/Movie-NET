@@ -15,10 +15,13 @@
         <p>
           <textarea [(ngModel)]="movie.overview" name="overview" placeholder="Overview" required class="form-control my-2"></textarea>
         </p>
-        <button type="submit" class="btn btn-primary my-2 mx-1">Update Movie</button>
+
+        <button type="button" class="btn btn-primary my-2 mx-1" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal">Update Movie</button>
         <button type="button" class="btn btn-danger my-2 mx-1" (click)="deleteMovieById(movie.id)">Delete Movie</button>
         <button type="button" class="btn btn-secondary my-2 mx-1" (click)="resetForm()">Reset</button>
       </div>
     </div>
+    
   </form>
 </div>
+

@@ -37,4 +37,11 @@ export class MovieService {
     return this.http.get<Genre[]>(`${BASE_URL}/api/v1/movie/${movieId}/genres`);
   }
 
+  addGenreToMovie(movieId: number, genreId: number): Observable<any> {
+    return this.http.post(`${BASE_URL}/api/v1/movie/${movieId}/genres/${genreId}`, {});
+  }
+
+  removeGenreFromMovie(movieId: number, genreId: number): Observable<any> {
+    return this.http.delete(`${BASE_URL}/api/v1/movie/${movieId}/genres/${genreId}`);
+  }
 }

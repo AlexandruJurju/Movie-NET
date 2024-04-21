@@ -3,12 +3,15 @@ import {Movie} from "../../model/movie";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MovieService} from "../../service/movie.service";
 import {FormsModule, NgForm} from "@angular/forms";
+import {Genre} from "../../model/genre";
+import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-movie-edit',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    NgForOf
   ],
   templateUrl: './movie-edit.component.html',
   styleUrl: './movie-edit.component.css'
@@ -16,6 +19,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 export class MovieEditComponent implements OnInit {
   movie: Movie = {} as Movie;
   movieCopy: Movie = {} as Movie;
+  genres: Genre[] = [];
 
   constructor(private movieService: MovieService,
               private router: Router,
@@ -49,13 +53,23 @@ export class MovieEditComponent implements OnInit {
       }
     });
 
+    this.movieService.getGenresByMovieId(movieId).subscribe({
+      next: genres => {
+        this.genres = genres;
+      },
+      error: error => {
+        console.error('Error fetching genres:', error);
+      }
+    });
+
   }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
       this.movieService.updateMovie(this.movie).subscribe({
         next: () => {
-          this.router.navigate(["/movie-details", this.movie.id]);
+          this.router.navigate(["/movie-details", this.movie.id]).then(() => {
+          });
         },
         error: error => {
           this.router.navigate(["/error"]).then(() => {
@@ -69,7 +83,8 @@ export class MovieEditComponent implements OnInit {
   deleteMovieById(id: number) {
     this.movieService.deleteMovieById(id).subscribe({
       next: () => {
-        this.router.navigate(["/movie-get"]);
+        this.router.navigate(["/movie-get"]).then(() => {
+        });
       },
       error: error => {
         this.router.navigate(["/error"]).then(() => {
@@ -78,7 +93,7 @@ export class MovieEditComponent implements OnInit {
     })
   }
 
-  resetForm(){
+  resetForm() {
     this.movie = {...this.movieCopy};
   }
 }
