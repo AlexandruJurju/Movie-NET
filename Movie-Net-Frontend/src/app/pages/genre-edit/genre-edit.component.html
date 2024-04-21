@@ -1,0 +1,12 @@
+<div class="d-flex justify-content-center align-items-center vh-100 m-0 bg-light text-center">
+  <form #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm)" class="w-50 mx-auto bg-white p-3 rounded shadow-sm">
+    <div class="d-flex flex-column align-items-center">
+      <div class="text-center w-100">
+        <h1>
+          <input type="text" [(ngModel)]="genre.name" name="name" placeholder="Genre Name" required class="form-control my-2">
+        </h1>
+        <button type="submit" class="btn btn-primary my-2 mx-1">Update Genre</button>
+      </div>
+    </div>
+  </form>
+</div>

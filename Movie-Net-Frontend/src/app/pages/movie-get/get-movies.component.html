@@ -1,0 +1,12 @@
+<div class="container py-5">
+  <div *ngIf="movies" class="row row-cols-1 row-cols-md-3 g-4">
+    <div *ngFor="let movie of movies" class="col">
+      <div class="card h-100 text-center p-3">
+        <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="card-img-top" (click)="goToMovieDetails(movie.id)">
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.title }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

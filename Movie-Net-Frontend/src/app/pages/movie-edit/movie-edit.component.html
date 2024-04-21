@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-center align-items-center vh-100 m-0 bg-light text-center">
+  <form #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm)" class="w-50 mx-auto bg-white p-3 rounded shadow-sm">
+    <div class="d-flex flex-column align-items-center">
+      <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="w-50">
+      <div class="text-center w-100">
+        <h1>
+          <input type="text" [(ngModel)]="movie.title" name="title" placeholder="Title" required class="form-control my-2">
+        </h1>
+        <p>
+          <input type="date" [(ngModel)]="movie.releaseDate" name="releaseDate" required class="form-control my-2">
+        </p>
+        <p>
+          <input type="text" [(ngModel)]="movie.headline" name="headline" placeholder="Headline" required class="form-control my-2">
+        </p>
+        <p>
+          <textarea [(ngModel)]="movie.overview" name="overview" placeholder="Overview" required class="form-control my-2"></textarea>
+        </p>
+
+        <button type="button" class="btn btn-primary my-2 mx-1" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal">Update Movie</button>
+        <button type="button" class="btn btn-danger my-2 mx-1" (click)="deleteMovieById(movie.id)">Delete Movie</button>
+        <button type="button" class="btn btn-secondary my-2 mx-1" (click)="resetForm()">Reset</button>
+      </div>
+    </div>
+    
+  </form>
+</div>
+
