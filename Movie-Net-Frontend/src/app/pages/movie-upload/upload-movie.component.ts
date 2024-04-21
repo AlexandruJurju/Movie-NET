@@ -4,7 +4,7 @@ import {MovieService} from "../../service/movie.service";
 import {Movie} from "../../model/movie";
 
 @Component({
-  selector: 'app-upload-movie',
+  selector: 'app-movie-upload',
   standalone: true,
   imports: [
     FormsModule

@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {MovieService} from "../../service/movie.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Movie} from "../../model/movie";
 
 @Component({
   selector: 'app-movie-details',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
 })

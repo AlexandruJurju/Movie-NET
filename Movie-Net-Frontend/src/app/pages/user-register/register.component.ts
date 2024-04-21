@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-user-register',
   standalone: true,
   imports: [
     ReactiveFormsModule

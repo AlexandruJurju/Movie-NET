@@ -5,7 +5,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-get-movies',
+  selector: 'app-movie-get',
   standalone: true,
   imports: [
     NgIf,
