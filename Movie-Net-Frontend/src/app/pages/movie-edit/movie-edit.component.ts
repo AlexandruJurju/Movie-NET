@@ -15,6 +15,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 })
 export class MovieEditComponent implements OnInit {
   movie: Movie = {} as Movie;
+  movieCopy: Movie = {} as Movie;
 
   constructor(private movieService: MovieService,
               private router: Router,
@@ -39,6 +40,7 @@ export class MovieEditComponent implements OnInit {
           return;
         }
         this.movie = movie;
+        this.movieCopy = {...movie};
       },
       error: error => {
         console.error('Error fetching movie:', error);
@@ -74,5 +76,9 @@ export class MovieEditComponent implements OnInit {
         })
       }
     })
+  }
+
+  resetForm(){
+    this.movie = {...this.movieCopy};
   }
 }
