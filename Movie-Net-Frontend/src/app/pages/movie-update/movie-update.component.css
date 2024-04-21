@@ -1,0 +1,31 @@
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.movie-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-poster {
+  width: 250px;
+  height: 250px;
+}
+
+.movie-info {
+  margin-top: 20px;
+}
+
+.title,
+.release-date,
+.headline,
+.overview {
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 20px;
+}

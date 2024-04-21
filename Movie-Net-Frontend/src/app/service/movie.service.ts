@@ -29,7 +29,7 @@ export class MovieService {
   }
 
   updateMovie(movie: Movie): Observable<Movie> {
-    return this.http.put<Movie>(`${BASE_URL}/api/v1/movie`, movie);
+    return this.http.put<Movie>(`${BASE_URL}/api/v1/movie/${movie.id}`, movie);
   }
 
 }

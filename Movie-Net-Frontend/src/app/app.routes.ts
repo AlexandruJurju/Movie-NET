@@ -11,18 +11,12 @@ import {MovieUpdateComponent} from "./pages/movie-update/movie-update.component"
 export const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'movie-upload', component: UploadMovieComponent},
-  {path: 'movie-update', component: MovieUpdateComponent},
   {path: 'movie-get', component: GetMoviesComponent},
+  {path: 'movie-update/:id', component: MovieUpdateComponent},
   {path: 'movie-details/:id', component: MovieDetailsComponent},
   {path: 'user-register', component: RegisterComponent},
   {path: 'user-login', component: LoginComponent},
   {path: 'error', component: ErrorComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
-
-  // page not found
-  {
-    path: '**', pathMatch: 'full',
-    component: ErrorComponent
-  },
 
 ];

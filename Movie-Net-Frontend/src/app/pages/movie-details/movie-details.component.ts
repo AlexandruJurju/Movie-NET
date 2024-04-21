@@ -45,4 +45,9 @@ export class MovieDetailsComponent {
 
   }
 
+  // TODO: pass the movie object, not the id
+  navigateToUpdateMovie() {
+    this.router.navigate(['/movie-update', this.movie.id]);
+  }
+
 }
