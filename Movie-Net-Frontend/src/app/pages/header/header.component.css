@@ -31,10 +31,11 @@
   color: white;
 }
 
-.nav-container a {
+.nav-container {
   color: white;
 }
 
 .nav-container div a {
   margin-right: 10px;
 }
+

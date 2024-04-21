@@ -1,5 +1,5 @@
-import {Component, inject, Input} from '@angular/core';
-import {Router, RouterLink, RouterLinkActive} from "@angular/router";
+import {Component} from '@angular/core';
+import {RouterLink, RouterLinkActive} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -13,7 +13,5 @@ import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 })
 
 export class HeaderComponent {
-  @Input() title = "Title"
-  router = inject(Router);
-
+  title = "Movie"
 }

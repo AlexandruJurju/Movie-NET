@@ -1,17 +1,10 @@
 <div class="main">
-  <h1>Show All movies</h1>
-
-  <button (click)="getMovies()">Get All Movies</button>
-
   <div *ngIf="movies">
-    <h2>Movies List</h2>
     <div class="movie-grid">
       <div *ngFor="let movie of movies" class="movie-card">
-        <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" width="200">
+        <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" (click)="goToMovieDetails(movie.id)">
         <h3>{{ movie.title }}</h3>
-        <p>{{ movie.releaseDate }}</p>
       </div>
     </div>
   </div>
-
 </div>

@@ -1,0 +1,37 @@
+.movie-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.movie-poster {
+  width: 250px;
+  height: auto;
+  margin-right: 50px;
+}
+
+.movie-info {
+  max-width: 800px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.release-date {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.headline {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.overview {
+  font-size: 17px;
+  line-height: 1.5;
+}
