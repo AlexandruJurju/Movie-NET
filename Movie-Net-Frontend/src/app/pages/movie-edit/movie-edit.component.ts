@@ -5,15 +5,15 @@ import {MovieService} from "../../service/movie.service";
 import {FormsModule, NgForm} from "@angular/forms";
 
 @Component({
-  selector: 'app-movie-update',
+  selector: 'app-movie-edit',
   standalone: true,
   imports: [
     FormsModule
   ],
-  templateUrl: './movie-update.component.html',
-  styleUrl: './movie-update.component.css'
+  templateUrl: './movie-edit.component.html',
+  styleUrl: './movie-edit.component.css'
 })
-export class MovieUpdateComponent {
+export class MovieEditComponent {
   movie: Movie = {} as Movie;
 
   constructor(private movieService: MovieService,
