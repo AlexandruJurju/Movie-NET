@@ -7,15 +7,28 @@ namespace Movie_Net_Backend.Model;
 [Table("movie")]
 public class Movie
 {
-    [Key] [Column("id")] public int Id { get; set; }
+    [Required] [Key] [Column("id")] public int Id { get; set; }
 
-    [Required] [Column("title")] [MaxLength(200)] public string Title { get; set; }
+    [Required]
+    [Column("title")]
+    [MaxLength(200)]
+    public string Title { get; set; } = String.Empty;
 
-    [Required] [Column("headline")] [MaxLength(200)] public string Headline { get; set; }
+    [Required]
+    [Column("headline")]
+    [MaxLength(200)]
+    public string Headline { get; set; } = String.Empty;
 
-    [Required] [Column("overview")] [MaxLength(1000)] public string Overview { get; set; }
+    [Required]
+    [Column("overview")]
+    [MaxLength(1000)]
+    public string Overview { get; set; } = String.Empty;
 
     [Column("release_date")] public DateOnly ReleaseDate { get; set; }
+
+    [Column("poster_url")]
+    [MaxLength(200)]
+    public string PosterUrl { get; set; } = String.Empty;
 
     [JsonIgnore] public ICollection<Genre> Genres { get; set; } = new List<Genre>();
 }

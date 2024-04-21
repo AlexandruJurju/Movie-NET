@@ -31,7 +31,7 @@ public class GenreController : ControllerBase
         var genreResult = _genreService.GetGenreById(genreId);
         if (genreResult.IsFailed)
         {
-            return NotFound(genreResult.Errors);
+            return NotFound();
         }
 
         return Ok(genreResult.Value);
@@ -44,7 +44,7 @@ public class GenreController : ControllerBase
         var createdGenreResult = _genreService.SaveGenre(genre);
         if (createdGenreResult.IsFailed)
         {
-            return BadRequest(createdGenreResult.Errors);
+            return BadRequest();
         }
 
         return CreatedAtAction(nameof(Post), new { id = createdGenreResult.Value.Id }, createdGenreResult.Value);
@@ -58,7 +58,7 @@ public class GenreController : ControllerBase
         var deleteResult = _genreService.DeleteGenre(genreId);
         if (deleteResult.IsFailed)
         {
-            return NotFound(deleteResult.Errors);
+            return NotFound();
         }
 
         return Ok();
@@ -72,7 +72,7 @@ public class GenreController : ControllerBase
         var updateResult = _genreService.UpdateGenre(genreId, updatedGenre);
         if (updateResult.IsFailed)
         {
-            return NotFound(updateResult.Errors);
+            return NotFound();
         }
 
         return Ok();
@@ -86,7 +86,7 @@ public class GenreController : ControllerBase
         var moviesResult = _genreService.GetMoviesWithGenre(genreId);
         if (moviesResult.IsFailed)
         {
-            return NotFound(moviesResult.Errors);
+            return NotFound();
         }
 
         return Ok(moviesResult.Value);

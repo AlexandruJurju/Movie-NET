@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
@@ -25,7 +26,7 @@ public class MovieService : IMovieService
 
         if (movie == null)
         {
-            return Result.Fail("Movie is null");
+            return Result.Fail(new Error($"Movie with id {id} could not be found"));
         }
 
         return Result.Ok(movie);
@@ -57,6 +58,8 @@ public class MovieService : IMovieService
         existingMovie.Headline = updatedMovie.Headline;
         existingMovie.Overview = updatedMovie.Overview;
         existingMovie.ReleaseDate = updatedMovie.ReleaseDate;
+        existingMovie.PosterUrl = updatedMovie.PosterUrl;
+
         _appDbContext.Movies.Update(existingMovie);
         _appDbContext.SaveChanges();
         return Result.Ok();
@@ -93,14 +96,16 @@ public class MovieService : IMovieService
 
     public Result<ICollection<Genre>> GetGenresOfMovie(int movieId)
     {
-        var movieResult = GetMovieById(movieId);
+        var movie = _appDbContext.Movies
+            .Include(m => m.Genres)
+            .FirstOrDefault(m => m.Id == movieId);
 
-        if (movieResult.IsFailed)
+        if (movie == null)
         {
             return Result.Fail<ICollection<Genre>>(new Error("Movie not found"));
         }
 
-        return Result.Ok(movieResult.Value.Genres);
+        return Result.Ok(movie.Genres);
     }
 
     public Result RemoveGenreFromMovie(int movieId, int genreId)

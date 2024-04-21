@@ -44,7 +44,7 @@ public class MovieController : ControllerBase
         var createdMovieResult = _movieService.SaveMovie(movie);
         if (createdMovieResult.IsFailed)
         {
-            return BadRequest(createdMovieResult.Errors);
+            return BadRequest();
         }
 
         return CreatedAtAction(nameof(Post), new { id = createdMovieResult.Value.Id }, createdMovieResult.Value);
@@ -58,7 +58,7 @@ public class MovieController : ControllerBase
         var deleteResult = _movieService.DeleteMovie(movieId);
         if (deleteResult.IsFailed)
         {
-            return NotFound(deleteResult.Errors);
+            return NotFound();
         }
 
         return Ok();
@@ -72,7 +72,7 @@ public class MovieController : ControllerBase
         var updateResult = _movieService.UpdateMovie(movieId, updatedMovie);
         if (updateResult.IsFailed)
         {
-            return NotFound(updateResult.Errors);
+            return NotFound();
         }
 
         return Ok();
@@ -86,7 +86,7 @@ public class MovieController : ControllerBase
         var addGenreResult = _movieService.AddGenreToMovie(movieId, genreId);
         if (addGenreResult.IsFailed)
         {
-            return NotFound(addGenreResult.Errors);
+            return NotFound();
         }
 
         return Ok();
@@ -95,12 +95,12 @@ public class MovieController : ControllerBase
     [HttpGet("{movieId}/genres")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Genre>))]
     [ProducesResponseType(400)]
-    public IActionResult GetGenresByMovie([FromRoute] int movieId)
+    public IActionResult GetGenresByMovieId([FromRoute] int movieId)
     {
         var genresResult = _movieService.GetGenresOfMovie(movieId);
         if (genresResult.IsFailed)
         {
-            return NotFound(genresResult.Errors);
+            return NotFound();
         }
 
         return Ok(genresResult.Value);
@@ -114,7 +114,7 @@ public class MovieController : ControllerBase
         var removeGenreResult = _movieService.RemoveGenreFromMovie(movieId, genreId);
         if (removeGenreResult.IsFailed)
         {
-            return NotFound(removeGenreResult.Errors);
+            return NotFound();
         }
 
         return Ok();
