@@ -1,0 +1,11 @@
+<div class="d-flex justify-content-center align-items-center vh-50">
+  <form #genreForm="ngForm" (ngSubmit)="onSubmit(genreForm)" class="w-25">
+    <div class="form-group">
+      <label for="name">Genre Name:</label>
+      <input type="text" id="name" name="name" ngModel class="form-control">
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary mt-3">Save Genre</button>
+    </div>
+  </form>
+</div>

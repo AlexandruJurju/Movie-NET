@@ -19,7 +19,7 @@ export class UploadMovieComponent {
   onSubmit(movieForm: NgForm) {
     const movie: Movie = movieForm.value;
 
-    // TODO: add reroute to home after uplaod
+    // TODO: add reroute to home after upload
     this.movieService.saveMovie(movie).subscribe({
       next: (response) => {
         console.log('Upload successful', response);
