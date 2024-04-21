@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Movie} from "../model/movie";
 import {BASE_URL} from "../app.settings";
+import {Genre} from "../model/genre";
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,10 @@ export class MovieService {
 
   updateMovie(movie: Movie): Observable<Movie> {
     return this.http.put<Movie>(`${BASE_URL}/api/v1/movie/${movie.id}`, movie);
+  }
+
+  getGenresByMovieId(movieId: number): Observable<Genre[]> {
+    return this.http.get<Genre[]>(`${BASE_URL}/api/v1/movie/${movieId}/genres`);
   }
 
 }
