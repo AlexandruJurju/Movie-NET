@@ -31,4 +31,6 @@ public class Movie
     public string PosterUrl { get; set; } = String.Empty;
 
     [JsonIgnore] public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
+    
+    [JsonIgnore] public virtual ICollection<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
 }
