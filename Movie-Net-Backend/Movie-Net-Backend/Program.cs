@@ -14,19 +14,16 @@ builder.Services.AddScoped<IGenreService, GenreService>();
 
 string connectionString = builder.Configuration.GetConnectionString("MySQLConnectionString")!;
 builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options => options
+        .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+        .UseLazyLoadingProxies());
 
-//
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowLocalhost4200",
-//         builder =>
-//         {
-//             builder.WithOrigins("http://localhost:4200")
-//                 .AllowAnyHeader()
-//                 .AllowAnyMethod();
-//         });
-// });
+builder.Services.AddLogging(logging =>
+{
+    logging.ClearProviders(); 
+    logging.AddConsole();     
+    logging.AddDebug();      
+});
 
 
 var app = builder.Build();
@@ -43,7 +40,6 @@ app.UseCors(builder =>
         .AllowAnyHeader()
         .AllowAnyMethod();
 });
-
 
 app.UseHttpsRedirection();
 

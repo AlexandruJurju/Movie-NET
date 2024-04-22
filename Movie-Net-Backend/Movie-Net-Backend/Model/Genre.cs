@@ -11,5 +11,5 @@ public class Genre
 
     [Column("name")] [MaxLength(200)] public string Name { get; set; } = String.Empty;
 
-    [JsonIgnore] public ICollection<Movie> Movies { get; set; } = new List<Movie>();
+    [JsonIgnore] public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
 }

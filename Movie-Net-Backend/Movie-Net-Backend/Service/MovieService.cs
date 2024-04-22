@@ -28,7 +28,7 @@ public class MovieService : IMovieService
         {
             return Result.Fail(new Error($"Movie with id {id} could not be found"));
         }
-
+        
         return Result.Ok(movie);
     }
 
@@ -96,16 +96,15 @@ public class MovieService : IMovieService
 
     public Result<ICollection<Genre>> GetGenresOfMovie(int movieId)
     {
-        var movie = _appDbContext.Movies
-            .Include(m => m.Genres)
-            .FirstOrDefault(m => m.Id == movieId);
 
-        if (movie == null)
+        var movie = GetMovieById(movieId);
+
+        if (movie.IsFailed)
         {
             return Result.Fail<ICollection<Genre>>(new Error("Movie not found"));
         }
 
-        return Result.Ok(movie.Genres);
+        return Result.Ok(movie.Value.Genres);
     }
 
     public Result RemoveGenreFromMovie(int movieId, int genreId)

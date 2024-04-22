@@ -30,5 +30,5 @@ public class Movie
     [MaxLength(200)]
     public string PosterUrl { get; set; } = String.Empty;
 
-    [JsonIgnore] public ICollection<Genre> Genres { get; set; } = new List<Genre>();
+    [JsonIgnore] public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
 }

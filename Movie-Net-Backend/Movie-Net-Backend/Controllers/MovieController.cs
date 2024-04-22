@@ -9,10 +9,12 @@ namespace Movie_Net_Backend.Controllers;
 public class MovieController : ControllerBase
 {
     private readonly IMovieService _movieService;
+    private readonly ILogger<MovieController> _logger;
 
-    public MovieController(IMovieService movieService)
+    public MovieController(IMovieService movieService, ILogger<MovieController> logger)
     {
         _movieService = movieService ?? throw new ArgumentNullException(nameof(movieService));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [HttpGet]
@@ -97,13 +99,14 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult GetGenresByMovieId([FromRoute] int movieId)
     {
-        var genresResult = _movieService.GetGenresOfMovie(movieId);
-        if (genresResult.IsFailed)
+        var genres = _movieService.GetGenresOfMovie(movieId);
+
+        if (genres.IsFailed)
         {
-            return NotFound();
+            return BadRequest();
         }
 
-        return Ok(genresResult.Value);
+        return Ok(genres.Value);
     }
 
     [HttpDelete("{movieId}/genres/{genreId}")]
