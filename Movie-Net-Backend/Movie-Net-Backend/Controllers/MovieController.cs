@@ -163,13 +163,13 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult GetActorsByMovieId([FromRoute] int movieId)
     {
-        var actors = _movieService.GetActorsOfMovie(movieId);
+        var movieActors = _movieService.GetActorsOfMovie(movieId);
 
-        if (actors.IsFailed)
+        if (movieActors.IsFailed)
         {
             return BadRequest();
         }
 
-        return Ok(actors.Value);
+        return Ok(movieActors.Value);
     }
 }

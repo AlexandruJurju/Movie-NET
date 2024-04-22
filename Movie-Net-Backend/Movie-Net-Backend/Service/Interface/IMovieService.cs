@@ -13,7 +13,7 @@ public interface IMovieService
     Result AddGenreToMovie(int movieId, int genreId);
     Result<ICollection<Genre>> GetGenresOfMovie(int movieId);
     Result RemoveGenreFromMovie(int movieId, int genreId);
-    Result<IEnumerable<Actor>> GetActorsOfMovie(int movieId);
+    Result<IEnumerable<MovieActor>> GetActorsOfMovie(int movieId);
     Result RemoveActorFromMovie(int movieId, int actorId);
     Result AddActorToMovie(MovieActor movieActor);
 }

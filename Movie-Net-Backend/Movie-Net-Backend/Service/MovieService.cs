@@ -125,7 +125,7 @@ public class MovieService : IMovieService
         return Result.Ok();
     }
 
-    public Result<IEnumerable<Actor>> GetActorsOfMovie(int movieId)
+    public Result<IEnumerable<MovieActor>> GetActorsOfMovie(int movieId)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
 
@@ -134,8 +134,8 @@ public class MovieService : IMovieService
             return Result.Fail($"Movie not found for result {movieId}");
         }
 
-        var actors = movie.MovieActors.Select(ma => ma.Actor);
-        return Result.Ok(actors);
+        var movieActors = movie.MovieActors.ToList();
+        return Result.Ok<IEnumerable<MovieActor>>(movieActors);
     }
 
     public Result RemoveActorFromMovie(int movieId, int actorId)
