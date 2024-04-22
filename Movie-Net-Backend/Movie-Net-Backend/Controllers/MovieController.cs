@@ -122,4 +122,54 @@ public class MovieController : ControllerBase
 
         return Ok();
     }
+    
+    // TODO: use MovieActorDto, remove ? from Movie and Actor in MovieActor
+    [HttpPost("{movieId}/actors")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult AddActorToMovie([FromRoute] int movieId, [FromBody] MovieActor movieActor)
+    {
+        if (movieId != movieActor.MovieId)
+        {
+            return BadRequest();
+        }
+
+        var addActorResult = _movieService.AddActorToMovie(movieActor);
+
+        if (addActorResult.IsFailed)
+        {
+            return NotFound();
+        }
+
+        return Ok();
+    }
+
+    [HttpDelete("{movieId}/actors/{actorId}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult RemoveActorFromMovie([FromRoute] int movieId, [FromRoute] int actorId)
+    {
+        var removeActorResult = _movieService.RemoveActorFromMovie(movieId, actorId);
+        if (removeActorResult.IsFailed)
+        {
+            return NotFound();
+        }
+
+        return Ok();
+    }
+
+    [HttpGet("{movieId}/actors")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<Actor>))]
+    [ProducesResponseType(400)]
+    public IActionResult GetActorsByMovieId([FromRoute] int movieId)
+    {
+        var actors = _movieService.GetActorsOfMovie(movieId);
+
+        if (actors.IsFailed)
+        {
+            return BadRequest();
+        }
+
+        return Ok(actors.Value);
+    }
 }
