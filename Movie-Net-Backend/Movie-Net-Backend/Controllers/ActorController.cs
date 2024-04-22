@@ -17,7 +17,7 @@ public class ActorController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Actor>))]
-    public IActionResult Get()
+    public IActionResult FindAllActors()
     {
         var actorsResult = _actorService.GetAllActors();
         return Ok(actorsResult);
@@ -26,7 +26,7 @@ public class ActorController : ControllerBase
     [HttpGet("{actorId}")]
     [ProducesResponseType(200, Type = typeof(Actor))]
     [ProducesResponseType(400)]
-    public IActionResult Get([FromRoute] int actorId)
+    public IActionResult FindActorById([FromRoute] int actorId)
     {
         var actorResult = _actorService.GetActorById(actorId);
         if (actorResult.IsFailed)
@@ -39,7 +39,7 @@ public class ActorController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201, Type = typeof(Actor))]
-    public IActionResult Post([FromBody] Actor actor)
+    public IActionResult SaveActor([FromBody] Actor actor)
     {
         var createdActorResult = _actorService.SaveActor(actor);
         if (createdActorResult.IsFailed)
@@ -47,13 +47,13 @@ public class ActorController : ControllerBase
             return BadRequest();
         }
 
-        return CreatedAtAction(nameof(Post), new { id = createdActorResult.Value.Id }, createdActorResult.Value);
+        return CreatedAtAction(nameof(SaveActor), new { id = createdActorResult.Value.Id }, createdActorResult.Value);
     }
 
     [HttpDelete("{actorId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult Delete([FromRoute] int actorId)
+    public IActionResult DeleteActor([FromRoute] int actorId)
     {
         var deleteResult = _actorService.DeleteActor(actorId);
         if (deleteResult.IsFailed)
@@ -67,7 +67,7 @@ public class ActorController : ControllerBase
     [HttpPut("{actorId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult Update([FromRoute] int actorId, [FromBody] Actor updatedActor)
+    public IActionResult UpdateActor([FromRoute] int actorId, [FromBody] Actor updatedActor)
     {
         var updateResult = _actorService.UpdateActor(actorId, updatedActor);
         if (updateResult.IsFailed)

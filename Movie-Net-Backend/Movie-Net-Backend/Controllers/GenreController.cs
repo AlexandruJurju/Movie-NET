@@ -17,7 +17,7 @@ public class GenreController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Genre>))]
-    public IActionResult Get()
+    public IActionResult FindAllGenres()
     {
         var genresResult = _genreService.GetAllGenres();
         return Ok(genresResult);
@@ -26,7 +26,7 @@ public class GenreController : ControllerBase
     [HttpGet("{genreId}")]
     [ProducesResponseType(200, Type = typeof(Genre))]
     [ProducesResponseType(400)]
-    public IActionResult Get([FromRoute] int genreId)
+    public IActionResult FindGenreById([FromRoute] int genreId)
     {
         var genreResult = _genreService.GetGenreById(genreId);
         if (genreResult.IsFailed)
@@ -39,7 +39,7 @@ public class GenreController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201, Type = typeof(Genre))]
-    public IActionResult Post([FromBody] Genre genre)
+    public IActionResult SaveGenre([FromBody] Genre genre)
     {
         var createdGenreResult = _genreService.SaveGenre(genre);
         if (createdGenreResult.IsFailed)
@@ -47,13 +47,13 @@ public class GenreController : ControllerBase
             return BadRequest();
         }
 
-        return CreatedAtAction(nameof(Post), new { id = createdGenreResult.Value.Id }, createdGenreResult.Value);
+        return CreatedAtAction(nameof(SaveGenre), new { id = createdGenreResult.Value.Id }, createdGenreResult.Value);
     }
 
     [HttpDelete("{genreId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult Delete([FromRoute] int genreId)
+    public IActionResult DeleteGenre([FromRoute] int genreId)
     {
         var deleteResult = _genreService.DeleteGenre(genreId);
         if (deleteResult.IsFailed)
@@ -67,7 +67,7 @@ public class GenreController : ControllerBase
     [HttpPut("{genreId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult Update([FromRoute] int genreId, [FromBody] Genre updatedGenre)
+    public IActionResult UpdateGenre([FromRoute] int genreId, [FromBody] Genre updatedGenre)
     {
         var updateResult = _genreService.UpdateGenre(genreId, updatedGenre);
         if (updateResult.IsFailed)
@@ -81,7 +81,7 @@ public class GenreController : ControllerBase
     [HttpGet("{genreId}/movies")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
     [ProducesResponseType(400)]
-    public IActionResult GetMoviesByGenre([FromRoute] int genreId)
+    public IActionResult GetMoviesWithGenre([FromRoute] int genreId)
     {
         var moviesResult = _genreService.GetMoviesWithGenre(genreId);
         if (moviesResult.IsFailed)

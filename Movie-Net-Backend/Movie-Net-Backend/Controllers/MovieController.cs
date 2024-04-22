@@ -19,7 +19,7 @@ public class MovieController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
-    public IActionResult Get()
+    public IActionResult FindAllMovies()
     {
         var moviesResult = _movieService.GetAllMovies();
         return Ok(moviesResult);
@@ -28,7 +28,7 @@ public class MovieController : ControllerBase
     [HttpGet("{movieId}")]
     [ProducesResponseType(200, Type = typeof(Movie))]
     [ProducesResponseType(400)]
-    public IActionResult Get([FromRoute] int movieId)
+    public IActionResult FindMovieById([FromRoute] int movieId)
     {
         var movieResult = _movieService.GetMovieById(movieId);
         if (movieResult.IsFailed)
@@ -41,7 +41,7 @@ public class MovieController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public IActionResult Post([FromBody] Movie movie)
+    public IActionResult SaveMovie([FromBody] Movie movie)
     {
         var createdMovieResult = _movieService.SaveMovie(movie);
         if (createdMovieResult.IsFailed)
@@ -49,13 +49,13 @@ public class MovieController : ControllerBase
             return BadRequest();
         }
 
-        return CreatedAtAction(nameof(Post), new { id = createdMovieResult.Value.Id }, createdMovieResult.Value);
+        return CreatedAtAction(nameof(SaveMovie), new { id = createdMovieResult.Value.Id }, createdMovieResult.Value);
     }
 
     [HttpDelete("{movieId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult Delete([FromRoute] int movieId)
+    public IActionResult DeleteMovie([FromRoute] int movieId)
     {
         var deleteResult = _movieService.DeleteMovie(movieId);
         if (deleteResult.IsFailed)
@@ -69,7 +69,7 @@ public class MovieController : ControllerBase
     [HttpPut("{movieId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult Update([FromRoute] int movieId, [FromBody] Movie updatedMovie)
+    public IActionResult UpdateMovie([FromRoute] int movieId, [FromBody] Movie updatedMovie)
     {
         var updateResult = _movieService.UpdateMovie(movieId, updatedMovie);
         if (updateResult.IsFailed)
@@ -97,7 +97,7 @@ public class MovieController : ControllerBase
     [HttpGet("{movieId}/genres")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Genre>))]
     [ProducesResponseType(400)]
-    public IActionResult GetGenresByMovieId([FromRoute] int movieId)
+    public IActionResult GetGenresOfMovie([FromRoute] int movieId)
     {
         var genres = _movieService.GetGenresOfMovie(movieId);
 
@@ -161,7 +161,7 @@ public class MovieController : ControllerBase
     [HttpGet("{movieId}/actors")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Actor>))]
     [ProducesResponseType(400)]
-    public IActionResult GetActorsByMovieId([FromRoute] int movieId)
+    public IActionResult GetActorsInMovie([FromRoute] int movieId)
     {
         var movieActors = _movieService.GetActorsOfMovie(movieId);
 

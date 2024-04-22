@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie-Net-Backend", Version = "1.0" });
-
+    c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
     c.AddServer(new OpenApiServer { Url = "http://localhost:5076", Description = "Local server" });
 });
 
