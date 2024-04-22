@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Movie} from "../../model/movie";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MovieService} from "../../service/movie.service";
 import {FormsModule, NgForm} from "@angular/forms";
-import {Genre} from "../../model/genre";
 import {NgForOf} from "@angular/common";
+import {MovieService} from "../../services/api/movie.service";
+import {Genre} from "../../services/model/genre";
+import {Movie} from "../../services/model/movie";
+
 
 @Component({
   selector: 'app-movie-edit',
@@ -36,7 +37,7 @@ export class MovieEditComponent implements OnInit {
 
     console.log(movieId);
 
-    this.movieService.getMovieById(movieId).subscribe({
+    this.movieService.findMovieById(movieId).subscribe({
       next: movie => {
         if (!movie) {
           this.router.navigate(['/error']).then(() => {
@@ -53,7 +54,7 @@ export class MovieEditComponent implements OnInit {
       }
     });
 
-    this.movieService.getGenresByMovieId(movieId).subscribe({
+    this.movieService.getGenresOfMovie(movieId).subscribe({
       next: genres => {
         this.genres = genres;
       },
@@ -66,7 +67,7 @@ export class MovieEditComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.movieService.updateMovie(this.movie).subscribe({
+      this.movieService.updateMovie(this.movie.id, this.movie).subscribe({
         next: () => {
           this.router.navigate(["/movie-details", this.movie.id]).then(() => {
           });
@@ -80,10 +81,10 @@ export class MovieEditComponent implements OnInit {
     }
   }
 
-  deleteMovieById(id: number) {
-    this.movieService.deleteMovieById(id).subscribe({
+  deleteMovieById(movieId: number) {
+    this.movieService.deleteMovie(movieId).subscribe({
       next: () => {
-        this.router.navigate(["/movie-get"]).then(() => {
+        this.router.navigate(["/movie-list"]).then(() => {
         });
       },
       error: error => {

@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {MovieService} from "../../service/movie.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {Movie} from "../../model/movie";
-import {Genre} from "../../model/genre";
-import {join} from "@angular/compiler-cli";
 import {NgForOf} from "@angular/common";
+import {Movie} from "../../services/model/movie";
+import {Genre} from "../../services/model/genre";
+import {MovieService} from "../../services/api/movie.service";
 
 @Component({
   selector: 'app-movie-details',
@@ -34,7 +33,7 @@ export class MovieDetailsComponent implements OnInit{
 
     console.log(movieId);
 
-    this.movieService.getMovieById(movieId).subscribe({
+    this.movieService.findMovieById(movieId).subscribe({
       next: movie => {
         if (!movie) {
           this.router.navigate(['/error']);
@@ -48,7 +47,7 @@ export class MovieDetailsComponent implements OnInit{
       }
     });
 
-    this.movieService.getGenresByMovieId(movieId).subscribe({
+    this.movieService.getGenresOfMovie(movieId).subscribe({
       next: genres => {
         console.log(genres);
         this.genres = genres;

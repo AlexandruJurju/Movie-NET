@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
-import {GenreService} from "../../service/genre.service";
-import {Genre} from "../../model/genre";
 import {Router} from "@angular/router";
+import {GenreService} from "../../services/api/genre.service";
+import {Genre} from "../../services/model/genre";
 
 @Component({
   selector: 'app-genre-save',
@@ -24,7 +24,7 @@ export class GenreSaveComponent {
 
     this.genreService.saveGenre(genre).subscribe({
       next: (response) => {
-        this.router.navigate(["/genre-get"]).then(() => {
+        this.router.navigate(["/genre-list"]).then(() => {
         });
         console.log('Save successful', response);
       },

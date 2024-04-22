@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Genre} from "../../model/genre";
-import {GenreService} from "../../service/genre.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule, NgForm} from "@angular/forms";
+import {Genre} from "../../services/model/genre";
+import {GenreService} from "../../services/api/genre.service";
 
 @Component({
   selector: 'app-genre-edit',
@@ -31,7 +31,7 @@ export class GenreEditComponent implements OnInit {
 
     console.log(genreId);
 
-    this.genreService.getGenreById(genreId).subscribe({
+    this.genreService.findGenreById(genreId).subscribe({
       next: genre => {
         if (!genre) {
           this.router.navigate(['/error']).then(() => {
@@ -51,9 +51,9 @@ export class GenreEditComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.genreService.updateGenre(this.genre).subscribe({
+      this.genreService.updateGenre(this.genre.id, this.genre).subscribe({
         next: () => {
-          this.router.navigate(["/genre-get"]).then(() => {
+          this.router.navigate(["/genre-list"]).then(() => {
           });
         },
         error: error => {
