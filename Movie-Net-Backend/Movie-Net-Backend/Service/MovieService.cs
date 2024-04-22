@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
@@ -94,7 +95,9 @@ public class MovieService : IMovieService
 
     public Result<ICollection<Genre>> GetGenresOfMovie(int movieId)
     {
-        var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
+        var movie = _appDbContext.Movies
+            .Include(movie => movie.Genres)
+            .FirstOrDefault(m => m.Id == movieId);
 
         if (movie == null)
         {
@@ -127,7 +130,9 @@ public class MovieService : IMovieService
 
     public Result<IEnumerable<MovieActor>> GetActorsOfMovie(int movieId)
     {
-        var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
+        var movie = _appDbContext.Movies
+            .Include(movie => movie.MovieActors)
+            .FirstOrDefault(m => m.Id == movieId);
 
         if (movie == null)
         {
@@ -140,7 +145,10 @@ public class MovieService : IMovieService
 
     public Result RemoveActorFromMovie(int movieId, int actorId)
     {
-        var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
+        var movie = _appDbContext.Movies
+            .Include(movie => movie.MovieActors)
+            .FirstOrDefault(m => m.Id == movieId);
+
         if (movie == null)
         {
             return Result.Fail("Movie not found for id {movieId}");

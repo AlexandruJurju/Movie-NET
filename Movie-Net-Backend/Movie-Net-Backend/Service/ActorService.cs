@@ -25,7 +25,7 @@ public class ActorService : IActorService
 
         if (actor == null)
         {
-            return Result.Fail<Actor>(new Error("Actor not found"));
+            return Result.Fail($"Actor with id {id} not found");
         }
 
         return Result.Ok(actor);
@@ -33,26 +33,27 @@ public class ActorService : IActorService
 
     public Result DeleteActor(int id)
     {
-        var actorResult = GetActorById(id);
-        if (actorResult.IsFailed)
-        {
-            return actorResult.ToResult();
-        }
+        var actor = _appDbContext.Actors.FirstOrDefault(a => a.Id == id);
 
-        _appDbContext.Actors.Remove(actorResult.Value);
+        if (actor == null)
+        {
+            return Result.Fail($"Actor with id {id} not found");
+        }
+        
+        _appDbContext.Actors.Remove(actor);
         _appDbContext.SaveChanges();
         return Result.Ok();
     }
 
     public Result UpdateActor(int id, Actor updatedActor)
     {
-        var actorResult = GetActorById(id);
-        if (actorResult.IsFailed)
+        var actor = _appDbContext.Actors.FirstOrDefault(a => a.Id == id);
+        if (actor == null)
         {
-            return actorResult.ToResult();
+            return Result.Fail($"Actor with id {id} not found");
         }
 
-        var existingActor = actorResult.Value;
+        var existingActor = actor;
         existingActor.FirstName = updatedActor.FirstName;
         existingActor.LastName = updatedActor.LastName;
         existingActor.BirthDate = updatedActor.BirthDate;
