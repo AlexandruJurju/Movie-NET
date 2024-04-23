@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -22,8 +21,8 @@ public class MovieController : ControllerBase
     [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
     public IActionResult FindAllMovies()
     {
-        var moviesResult = _movieService.GetAllMovies();
-        return Ok(moviesResult);
+        var movies = _movieService.FindAllMovies();
+        return Ok(movies);
     }
 
     [HttpGet("{movieId}")]
@@ -31,7 +30,7 @@ public class MovieController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult FindMovieById([FromRoute] int movieId)
     {
-        var movieResult = _movieService.GetMovieById(movieId);
+        var movieResult = _movieService.FindMovieById(movieId);
         if (movieResult.IsFailed)
         {
             return NotFound();

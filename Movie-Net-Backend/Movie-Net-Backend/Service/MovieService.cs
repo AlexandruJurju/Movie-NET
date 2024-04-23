@@ -15,12 +15,12 @@ public class MovieService : IMovieService
         _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
     }
 
-    public IEnumerable<Movie> GetAllMovies()
+    public IEnumerable<Movie> FindAllMovies()
     {
         return _appDbContext.Movies.ToList();
     }
 
-    public Result<Movie> GetMovieById(int movieId)
+    public Result<Movie> FindMovieById(int movieId)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
 

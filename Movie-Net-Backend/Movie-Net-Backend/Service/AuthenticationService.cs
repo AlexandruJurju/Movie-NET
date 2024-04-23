@@ -49,9 +49,9 @@ public class AuthenticationService : IAuthenticationService
             return userResult.ToResult();
         }
 
-        if (BCrypt.Net.BCrypt.HashPassword(loginRequest.Email) != userResult.Value.Password)
+        if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, userResult.Value.Password))
         {
-            return Result.Fail("Wrong password used");
+            return Result.Fail("Passwords dont match");
         }
 
         return _jwtService.GenerateToken(loginRequest);

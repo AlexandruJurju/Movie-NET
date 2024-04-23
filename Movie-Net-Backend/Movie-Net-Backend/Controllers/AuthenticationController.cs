@@ -19,9 +19,14 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public IActionResult LoginUser([FromBody] LoginRequestDto loginRequest)
     {
-        var token = _authenticationService.LoginUser(loginRequest);
+        var loginResult = _authenticationService.LoginUser(loginRequest);
+
+        if (loginResult.IsFailed)
+        {
+            return BadRequest(loginResult.ToResult());
+        }
         
-        return Ok(token);
+        return Ok(loginResult.Value);
     }
 
     [HttpPost("register")]

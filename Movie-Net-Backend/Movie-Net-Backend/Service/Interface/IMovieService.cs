@@ -5,8 +5,8 @@ namespace Movie_Net_Backend.Service.Interface;
 
 public interface IMovieService
 {
-    IEnumerable<Movie> GetAllMovies();
-    Result<Movie> GetMovieById(int movieId);
+    IEnumerable<Movie> FindAllMovies();
+    Result<Movie> FindMovieById(int movieId);
     Result DeleteMovie(int movieId);
     Result UpdateMovie(int movieId, Movie updatedMovie);
     Result<Movie> SaveMovie(Movie movie);

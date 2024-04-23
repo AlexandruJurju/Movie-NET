@@ -38,10 +38,40 @@ public class UserService : IUserService
         return user;
     }
 
+    public Result<User> FindUserById(int userId)
+    {
+        var user = _appDbContext.Users.FirstOrDefault(u => u.Id == userId);
+
+        if (user == null)
+        {
+            return Result.Fail($"User with id {userId} not found");
+        }
+
+        return user;
+    }
+
+    public Result DeleteUserById(int userId)
+    {
+        var userResult = FindUserById(userId);
+        if (userResult.IsFailed)
+        {
+            return userResult.ToResult();
+        }
+
+        _appDbContext.Users.Remove(userResult.Value);
+        _appDbContext.SaveChanges();
+        return Result.Ok();
+    }
+
     public User SaveUser(User user)
     {
         _appDbContext.Users.Add(user);
         _appDbContext.SaveChanges();
         return user;
+    }
+
+    public IEnumerable<User> FindAllUsers()
+    {
+        return _appDbContext.Users.ToList();
     }
 }
