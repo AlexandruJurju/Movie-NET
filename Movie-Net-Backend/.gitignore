@@ -22,6 +22,7 @@
 **/.idea/**/*.iml
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
+*.env
 
 *.suo
 *.user

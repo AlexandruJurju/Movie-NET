@@ -1,15 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Movie_Net_Backend</RootNamespace>
-    </PropertyGroup>
+      <UserSecretsId>0073e457-733c-433f-bb09-8218659a8b45</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="DotNetEnv" Version="3.0.0" />
         <PackageReference Include="FluentResults" Version="3.15.2" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.18" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.18" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.18" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.18">
@@ -17,7 +20,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
