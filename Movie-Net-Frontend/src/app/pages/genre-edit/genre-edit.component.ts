@@ -22,6 +22,10 @@ export class GenreEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.findGenreByPathId();
+  }
+
+  private findGenreByPathId() {
     const genreId = +this.route.snapshot.paramMap.get('id')!;
     if (genreId === null || isNaN(genreId)) {
       this.router.navigate(['/error']).then(() => {
@@ -46,7 +50,6 @@ export class GenreEditComponent implements OnInit {
         });
       }
     });
-
   }
 
   onSubmit(form: NgForm) {

@@ -21,10 +21,10 @@ export class GenreListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getGenres();
+    this.findAllGenres();
   }
 
-  getGenres(): void {
+  findAllGenres(): void {
     this.genreService.findAllGenres().subscribe(genres => this.genres = genres);
   }
 
@@ -35,7 +35,7 @@ export class GenreListComponent implements OnInit {
 
   deleteGenre(genreId: number): void {
     this.genreService.deleteGenre(genreId).subscribe(() => {
-      this.getGenres(); // Refresh the list after deletion
+      this.findAllGenres(); // Refresh the list after deletion
     });
   }
 

@@ -22,10 +22,10 @@ export class MovieListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMovies();
+    this.findAllMovies();
   }
 
-  getMovies() {
+  findAllMovies() {
     this.movieService.findAllMovies()
       .subscribe(movies => {
         this.movies = movies;

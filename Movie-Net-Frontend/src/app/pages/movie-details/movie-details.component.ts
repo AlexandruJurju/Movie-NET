@@ -4,6 +4,7 @@ import {NgForOf} from "@angular/common";
 import {Movie} from "../../services/model/movie";
 import {Genre} from "../../services/model/genre";
 import {MovieService} from "../../services/api/movie.service";
+import {Actor} from "../../services/model/actor";
 
 @Component({
   selector: 'app-movie-details',
@@ -15,9 +16,10 @@ import {MovieService} from "../../services/api/movie.service";
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
 })
-export class MovieDetailsComponent implements OnInit{
+export class MovieDetailsComponent implements OnInit {
   movie: Movie = {} as Movie;
   genres: Genre[] = [];
+  actors: Actor[] = [];
 
   constructor(private movieService: MovieService,
               private router: Router,
@@ -25,6 +27,35 @@ export class MovieDetailsComponent implements OnInit{
   }
 
   ngOnInit() {
+
+    this.getMovieFromPath();
+
+    this.getGenresOfMovie();
+
+  }
+
+  // TODO: pass the movie object, not the id
+  navigateToUpdateMovie() {
+    this.router.navigate(['/movie-edit', this.movie.id]);
+  }
+
+  private getActorsOfMovie(){
+
+  }
+
+  private getGenresOfMovie() {
+    this.movieService.getGenresOfMovie(this.movie.id).subscribe({
+      next: genres => {
+        console.log(genres);
+        this.genres = genres;
+      },
+      error: error => {
+        console.error('Error fetching genres:', error);
+      }
+    });
+  }
+
+  private getMovieFromPath() {
     const movieId = +this.route.snapshot.paramMap.get('id')!;
     if (movieId === null || isNaN(movieId)) {
       this.router.navigate(['/error']);
@@ -46,20 +77,7 @@ export class MovieDetailsComponent implements OnInit{
         this.router.navigate(['/error']);
       }
     });
-
-    this.movieService.getGenresOfMovie(movieId).subscribe({
-      next: genres => {
-        console.log(genres);
-        this.genres = genres;
-      },
-      error: error => {
-        console.error('Error fetching genres:', error);
-      }
-    });
   }
 
-  // TODO: pass the movie object, not the id
-  navigateToUpdateMovie() {
-    this.router.navigate(['/movie-edit', this.movie.id]);
-  }
+
 }

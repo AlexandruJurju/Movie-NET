@@ -28,6 +28,23 @@ export class MovieEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.findMovieFromPath();
+
+    this.getGenresOfMovie();
+  }
+
+  private getGenresOfMovie() {
+    this.movieService.getGenresOfMovie(this.movie.id).subscribe({
+      next: genres => {
+        this.genres = genres;
+      },
+      error: error => {
+        console.error('Error fetching genres:', error);
+      }
+    });
+  }
+
+  private findMovieFromPath() {
     const movieId = +this.route.snapshot.paramMap.get('id')!;
     if (movieId === null || isNaN(movieId)) {
       this.router.navigate(['/error']).then(() => {
@@ -53,16 +70,6 @@ export class MovieEditComponent implements OnInit {
         });
       }
     });
-
-    this.movieService.getGenresOfMovie(movieId).subscribe({
-      next: genres => {
-        this.genres = genres;
-      },
-      error: error => {
-        console.error('Error fetching genres:', error);
-      }
-    });
-
   }
 
   onSubmit(form: NgForm) {
