@@ -65,11 +65,11 @@ public class MovieService : IMovieService
         return Result.Ok();
     }
 
-    public Result<Movie> SaveMovie(Movie movie)
+    public Movie SaveMovie(Movie movie)
     {
         _appDbContext.Movies.Add(movie);
         _appDbContext.SaveChanges();
-        return Result.Ok(movie);
+        return movie;
     }
 
     public Result AddGenreToMovie(int movieId, int genreId)

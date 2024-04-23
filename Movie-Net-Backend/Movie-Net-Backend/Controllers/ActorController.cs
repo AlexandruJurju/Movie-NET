@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -9,23 +11,22 @@ namespace Movie_Net_Backend.Controllers;
 public class ActorController : ControllerBase
 {
     private readonly IActorService _actorService;
+    private readonly IMapper _mapper;
 
-    public ActorController(IActorService actorService)
+    public ActorController(IActorService actorService, IMapper mapper)
     {
         _actorService = actorService ?? throw new ArgumentNullException(nameof(actorService));
+        _mapper = mapper;
     }
 
     [HttpGet]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<Actor>))]
     public IActionResult FindAllActors()
     {
-        var actorsResult = _actorService.GetAllActors();
-        return Ok(actorsResult);
+        var actors = _mapper.Map<List<ActorDto>>(_actorService.GetAllActors());
+        return Ok(actors);
     }
 
     [HttpGet("{actorId}")]
-    [ProducesResponseType(200, Type = typeof(Actor))]
-    [ProducesResponseType(400)]
     public IActionResult FindActorById([FromRoute] int actorId)
     {
         var actorResult = _actorService.GetActorById(actorId);
@@ -34,13 +35,16 @@ public class ActorController : ControllerBase
             return NotFound();
         }
 
-        return Ok(actorResult.Value);
+        var actor = _mapper.Map<ActorDto>(actorResult.Value);
+
+        return Ok(actor);
     }
 
     [HttpPost]
-    [ProducesResponseType(201, Type = typeof(Actor))]
-    public IActionResult SaveActor([FromBody] Actor actor)
+    public IActionResult SaveActor([FromBody] ActorDto actorDto)
     {
+        var actor = _mapper.Map<Actor>(actorDto);
+
         var createdActorResult = _actorService.SaveActor(actor);
         if (createdActorResult.IsFailed)
         {
@@ -51,8 +55,6 @@ public class ActorController : ControllerBase
     }
 
     [HttpDelete("{actorId}")]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
     public IActionResult DeleteActor([FromRoute] int actorId)
     {
         var deleteResult = _actorService.DeleteActor(actorId);
@@ -65,11 +67,16 @@ public class ActorController : ControllerBase
     }
 
     [HttpPut("{actorId}")]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    public IActionResult UpdateActor([FromRoute] int actorId, [FromBody] Actor updatedActor)
+    public IActionResult UpdateActor([FromRoute] int actorId, [FromBody] ActorDto updatedActor)
     {
-        var updateResult = _actorService.UpdateActor(actorId, updatedActor);
+        if (actorId != updatedActor.Id)
+        {
+            return BadRequest();
+        }
+
+        var actor = _mapper.Map<Actor>(updatedActor);
+
+        var updateResult = _actorService.UpdateActor(actorId, actor);
         if (updateResult.IsFailed)
         {
             return NotFound();

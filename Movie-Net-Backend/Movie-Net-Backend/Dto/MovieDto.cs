@@ -2,7 +2,7 @@
 
 public class MovieDto
 {
-    int Id { get; set; }
+    public int Id { get; set; }
     public string Title { get; set; }
     public string Headline { get; set; }
     public string Overview { get; set; }

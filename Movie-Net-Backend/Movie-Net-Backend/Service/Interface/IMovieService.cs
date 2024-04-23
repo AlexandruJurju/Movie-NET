@@ -9,7 +9,7 @@ public interface IMovieService
     Result<Movie> FindMovieById(int movieId);
     Result DeleteMovie(int movieId);
     Result UpdateMovie(int movieId, Movie updatedMovie);
-    Result<Movie> SaveMovie(Movie movie);
+    Movie SaveMovie(Movie movie);
     Result AddGenreToMovie(int movieId, int genreId);
     Result<ICollection<Genre>> GetGenresOfMovie(int movieId);
     Result RemoveGenreFromMovie(int movieId, int genreId);

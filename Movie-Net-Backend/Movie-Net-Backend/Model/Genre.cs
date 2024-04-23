@@ -9,7 +9,7 @@ public class Genre
 {
     [Required] [Key] [Column("id")] public int Id { get; set; }
 
-    [Column("name")] [MaxLength(200)] public string Name { get; set; } = String.Empty;
+    [Column("name")] [MaxLength(200)] public string Name { get; set; }
 
-    [JsonIgnore] public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
+    public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
 }

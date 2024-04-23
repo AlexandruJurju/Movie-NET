@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Movie_Net_Backend.Model;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
@@ -9,33 +10,33 @@ namespace Movie_Net_Backend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IMapper mapper)
     {
         _userService = userService;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
     public IActionResult FindAllUsers()
     {
-        var users = _userService.FindAllUsers();
+        var users = _mapper.Map<List<UserDto>>(_userService.FindAllUsers());
         return Ok(users);
     }
 
     [HttpGet("{userId}")]
-    [ProducesResponseType(200, Type = typeof(User))]
-    [ProducesResponseType(400)]
     public IActionResult FindUserById([FromRoute] int userId)
     {
         var result = _userService.FindUserById(userId);
-
         if (result.IsFailed)
         {
             return BadRequest(result.Errors);
         }
 
-        return Ok(result.Errors);
+        var user = _mapper.Map<UserDto>(result.Value);
+
+        return Ok(user);
     }
 
     [HttpDelete("{userId}")]

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -9,23 +11,22 @@ namespace Movie_Net_Backend.Controllers;
 public class GenreController : ControllerBase
 {
     private readonly IGenreService _genreService;
+    private readonly IMapper _mapper;
 
-    public GenreController(IGenreService genreService)
+    public GenreController(IGenreService genreService, IMapper mapper)
     {
         _genreService = genreService ?? throw new ArgumentNullException(nameof(genreService));
+        _mapper = mapper;
     }
 
     [HttpGet]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<Genre>))]
     public IActionResult FindAllGenres()
     {
-        var genresResult = _genreService.GetAllGenres();
-        return Ok(genresResult);
+        var genres = _mapper.Map<List<GenreDto>>(_genreService.GetAllGenres());
+        return Ok(genres);
     }
 
     [HttpGet("{genreId}")]
-    [ProducesResponseType(200, Type = typeof(Genre))]
-    [ProducesResponseType(400)]
     public IActionResult FindGenreById([FromRoute] int genreId)
     {
         var genreResult = _genreService.GetGenreById(genreId);
@@ -34,13 +35,16 @@ public class GenreController : ControllerBase
             return NotFound();
         }
 
-        return Ok(genreResult.Value);
+        var genre = _mapper.Map<GenreDto>(genreResult.Value);
+
+        return Ok(genre);
     }
 
     [HttpPost]
-    [ProducesResponseType(201, Type = typeof(Genre))]
-    public IActionResult SaveGenre([FromBody] Genre genre)
+    public IActionResult SaveGenre([FromBody] GenreDto genreDto)
     {
+        var genre = _mapper.Map<Genre>(genreDto);
+
         var createdGenreResult = _genreService.SaveGenre(genre);
         if (createdGenreResult.IsFailed)
         {
@@ -51,8 +55,6 @@ public class GenreController : ControllerBase
     }
 
     [HttpDelete("{genreId}")]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
     public IActionResult DeleteGenre([FromRoute] int genreId)
     {
         var deleteResult = _genreService.DeleteGenre(genreId);
@@ -65,11 +67,16 @@ public class GenreController : ControllerBase
     }
 
     [HttpPut("{genreId}")]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    public IActionResult UpdateGenre([FromRoute] int genreId, [FromBody] Genre updatedGenre)
+    public IActionResult UpdateGenre([FromRoute] int genreId, [FromBody] GenreDto updatedGenre)
     {
-        var updateResult = _genreService.UpdateGenre(genreId, updatedGenre);
+        if (genreId != updatedGenre.Id)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var genre = _mapper.Map<Genre>(updatedGenre);
+
+        var updateResult = _genreService.UpdateGenre(genreId, genre);
         if (updateResult.IsFailed)
         {
             return NotFound();
@@ -79,8 +86,6 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet("{genreId}/movies")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
-    [ProducesResponseType(400)]
     public IActionResult GetMoviesWithGenre([FromRoute] int genreId)
     {
         var moviesResult = _genreService.GetMoviesWithGenre(genreId);
@@ -89,6 +94,7 @@ public class GenreController : ControllerBase
             return NotFound();
         }
 
-        return Ok(moviesResult.Value);
+        var movies = _mapper.Map<List<Movie>>(moviesResult.Value);
+        return Ok(movies);
     }
 }
