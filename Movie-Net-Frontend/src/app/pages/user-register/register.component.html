@@ -14,7 +14,7 @@
       <label for="password">Password</label>
       <input type="password" id="password" formControlName="password" class="form-control" required style="margin-bottom: 10px;">
     </div>
-
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
     <button type="submit" [disabled]="!form.valid" class="btn btn-primary w-100">Register</button>
   </form>
 </div>
