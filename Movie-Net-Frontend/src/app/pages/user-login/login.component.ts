@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthenticationService, LoginRequestDto} from "../../services/swagger";
+import {TokenService} from "../../services/token/token.service";
 
 @Component({
   selector: 'app-user-login',
@@ -16,6 +17,7 @@ export class LoginComponent {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private tokenService: TokenService,
     private router: Router,
     private formBuilder: FormBuilder) {
   }
