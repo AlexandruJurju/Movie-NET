@@ -46,9 +46,10 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IActorService, ActorService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 string connectionString = builder.Configuration.GetConnectionString("MySQLConnectionString")!;
 builder.Services.AddDbContext<AppDbContext>(

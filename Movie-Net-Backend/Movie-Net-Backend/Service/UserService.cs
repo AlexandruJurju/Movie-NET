@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using Movie_Net_Backend.Data;
-using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -39,15 +38,8 @@ public class UserService : IUserService
         return user;
     }
 
-    public User SaveUser(RegisterRequestDto registerRequest)
+    public User SaveUser(User user)
     {
-        var user = new User
-        {
-            Username = registerRequest.Username,
-            Password = registerRequest.Password,
-            Email = registerRequest.Email
-        };
-
         _appDbContext.Users.Add(user);
         _appDbContext.SaveChanges();
         return user;

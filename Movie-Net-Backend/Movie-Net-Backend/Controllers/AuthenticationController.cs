@@ -8,49 +8,33 @@ namespace Movie_Net_Backend.Controllers;
 [Route("api/v1/[controller]")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IUserService _userService;
-    private readonly IJwtService _jwtService;
+    private readonly IAuthenticationService _authenticationService;
 
-    public AuthenticationController(IUserService userService, IJwtService jwtService)
+    public AuthenticationController(IAuthenticationService authenticationService)
     {
-        _userService = userService;
-        _jwtService = jwtService;
+        _authenticationService = authenticationService;
     }
 
 
     [HttpPost("login")]
     public IActionResult LoginUser([FromBody] LoginRequestDto loginRequest)
     {
-        var userResult = _userService.FindUserByEmail(loginRequest.Email);
-
-        if (userResult.IsFailed)
-        {
-            return BadRequest(userResult.Errors);
-        }
-
-        return Ok(_jwtService.GenerateToken(loginRequest));
+        var token = _authenticationService.LoginUser(loginRequest);
+        
+        return Ok(token);
     }
 
-    // TODO: hash password before saving
     [HttpPost("register")]
     public IActionResult RegisterUser([FromBody] RegisterRequestDto registerRequest)
     {
-        var existingUsernameUser = _userService.FindUserByUsername(registerRequest.Username);
+        var user = _authenticationService.RegisterUser(registerRequest);
 
-        if (!existingUsernameUser.IsFailed)
+        if (user.IsFailed)
         {
-            return BadRequest("Email already exists");
+            return BadRequest();
         }
 
-        var existingEmailUser = _userService.FindUserByEmail(registerRequest.Email);
-
-        if (!existingEmailUser.IsFailed)
-        {
-            return BadRequest("Email already exists");
-        }
-
-        var user = _userService.SaveUser(registerRequest);
-        return CreatedAtAction(nameof(RegisterUser), new { id = user.Id }, user);
+        return CreatedAtAction(nameof(RegisterUser), new { id = user.Value.Id }, user.Value);
     }
 
     [Authorize]

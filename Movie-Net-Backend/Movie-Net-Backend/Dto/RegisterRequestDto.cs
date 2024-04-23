@@ -4,7 +4,7 @@ namespace Movie_Net_Backend.Dto;
 
 public class RegisterRequestDto
 {
-    [Required(ErrorMessage = "Email is required")]
+    [Required(ErrorMessage = "Username is required")]
     public string Username { get; set; }
 
     [EmailAddress]
