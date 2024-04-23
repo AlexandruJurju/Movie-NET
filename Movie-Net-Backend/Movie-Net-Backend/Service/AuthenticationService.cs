@@ -22,13 +22,13 @@ public class AuthenticationService : IAuthenticationService
         var findByUsernameResult = _userService.FindUserByUsername(registerRequest.Username);
         if (!findByUsernameResult.IsFailed)
         {
-            return findByUsernameResult.ToResult();
+            return Result.Fail("Username already exists");
         }
 
         var findByEmailResult = _userService.FindUserByEmail(registerRequest.Email);
         if (!findByEmailResult.IsFailed)
         {
-            return findByEmailResult.ToResult();
+            return Result.Fail("Email already exists");
         }
 
         var user = new User
@@ -41,7 +41,7 @@ public class AuthenticationService : IAuthenticationService
         return _userService.SaveUser(user);
     }
 
-    public Result<string> LoginUser(LoginRequestDto loginRequest)
+    public Result<AuthenticationResponse> LoginUser(LoginRequestDto loginRequest)
     {
         var userResult = _userService.FindUserByEmail(loginRequest.Email);
         if (userResult.IsFailed)
@@ -54,6 +54,9 @@ public class AuthenticationService : IAuthenticationService
             return Result.Fail("Passwords dont match");
         }
 
-        return _jwtService.GenerateToken(loginRequest);
+        return Result.Ok(new AuthenticationResponse
+        {
+            Token = _jwtService.GenerateToken(loginRequest)
+        });
     }
 }

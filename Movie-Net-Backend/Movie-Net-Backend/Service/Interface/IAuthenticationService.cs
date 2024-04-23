@@ -7,5 +7,5 @@ namespace Movie_Net_Backend.Service.Interface;
 public interface IAuthenticationService
 {
     Result<User> RegisterUser(RegisterRequestDto registerRequest);
-    Result<string> LoginUser(LoginRequestDto loginRequest);
+    Result<AuthenticationResponse> LoginUser(LoginRequestDto loginRequest);
 }

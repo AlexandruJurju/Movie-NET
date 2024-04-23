@@ -32,14 +32,14 @@ public class AuthenticationController : ControllerBase
     [HttpPost("register")]
     public IActionResult RegisterUser([FromBody] RegisterRequestDto registerRequest)
     {
-        var user = _authenticationService.RegisterUser(registerRequest);
+        var registerResult = _authenticationService.RegisterUser(registerRequest);
 
-        if (user.IsFailed)
+        if (registerResult.IsFailed)
         {
-            return BadRequest();
+            return BadRequest(registerResult.ToResult());
         }
 
-        return CreatedAtAction(nameof(RegisterUser), new { id = user.Value.Id }, user.Value);
+        return CreatedAtAction(nameof(RegisterUser), new { id = registerResult.Value.Id }, registerResult.Value);
     }
 
     [Authorize]
