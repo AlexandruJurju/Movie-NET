@@ -78,7 +78,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -89,7 +89,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
             'application/json',
             'text/json',
@@ -134,7 +134,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -145,7 +145,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -177,7 +177,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -188,7 +188,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -215,7 +215,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -226,7 +226,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -258,7 +258,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -269,7 +269,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -301,7 +301,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -312,7 +312,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -344,7 +344,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -355,7 +355,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -392,7 +392,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -403,7 +403,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -440,7 +440,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -451,7 +451,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
         ];
 
@@ -480,7 +480,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
@@ -488,7 +488,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
             'application/json',
             'text/json',
@@ -530,7 +530,7 @@ export class MovieService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept menu
+        // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
@@ -541,7 +541,7 @@ export class MovieService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type menu
+        // to determine the Content-Type header
         const consumes: string[] = [
             'application/json',
             'text/json',
