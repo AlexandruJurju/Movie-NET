@@ -2,9 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule, NgForm} from "@angular/forms";
 import {NgForOf} from "@angular/common";
-import {MovieService} from "../../services/api/movie.service";
-import {Genre} from "../../services/model/genre";
-import {Movie} from "../../services/model/movie";
+import {Genre, Movie, MovieService} from "../../services/swagger";
+
 
 
 @Component({

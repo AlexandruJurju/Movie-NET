@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule, NgForm} from "@angular/forms";
-import {Genre} from "../../services/model/genre";
-import {GenreService} from "../../services/api/genre.service";
+import {Genre, GenreService} from "../../services/swagger";
 
 @Component({
   selector: 'app-genre-edit',

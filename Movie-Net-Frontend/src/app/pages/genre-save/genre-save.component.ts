@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
-import {GenreService} from "../../services/api/genre.service";
-import {Genre} from "../../services/model/genre";
+import {Genre, GenreService} from "../../services/swagger";
 
 @Component({
   selector: 'app-genre-save',

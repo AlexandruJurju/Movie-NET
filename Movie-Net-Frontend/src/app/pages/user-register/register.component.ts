@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
-import {AuthenticationService} from "../../services";
 import {Router} from "@angular/router";
 import {NgIf} from "@angular/common";
+import {AuthenticationService} from "../../services/swagger";
 
 @Component({
   selector: 'app-user-register',

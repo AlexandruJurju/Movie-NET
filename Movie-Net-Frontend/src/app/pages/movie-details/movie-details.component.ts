@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgForOf} from "@angular/common";
-import {Movie} from "../../services/model/movie";
-import {Genre} from "../../services/model/genre";
-import {MovieService} from "../../services/api/movie.service";
-import {Actor} from "../../services/model/actor";
+import {Actor, Genre, Movie, MovieService} from "../../services/swagger";
 
 @Component({
   selector: 'app-movie-details',

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {AuthenticationService, LoginRequestDto} from "../../services";
 import {Router} from "@angular/router";
+import {AuthenticationService, LoginRequestDto} from "../../services/swagger";
 
 @Component({
   selector: 'app-user-login',
