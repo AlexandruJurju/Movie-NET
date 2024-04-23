@@ -1,52 +1,56 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Movie_Net_Backend.Dto;
+using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
 
 [Route("api/v1/[controller]")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IConfiguration _configuration;
+    private readonly IUserService _userService;
+    private readonly IJwtService _jwtService;
 
-    private static readonly TimeSpan TokenLifeSpan = TimeSpan.FromHours(4);
-
-    public AuthenticationController(IConfiguration configuration)
+    public AuthenticationController(IUserService userService, IJwtService jwtService)
     {
-        _configuration = configuration;
+        _userService = userService;
+        _jwtService = jwtService;
     }
 
-    [AllowAnonymous]
-    [HttpPost("token")]
-    public IActionResult GenerateToken([FromBody] RegisterRequestDto request)
+
+    [HttpPost("login")]
+    public IActionResult LoginUser([FromBody] LoginRequestDto loginRequest)
     {
-        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!);
+        var userResult = _userService.FindUserByEmail(loginRequest.Email);
 
-        var tokenDescriptor = new SecurityTokenDescriptor()
+        if (userResult.IsFailed)
         {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, request.Email),
-                new Claim(JwtRegisteredClaimNames.Email, request.Email),
-            }),
-            Expires = DateTime.UtcNow.Add(TokenLifeSpan),
-            Issuer = _configuration["JwtSettings:Issuer"],
-            Audience = _configuration["JwtSettings:Audience"],
-            SigningCredentials = new SigningCredentials
-                (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
+            return BadRequest(userResult.Errors);
+        }
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        var jwtToken = tokenHandler.WriteToken(token);
-        var stringToken = tokenHandler.WriteToken(token);
+        return Ok(_jwtService.GenerateToken(loginRequest));
+    }
 
-        return Ok(stringToken);
+    // TODO: hash password before saving
+    [HttpPost("register")]
+    public IActionResult RegisterUser([FromBody] RegisterRequestDto registerRequest)
+    {
+        var existingUsernameUser = _userService.FindUserByUsername(registerRequest.Username);
+
+        if (!existingUsernameUser.IsFailed)
+        {
+            return BadRequest("Email already exists");
+        }
+
+        var existingEmailUser = _userService.FindUserByEmail(registerRequest.Email);
+
+        if (!existingEmailUser.IsFailed)
+        {
+            return BadRequest("Email already exists");
+        }
+
+        var user = _userService.SaveUser(registerRequest);
+        return CreatedAtAction(nameof(RegisterUser), new { id = user.Id }, user);
     }
 
     [Authorize]

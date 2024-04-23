@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Actor> Actors { get; set; }
     public DbSet<MovieActor> MovieActors { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public AppDbContext(DbContextOptions options) : base(options)
     {
