@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
@@ -38,6 +39,27 @@ public class MovieController : ControllerBase
         var movie = _mapper.Map<MovieDto>(result.Value);
 
         return Ok(movie);
+    }
+
+    [HttpGet("{page}/{size}")]
+    [ProducesResponseType(200, Type = typeof(PageResponse<MovieDto>))]
+    public IActionResult FindAllMovies([FromRoute] int page, [FromRoute] int size)
+    {
+        var movies = _mapper.Map<List<MovieDto>>(_movieService.FindAllMovies());
+        var totalElements = movies.Count();
+        var totalPages = (int)Math.Ceiling((double)totalElements / size);
+        var content = movies.Skip((page - 1) * size).Take(size).ToList();
+        PageResponse<MovieDto> response = new PageResponse<MovieDto>
+        {
+            Content = content,
+            Number = page,
+            Size = size,
+            TotalElements = totalElements,
+            TotalPages = totalPages,
+            First = page == 1,
+            Last = page == totalPages
+        };
+        return Ok(response);
     }
 
     [HttpPost]

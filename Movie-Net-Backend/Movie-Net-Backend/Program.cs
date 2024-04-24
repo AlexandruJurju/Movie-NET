@@ -13,7 +13,6 @@ DotNetEnv.Env.Load();
 
 
 // setup jwt authentication
-
 var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!;
 
 builder.Services.AddAuthentication(x =>
@@ -48,6 +47,7 @@ builder.Services.AddSwaggerGen(c =>
     c.AddServer(new OpenApiServer { Url = "http://localhost:5076", Description = "Local server" });
 });
 
+// add automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // add services to DI
@@ -58,13 +58,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
-// add automapper
-
 // create mysql connection
 var connectionString = builder.Configuration.GetConnectionString("MySQLConnectionString")!;
 builder.Services.AddDbContext<AppDbContext>(
     options => options
         .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+        // add lazy loading
         .UseLazyLoadingProxies());
 
 // setup logging
