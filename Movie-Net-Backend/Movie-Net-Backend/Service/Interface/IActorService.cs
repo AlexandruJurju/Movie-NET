@@ -9,5 +9,5 @@ public interface IActorService
     Result<Actor> GetActorById(int id);
     Result DeleteActor(int id);
     Result UpdateActor(int id, Actor updatedActor);
-    Result<Actor> SaveActor(Actor actor);
+    Actor SaveActor(Actor actor);
 }

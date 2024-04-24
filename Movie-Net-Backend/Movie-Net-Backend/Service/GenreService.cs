@@ -61,11 +61,11 @@ public class GenreService : IGenreService
         return Result.Ok();
     }
 
-    public Result<Genre> SaveGenre(Genre genre)
+    public Genre SaveGenre(Genre genre)
     {
         _appDbContext.Genres.Add(genre);
         _appDbContext.SaveChanges();
-        return Result.Ok(genre);
+        return genre;
     }
 
     public Result<ICollection<Movie>> GetMoviesWithGenre(int genreId)

@@ -44,14 +44,8 @@ public class ActorController : ControllerBase
     public IActionResult SaveActor([FromBody] ActorDto actorDto)
     {
         var actor = _mapper.Map<Actor>(actorDto);
-
-        var createdActorResult = _actorService.SaveActor(actor);
-        if (createdActorResult.IsFailed)
-        {
-            return BadRequest();
-        }
-
-        return CreatedAtAction(nameof(SaveActor), new { id = createdActorResult.Value.Id }, createdActorResult.Value);
+        var actorCreated = _actorService.SaveActor(actor);
+        return CreatedAtAction(nameof(SaveActor), actorDto);
     }
 
     [HttpDelete("{actorId}")]

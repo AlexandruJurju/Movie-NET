@@ -9,6 +9,6 @@ public interface IGenreService
     Result<Genre> GetGenreById(int id);
     Result DeleteGenre(int id);
     Result UpdateGenre(int id, Genre updatedGenre);
-    Result<Genre> SaveGenre(Genre genre);
+    Genre SaveGenre(Genre genre);
     Result<ICollection<Movie>> GetMoviesWithGenre(int genreId);
 }

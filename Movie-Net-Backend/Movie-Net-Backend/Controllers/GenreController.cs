@@ -44,14 +44,8 @@ public class GenreController : ControllerBase
     public IActionResult SaveGenre([FromBody] GenreDto genreDto)
     {
         var genre = _mapper.Map<Genre>(genreDto);
-
-        var createdGenreResult = _genreService.SaveGenre(genre);
-        if (createdGenreResult.IsFailed)
-        {
-            return BadRequest();
-        }
-
-        return CreatedAtAction(nameof(SaveGenre), new { id = createdGenreResult.Value.Id }, createdGenreResult.Value);
+        var createdGenre = _genreService.SaveGenre(genre);
+        return CreatedAtAction(nameof(SaveGenre), new { id = createdGenre.Id });
     }
 
     [HttpDelete("{genreId}")]

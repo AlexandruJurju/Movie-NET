@@ -6,7 +6,7 @@ namespace Movie_Net_Backend.Model;
 [Table("actor")]
 public class Actor
 {
-    [Key] public int Id { get; set; }
+    [Key] [Required] public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public DateOnly BirthDate { get; set; }

@@ -65,10 +65,10 @@ public class ActorService : IActorService
         return Result.Ok();
     }
 
-    public Result<Actor> SaveActor(Actor actor)
+    public Actor SaveActor(Actor actor)
     {
         _appDbContext.Actors.Add(actor);
         _appDbContext.SaveChanges();
-        return Result.Ok(actor);
+        return actor;
     }
 }

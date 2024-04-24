@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
@@ -17,7 +18,7 @@ public class MovieController : ControllerBase
     public MovieController(IMovieService movieService, ILogger<MovieController> logger, IMapper mapper)
     {
         _movieService = movieService ?? throw new ArgumentNullException(nameof(movieService));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _logger = logger;
         _mapper = mapper;
     }
 
@@ -31,13 +32,15 @@ public class MovieController : ControllerBase
     [HttpGet("{movieId}")]
     public IActionResult FindMovieById([FromRoute] int movieId)
     {
-        var movieResult = _movieService.FindMovieById(movieId);
-        if (movieResult.IsFailed)
+        var result = _movieService.FindMovieById(movieId);
+        if (result.IsFailed)
         {
             return NotFound();
         }
 
-        return Ok(movieResult.Value);
+        var movie = _mapper.Map<MovieDto>(result.Value);
+
+        return Ok(movie);
     }
 
     [HttpPost]
@@ -45,7 +48,7 @@ public class MovieController : ControllerBase
     {
         var movie = _mapper.Map<Movie>(movieDto);
         var createdMovie = _movieService.SaveMovie(movie);
-        return CreatedAtAction(nameof(SaveMovie), new { id = createdMovie.Id }, createdMovie);
+        return CreatedAtAction(nameof(SaveMovie), new { id = createdMovie.Id });
     }
 
     [HttpDelete("{movieId}")]
@@ -94,14 +97,17 @@ public class MovieController : ControllerBase
     [HttpGet("{movieId}/genres")]
     public IActionResult GetGenresOfMovie([FromRoute] int movieId)
     {
-        var genres = _movieService.GetGenresOfMovie(movieId);
+        var result = _movieService.GetGenresOfMovie(movieId);
 
-        if (genres.IsFailed)
+        if (result.IsFailed)
         {
             return BadRequest();
         }
 
-        return Ok(genres.Value);
+        var genres = _mapper.Map<List<GenreDto>>(result.Value);
+
+
+        return Ok(genres);
     }
 
     [HttpDelete("{movieId}/genres/{genreId}")]
@@ -116,14 +122,15 @@ public class MovieController : ControllerBase
         return Ok();
     }
 
-    // TODO: use MovieActorDto, remove ? from Movie and Actor in MovieActor
     [HttpPost("{movieId}/actors")]
-    public IActionResult AddActorToMovie([FromRoute] int movieId, [FromBody] MovieActor movieActor)
+    public IActionResult AddActorToMovie([FromRoute] int movieId, [FromBody] MovieActorDto movieActorDto)
     {
-        if (movieId != movieActor.MovieId)
+        if (movieId != movieActorDto.MovieId)
         {
             return BadRequest();
         }
+
+        var movieActor = _mapper.Map<MovieActor>(movieActorDto);
 
         var addActorResult = _movieService.AddActorToMovie(movieActor);
 
