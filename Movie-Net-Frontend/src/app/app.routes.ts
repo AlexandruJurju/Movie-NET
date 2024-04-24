@@ -10,22 +10,63 @@ import {MovieEditComponent} from "./pages/movie-edit/movie-edit.component";
 import {GenreListComponent} from "./pages/genre-list/genre-list.component";
 import {GenreSaveComponent} from "./pages/genre-save/genre-save.component";
 import {GenreEditComponent} from "./pages/genre-edit/genre-edit.component";
+import {authGuard} from "./services/guard/auth.guard";
 
 export const routes: Routes = [
-  {path: 'home', component: HomeComponent},
+  {
+    path: 'home',
+    component: HomeComponent
+  },
 
-  {path: 'user-register', component: UserRegisterComponent},
-  {path: 'user-login', component: UserLoginComponent},
+  {
+    path: 'user-register',
+    component: UserRegisterComponent
+  },
+  {
+    path: 'user-login',
+    component: UserLoginComponent
+  },
 
-  {path: 'movie-save', component: MovieSaveComponent},
-  {path: 'movie-list', component: MovieListComponent},
-  {path: 'movie-edit/:id', component: MovieEditComponent},
-  {path: 'movie-details/:id', component: MovieDetailsComponent},
+  {
+    path: 'movie-save',
+    component: MovieSaveComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'movie-list',
+    component: MovieListComponent,
+  },
+  {
+    path: 'movie-edit/:id',
+    component: MovieEditComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'movie-details/:id',
+    component: MovieDetailsComponent,
+    canActivate: [authGuard]
+  },
 
-  {path: 'genre-list', component: GenreListComponent},
-  {path: 'genre-save', component: GenreSaveComponent},
-  {path: 'genre-edit/:id', component: GenreEditComponent},
+  {
+    path: 'genre-list',
+    component: GenreListComponent,
+  },
+  {
+    path: 'genre-save',
+    component: GenreSaveComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'genre-edit/:id',
+    component: GenreEditComponent,
+    canActivate: [authGuard]
+  },
 
-  {path: 'error', component: ErrorComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {
+    path: 'error',
+    component: ErrorComponent
+  },
+  {
+    path: '', redirectTo: '/home', pathMatch: 'full'
+  },
 ];
