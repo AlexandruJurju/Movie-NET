@@ -30,10 +30,7 @@ public class ActorController : ControllerBase
     public IActionResult FindActorById([FromRoute] int actorId)
     {
         var actorResult = _actorService.GetActorById(actorId);
-        if (actorResult.IsFailed)
-        {
-            return NotFound();
-        }
+        if (actorResult.IsFailed) return NotFound();
 
         var actor = _mapper.Map<ActorDto>(actorResult.Value);
 
@@ -52,10 +49,7 @@ public class ActorController : ControllerBase
     public IActionResult DeleteActor([FromRoute] int actorId)
     {
         var deleteResult = _actorService.DeleteActor(actorId);
-        if (deleteResult.IsFailed)
-        {
-            return NotFound();
-        }
+        if (deleteResult.IsFailed) return NotFound();
 
         return Ok();
     }
@@ -63,18 +57,12 @@ public class ActorController : ControllerBase
     [HttpPut("{actorId}")]
     public IActionResult UpdateActor([FromRoute] int actorId, [FromBody] ActorDto updatedActor)
     {
-        if (actorId != updatedActor.Id)
-        {
-            return BadRequest();
-        }
+        if (actorId != updatedActor.Id) return BadRequest();
 
         var actor = _mapper.Map<Actor>(updatedActor);
 
         var updateResult = _actorService.UpdateActor(actorId, actor);
-        if (updateResult.IsFailed)
-        {
-            return NotFound();
-        }
+        if (updateResult.IsFailed) return NotFound();
 
         return Ok();
     }

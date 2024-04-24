@@ -20,16 +20,10 @@ public class AuthenticationService : IAuthenticationService
     public Result<User> RegisterUser(RegisterRequestDto registerRequest)
     {
         var findByUsernameResult = _userService.FindUserByUsername(registerRequest.Username);
-        if (!findByUsernameResult.IsFailed)
-        {
-            return Result.Fail("Username already exists");
-        }
+        if (!findByUsernameResult.IsFailed) return Result.Fail("Username already exists");
 
         var findByEmailResult = _userService.FindUserByEmail(registerRequest.Email);
-        if (!findByEmailResult.IsFailed)
-        {
-            return Result.Fail("Email already exists");
-        }
+        if (!findByEmailResult.IsFailed) return Result.Fail("Email already exists");
 
         var user = new User
         {
@@ -44,15 +38,9 @@ public class AuthenticationService : IAuthenticationService
     public Result<AuthenticationResponse> LoginUser(LoginRequestDto loginRequest)
     {
         var userResult = _userService.FindUserByEmail(loginRequest.Email);
-        if (userResult.IsFailed)
-        {
-            return userResult.ToResult();
-        }
+        if (userResult.IsFailed) return userResult.ToResult();
 
-        if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, userResult.Value.Password))
-        {
-            return Result.Fail("Passwords dont match");
-        }
+        if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, userResult.Value.Password)) return Result.Fail("Passwords dont match");
 
         return Result.Ok(new AuthenticationResponse
         {

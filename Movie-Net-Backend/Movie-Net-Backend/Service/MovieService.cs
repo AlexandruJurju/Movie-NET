@@ -24,10 +24,7 @@ public class MovieService : IMovieService
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
 
-        if (movie == null)
-        {
-            return Result.Fail($"Movie with movieId {movieId} not found");
-        }
+        if (movie == null) return Result.Fail($"Movie with movieId {movieId} not found");
 
         return Result.Ok(movie);
     }
@@ -35,10 +32,7 @@ public class MovieService : IMovieService
     public Result DeleteMovie(int movieId)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
-        if (movie == null)
-        {
-            return Result.Fail($"Movie with movieId {movieId} not found");
-        }
+        if (movie == null) return Result.Fail($"Movie with movieId {movieId} not found");
 
         _appDbContext.Movies.Remove(movie);
         _appDbContext.SaveChanges();
@@ -48,10 +42,7 @@ public class MovieService : IMovieService
     public Result UpdateMovie(int movieId, Movie updatedMovie)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
-        if (movie == null)
-        {
-            return Result.Fail($"Movie with movieId {movieId} not found");
-        }
+        if (movie == null) return Result.Fail($"Movie with movieId {movieId} not found");
 
         var existingMovie = movie;
         existingMovie.Title = updatedMovie.Title;
@@ -75,16 +66,10 @@ public class MovieService : IMovieService
     public Result AddGenreToMovie(int movieId, int genreId)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
-        if (movie == null)
-        {
-            return Result.Fail($"Movie with id {movieId} not found");
-        }
+        if (movie == null) return Result.Fail($"Movie with id {movieId} not found");
 
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
-        if (genre == null)
-        {
-            return Result.Fail($"Genre with id {genreId} not found");
-        }
+        if (genre == null) return Result.Fail($"Genre with id {genreId} not found");
 
         movie.Genres.Add(genre);
         _appDbContext.Movies.Update(movie);
@@ -99,10 +84,7 @@ public class MovieService : IMovieService
             .Include(movie => movie.Genres)
             .FirstOrDefault(m => m.Id == movieId);
 
-        if (movie == null)
-        {
-            return Result.Fail($"Movie with id {movieId} not found");
-        }
+        if (movie == null) return Result.Fail($"Movie with id {movieId} not found");
 
         return Result.Ok(movie.Genres);
     }
@@ -110,16 +92,10 @@ public class MovieService : IMovieService
     public Result RemoveGenreFromMovie(int movieId, int genreId)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
-        if (movie == null)
-        {
-            return Result.Fail($"Movie with id {movieId} not found");
-        }
+        if (movie == null) return Result.Fail($"Movie with id {movieId} not found");
 
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == genreId);
-        if (genre == null)
-        {
-            return Result.Fail($"Genre with id {genreId} not found");
-        }
+        if (genre == null) return Result.Fail($"Genre with id {genreId} not found");
 
         movie.Genres.Remove(genre);
         _appDbContext.Movies.Update(movie);
@@ -134,10 +110,7 @@ public class MovieService : IMovieService
             .Include(movie => movie.MovieActors)
             .FirstOrDefault(m => m.Id == movieId);
 
-        if (movie == null)
-        {
-            return Result.Fail($"Movie not found for result {movieId}");
-        }
+        if (movie == null) return Result.Fail($"Movie not found for result {movieId}");
 
         var movieActors = movie.MovieActors.ToList();
         return Result.Ok<IEnumerable<MovieActor>>(movieActors);
@@ -149,22 +122,13 @@ public class MovieService : IMovieService
             .Include(movie => movie.MovieActors)
             .FirstOrDefault(m => m.Id == movieId);
 
-        if (movie == null)
-        {
-            return Result.Fail("Movie not found for id {movieId}");
-        }
+        if (movie == null) return Result.Fail("Movie not found for id {movieId}");
 
         var genre = _appDbContext.Actors.FirstOrDefault(a => a.Id == actorId);
-        if (genre == null)
-        {
-            return Result.Fail("Actor not found");
-        }
+        if (genre == null) return Result.Fail("Actor not found");
 
         var movieActor = movie.MovieActors.FirstOrDefault(ma => ma.ActorId == actorId);
-        if (movieActor == null)
-        {
-            return Result.Fail("Actor is not in this movie");
-        }
+        if (movieActor == null) return Result.Fail("Actor is not in this movie");
 
         movie.MovieActors.Remove(movieActor);
         _appDbContext.SaveChanges();
@@ -176,16 +140,10 @@ public class MovieService : IMovieService
     public Result AddActorToMovie(MovieActor movieActor)
     {
         var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieActor.MovieId);
-        if (movie == null)
-        {
-            return Result.Fail($"Movie not found for id {movieActor.MovieId}");
-        }
+        if (movie == null) return Result.Fail($"Movie not found for id {movieActor.MovieId}");
 
         var actor = _appDbContext.Actors.FirstOrDefault(a => a.Id == movieActor.ActorId);
-        if (actor == null)
-        {
-            return Result.Fail($"Actor not found for id {movieActor.ActorId}");
-        }
+        if (actor == null) return Result.Fail($"Actor not found for id {movieActor.ActorId}");
 
         movie.MovieActors.Add(movieActor);
         _appDbContext.SaveChanges();

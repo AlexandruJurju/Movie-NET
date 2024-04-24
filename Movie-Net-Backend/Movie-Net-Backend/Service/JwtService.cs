@@ -28,7 +28,7 @@ public class JwtService : IJwtService
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, loginRequest.Email),
-                new Claim(JwtRegisteredClaimNames.Email, loginRequest.Email),
+                new Claim(JwtRegisteredClaimNames.Email, loginRequest.Email)
             }),
             Expires = DateTime.UtcNow.Add(TokenLifeSpan),
             Issuer = _configuration["JwtSettings:Issuer"],

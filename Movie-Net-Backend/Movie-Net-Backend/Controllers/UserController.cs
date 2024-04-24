@@ -29,10 +29,7 @@ public class UserController : ControllerBase
     public IActionResult FindUserById([FromRoute] int userId)
     {
         var result = _userService.FindUserById(userId);
-        if (result.IsFailed)
-        {
-            return BadRequest(result.Errors);
-        }
+        if (result.IsFailed) return BadRequest(result.Errors);
 
         var user = _mapper.Map<UserDto>(result.Value);
 
@@ -44,10 +41,7 @@ public class UserController : ControllerBase
     {
         var result = _userService.DeleteUserById(userId);
 
-        if (result.IsFailed)
-        {
-            return BadRequest(result.Errors);
-        }
+        if (result.IsFailed) return BadRequest(result.Errors);
 
         return Ok();
     }

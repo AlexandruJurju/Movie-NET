@@ -30,10 +30,7 @@ public class GenreController : ControllerBase
     public IActionResult FindGenreById([FromRoute] int genreId)
     {
         var genreResult = _genreService.GetGenreById(genreId);
-        if (genreResult.IsFailed)
-        {
-            return NotFound();
-        }
+        if (genreResult.IsFailed) return NotFound();
 
         var genre = _mapper.Map<GenreDto>(genreResult.Value);
 
@@ -52,10 +49,7 @@ public class GenreController : ControllerBase
     public IActionResult DeleteGenre([FromRoute] int genreId)
     {
         var deleteResult = _genreService.DeleteGenre(genreId);
-        if (deleteResult.IsFailed)
-        {
-            return NotFound();
-        }
+        if (deleteResult.IsFailed) return NotFound();
 
         return Ok();
     }
@@ -63,18 +57,12 @@ public class GenreController : ControllerBase
     [HttpPut("{genreId}")]
     public IActionResult UpdateGenre([FromRoute] int genreId, [FromBody] GenreDto updatedGenre)
     {
-        if (genreId != updatedGenre.Id)
-        {
-            return BadRequest(ModelState);
-        }
+        if (genreId != updatedGenre.Id) return BadRequest(ModelState);
 
         var genre = _mapper.Map<Genre>(updatedGenre);
 
         var updateResult = _genreService.UpdateGenre(genreId, genre);
-        if (updateResult.IsFailed)
-        {
-            return NotFound();
-        }
+        if (updateResult.IsFailed) return NotFound();
 
         return Ok();
     }
@@ -83,10 +71,7 @@ public class GenreController : ControllerBase
     public IActionResult GetMoviesWithGenre([FromRoute] int genreId)
     {
         var moviesResult = _genreService.GetMoviesWithGenre(genreId);
-        if (moviesResult.IsFailed)
-        {
-            return NotFound();
-        }
+        if (moviesResult.IsFailed) return NotFound();
 
         var movies = _mapper.Map<List<Movie>>(moviesResult.Value);
         return Ok(movies);

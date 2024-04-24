@@ -14,7 +14,7 @@ DotNetEnv.Env.Load();
 
 // setup jwt authentication
 
-string jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!;
+var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!;
 
 builder.Services.AddAuthentication(x =>
 {
@@ -61,7 +61,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 // add automapper
 
 // create mysql connection
-string connectionString = builder.Configuration.GetConnectionString("MySQLConnectionString")!;
+var connectionString = builder.Configuration.GetConnectionString("MySQLConnectionString")!;
 builder.Services.AddDbContext<AppDbContext>(
     options => options
         .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))

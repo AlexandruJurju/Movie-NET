@@ -24,10 +24,7 @@ public class GenreService : IGenreService
     {
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
 
-        if (genre == null)
-        {
-            return Result.Fail($"Genre with id {id} not found");
-        }
+        if (genre == null) return Result.Fail($"Genre with id {id} not found");
 
         return Result.Ok(genre);
     }
@@ -36,10 +33,7 @@ public class GenreService : IGenreService
     {
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
 
-        if (genre == null)
-        {
-            return Result.Fail($"Genre with id {id} not found");
-        }
+        if (genre == null) return Result.Fail($"Genre with id {id} not found");
 
         _appDbContext.Genres.Remove(genre);
         _appDbContext.SaveChanges();
@@ -50,10 +44,7 @@ public class GenreService : IGenreService
     {
         var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
 
-        if (genre == null)
-        {
-            return Result.Fail($"Genre with id {id} not found");
-        }
+        if (genre == null) return Result.Fail($"Genre with id {id} not found");
 
         genre.Name = updatedGenre.Name;
         _appDbContext.Genres.Update(genre);
@@ -75,10 +66,7 @@ public class GenreService : IGenreService
             .Include(g => g.Movies)
             .FirstOrDefault(g => g.Id == genreId);
 
-        if (genre == null)
-        {
-            return Result.Fail<ICollection<Movie>>(new Error("Genre not found"));
-        }
+        if (genre == null) return Result.Fail<ICollection<Movie>>(new Error("Genre not found"));
 
         return Result.Ok(genre.Movies);
     }

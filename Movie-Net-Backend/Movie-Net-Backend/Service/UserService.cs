@@ -18,10 +18,7 @@ public class UserService : IUserService
     {
         var user = _appDbContext.Users.FirstOrDefault(u => u.Username == username);
 
-        if (user == null)
-        {
-            return Result.Fail<User>($"User with username {username} not found");
-        }
+        if (user == null) return Result.Fail<User>($"User with username {username} not found");
 
         return user;
     }
@@ -30,10 +27,7 @@ public class UserService : IUserService
     {
         var user = _appDbContext.Users.FirstOrDefault(u => u.Email == email);
 
-        if (user == null)
-        {
-            return Result.Fail<User>($"User with email {email} not found");
-        }
+        if (user == null) return Result.Fail<User>($"User with email {email} not found");
 
         return user;
     }
@@ -42,10 +36,7 @@ public class UserService : IUserService
     {
         var user = _appDbContext.Users.FirstOrDefault(u => u.Id == userId);
 
-        if (user == null)
-        {
-            return Result.Fail($"User with id {userId} not found");
-        }
+        if (user == null) return Result.Fail($"User with id {userId} not found");
 
         return user;
     }
@@ -53,10 +44,7 @@ public class UserService : IUserService
     public Result DeleteUserById(int userId)
     {
         var userResult = FindUserById(userId);
-        if (userResult.IsFailed)
-        {
-            return userResult.ToResult();
-        }
+        if (userResult.IsFailed) return userResult.ToResult();
 
         _appDbContext.Users.Remove(userResult.Value);
         _appDbContext.SaveChanges();

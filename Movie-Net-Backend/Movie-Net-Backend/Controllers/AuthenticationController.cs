@@ -22,11 +22,8 @@ public class AuthenticationController : ControllerBase
     {
         var loginResult = _authenticationService.LoginUser(loginRequest);
 
-        if (loginResult.IsFailed)
-        {
-            return BadRequest(loginResult.ToResult());
-        }
-        
+        if (loginResult.IsFailed) return BadRequest(loginResult.ToResult());
+
         return Ok(loginResult.Value);
     }
 
@@ -35,10 +32,7 @@ public class AuthenticationController : ControllerBase
     {
         var registerResult = _authenticationService.RegisterUser(registerRequest);
 
-        if (registerResult.IsFailed)
-        {
-            return BadRequest(registerResult.ToResult());
-        }
+        if (registerResult.IsFailed) return BadRequest(registerResult.ToResult());
 
         return CreatedAtAction(nameof(RegisterUser), new { id = registerResult.Value.Id }, registerResult.Value);
     }
