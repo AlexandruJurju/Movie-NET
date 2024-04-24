@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface User { 
+export interface ActorDto { 
     id?: number;
-    email?: string;
-    username?: string;
-    password?: string;
+    firstName?: string;
+    lastName?: string;
+    birthDate?: string;
+    biography?: string;
+    profilePictureUrl?: string;
 }

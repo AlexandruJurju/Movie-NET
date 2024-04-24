@@ -1,46 +1,41 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {NgForOf} from "@angular/common";
-import {Actor, Genre, Movie, MovieService} from "../../services/swagger";
+import {NgForOf, NgIf} from "@angular/common";
+import {ActorDto, GenreDto, MovieDto, MovieService} from "../../services/swagger";
 
 @Component({
   selector: 'app-movie-details',
   standalone: true,
   imports: [
     RouterLink,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
 })
 export class MovieDetailsComponent implements OnInit {
-  movie: Movie = {} as Movie;
-  genres: Genre[] = [];
-  actors: Actor[] = [];
+  movie: MovieDto = {} as MovieDto;
+  genres: GenreDto[] = [];
 
-  constructor(private movieService: MovieService,
-              private router: Router,
-              private route: ActivatedRoute,) {
+  constructor(
+    private movieService: MovieService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
   }
 
   ngOnInit() {
-
-    this.getMovieFromPath();
-
-    this.getGenresOfMovie();
-
+    this.getMovieInformation();
   }
 
-  // TODO: pass the movie object, not the id
+  // Navigate to update movie page
   navigateToUpdateMovie() {
     this.router.navigate(['/movie-edit', this.movie.id]);
   }
 
-  private getActorsOfMovie(){
-
-  }
-
   private getGenresOfMovie() {
+    console.log(this.movie.id);
     this.movieService.getGenresOfMovie(this.movie.id).subscribe({
       next: genres => {
         console.log(genres);
@@ -52,7 +47,7 @@ export class MovieDetailsComponent implements OnInit {
     });
   }
 
-  private getMovieFromPath() {
+  private getMovieInformation() {
     const movieId = +this.route.snapshot.paramMap.get('id')!;
     if (movieId === null || isNaN(movieId)) {
       this.router.navigate(['/error']);
@@ -67,7 +62,10 @@ export class MovieDetailsComponent implements OnInit {
           this.router.navigate(['/error']);
           return;
         }
+        console.log('MOVIE ID ' + movie.id);
         this.movie = movie;
+        // Call getGenresOfMovie after getting movie information
+        this.getGenresOfMovie();
       },
       error: error => {
         console.error('Error fetching movie:', error);
@@ -75,6 +73,4 @@ export class MovieDetailsComponent implements OnInit {
       }
     });
   }
-
-
 }

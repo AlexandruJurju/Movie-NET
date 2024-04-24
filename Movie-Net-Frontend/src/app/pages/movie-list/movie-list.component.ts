@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
-import {Movie, MovieService} from "../../services/swagger";
+import {MovieDto, MovieService} from "../../services/swagger";
 
 @Component({
   selector: 'app-movie-list',
@@ -15,7 +15,7 @@ import {Movie, MovieService} from "../../services/swagger";
 })
 
 export class MovieListComponent implements OnInit {
-  movies: Movie[] = [];
+  movies: MovieDto[] = [];
 
   constructor(private movieService: MovieService, private router: Router) {
   }

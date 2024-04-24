@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Movie, MovieService} from "../../services/swagger";
+import {MovieDto, MovieService} from "../../services/swagger";
 
 @Component({
   selector: 'app-movie-save',
@@ -20,7 +20,7 @@ export class MovieSaveComponent {
 
 
   onSubmit(movieForm: NgForm) {
-    const movie: Movie = movieForm.value;
+    const movie: MovieDto = movieForm.value;
 
     this.movieService.saveMovie(movie).subscribe({
       next: (response) => {

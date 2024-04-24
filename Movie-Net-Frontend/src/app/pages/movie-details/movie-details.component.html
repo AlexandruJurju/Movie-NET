@@ -5,7 +5,11 @@
     <p class="text-muted mb-2">{{ movie.releaseDate }}</p>
     <p class="font-weight-bold display-6">{{ movie.headline }}</p>
     <p class="mb-2 lead">{{ movie.overview }}</p>
-    <p class="mb-2 lead">Genres: <span *ngFor="let genre of genres">{{ genre.name }}</span></p>
-    <button class="btn btn-primary" (click)="navigateToUpdateMovie()">Update Movie</button>
+    <p class="mb-2 lead">Genres:
+      <ng-container *ngFor="let genre of genres; let last = last">
+        <span>{{ genre.name }}</span>
+        <span *ngIf="!last">, </span>
+      </ng-container>
+    </p>    <button class="btn btn-primary" (click)="navigateToUpdateMovie()">Update Movie</button>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule, NgForm} from "@angular/forms";
-import {Genre, GenreService} from "../../services/swagger";
+import {GenreDto, GenreService} from "../../services/swagger";
 
 @Component({
   selector: 'app-genre-edit',
@@ -13,7 +13,7 @@ import {Genre, GenreService} from "../../services/swagger";
   styleUrl: './genre-edit.component.css'
 })
 export class GenreEditComponent implements OnInit {
-  genre: Genre = {} as Genre;
+  genre: GenreDto = {} as GenreDto;
 
   constructor(private genreService: GenreService,
               private router: Router,

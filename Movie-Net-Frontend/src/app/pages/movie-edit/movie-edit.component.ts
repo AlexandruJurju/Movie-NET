@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule, NgForm} from "@angular/forms";
 import {NgForOf} from "@angular/common";
-import {Genre, Movie, MovieService} from "../../services/swagger";
+import {GenreDto, MovieDto, MovieService} from "../../services/swagger";
 
 
 
@@ -17,9 +17,9 @@ import {Genre, Movie, MovieService} from "../../services/swagger";
   styleUrl: './movie-edit.component.css'
 })
 export class MovieEditComponent implements OnInit {
-  movie: Movie = {} as Movie;
-  movieCopy: Movie = {} as Movie;
-  genres: Genre[] = [];
+  movie: MovieDto = {} as MovieDto;
+  movieCopy: MovieDto = {} as MovieDto;
+  genres: GenreDto[] = [];
 
   constructor(private movieService: MovieService,
               private router: Router,

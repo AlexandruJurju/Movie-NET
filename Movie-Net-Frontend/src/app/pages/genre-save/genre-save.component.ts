@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Genre, GenreService} from "../../services/swagger";
+import {GenreDto, GenreService} from "../../services/swagger";
 
 @Component({
   selector: 'app-genre-save',
@@ -19,7 +19,7 @@ export class GenreSaveComponent {
   }
 
   onSubmit(genreForm: NgForm) {
-    const genre: Genre = genreForm.value;
+    const genre: GenreDto = genreForm.value;
 
     this.genreService.saveGenre(genre).subscribe({
       next: (response) => {

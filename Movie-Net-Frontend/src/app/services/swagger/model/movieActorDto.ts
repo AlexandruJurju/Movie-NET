@@ -10,11 +10,10 @@
  * Do not edit the class manually.
  */
 
-export interface Movie { 
-    id: number;
-    title: string;
-    headline: string;
-    overview: string;
-    releaseDate?: string;
-    posterUrl?: string;
+export interface MovieActorDto { 
+    id?: number;
+    movieId?: number;
+    actorId?: number;
+    role?: string;
+    displayOrder?: number;
 }

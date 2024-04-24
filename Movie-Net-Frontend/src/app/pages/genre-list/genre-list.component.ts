@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {Router} from "@angular/router";
-import {Genre, GenreService} from "../../services/swagger";
+import {GenreDto, GenreService} from "../../services/swagger";
 
 @Component({
   selector: 'app-genre-list',
@@ -13,8 +13,8 @@ import {Genre, GenreService} from "../../services/swagger";
   styleUrl: './genre-list.component.css'
 })
 export class GenreListComponent implements OnInit {
-  genres: Genre[] = [];
-  genreToDelete: Genre = {} as Genre;
+  genres: GenreDto[] = [];
+  genreToDelete: GenreDto = {} as GenreDto;
 
   constructor(private genreService: GenreService, private router: Router) {
   }
@@ -28,7 +28,7 @@ export class GenreListComponent implements OnInit {
   }
 
   // TODO: pass the whole object to page, not just the id, get rid of the call
-  editGenre(genre: Genre): void {
+  editGenre(genre: GenreDto): void {
     this.router.navigate(['/genre-edit', genre.id]);
   }
 
@@ -42,7 +42,7 @@ export class GenreListComponent implements OnInit {
     this.router.navigate(["/genre-save"])
   }
 
-  setGenreToDelete(genre: Genre) {
+  setGenreToDelete(genre: GenreDto) {
     this.genreToDelete = genre;
   }
 }

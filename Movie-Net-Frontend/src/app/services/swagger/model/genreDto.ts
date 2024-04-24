@@ -10,3 +10,7 @@
  * Do not edit the class manually.
  */
 
+export interface GenreDto {
+    id: number;
+    name?: string;
+}
