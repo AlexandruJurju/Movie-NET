@@ -9,12 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { MovieDto } from './movieDto';
 
-export interface ActorDto { 
-    id: number;
-    firstName?: string;
-    lastName?: string;
-    birthDate?: string;
-    biography?: string;
-    profilePictureUrl?: string;
+export interface MovieDtoPageResponse { 
+    content?: Array<MovieDto>;
+    number?: number;
+    size?: number;
+    totalElements?: number;
+    totalPages?: number;
+    first?: boolean;
+    last?: boolean;
 }

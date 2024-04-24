@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
-import {MovieDto, MovieService} from "../../services/swagger";
+import {MovieDto, MovieDtoPageResponse, MovieService} from "../../services/swagger";
 
 @Component({
   selector: 'app-movie-list',
@@ -15,23 +15,39 @@ import {MovieDto, MovieService} from "../../services/swagger";
 })
 
 export class MovieListComponent implements OnInit {
-  movies: MovieDto[] = [];
+  movieResponse: MovieDtoPageResponse = {};
+  page = 0;
+  size = 4;
+  pages: any = [];
 
   constructor(private movieService: MovieService, private router: Router) {
   }
 
   ngOnInit() {
-    this.findAllMovies();
+    this.findAllMoviesPaged();
   }
 
-  findAllMovies() {
-    this.movieService.findAllMovies()
-      .subscribe(movies => {
-        this.movies = movies;
-      })
+  private findAllMoviesPaged() {
+    console.log(this.page + " " + this.size);
+    this.movieService.findAllMovies_1(this.page, this.size)
+      .subscribe({
+        next: (books) => {
+          this.movieResponse = books;
+          console.log(this.movieResponse.content);
+          this.pages = Array(this.movieResponse.totalPages)
+            .fill(0)
+            .map((x, i) => i);
+        }
+      });
+  }
+
+  gotToPage(page: number) {
+    this.page = page + 1;
+    this.findAllMoviesPaged();
   }
 
   goToMovieDetails(id: number) {
     this.router.navigate(['/movie-details', id]);
   }
+
 }

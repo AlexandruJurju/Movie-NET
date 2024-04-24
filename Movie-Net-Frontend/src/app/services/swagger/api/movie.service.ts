@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { MovieActorDto } from '../model/movieActorDto';
 import { MovieDto } from '../model/movieDto';
+import { MovieDtoPageResponse } from '../model/movieDtoPageResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -217,6 +218,54 @@ export class MovieService {
         ];
 
         return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Movie`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param page 
+     * @param size 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findAllMovies_1(page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<MovieDtoPageResponse>;
+    public findAllMovies_1(page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MovieDtoPageResponse>>;
+    public findAllMovies_1(page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MovieDtoPageResponse>>;
+    public findAllMovies_1(page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (page === null || page === undefined) {
+            throw new Error('Required parameter page was null or undefined when calling findAllMovies_1.');
+        }
+
+        if (size === null || size === undefined) {
+            throw new Error('Required parameter size was null or undefined when calling findAllMovies_1.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<MovieDtoPageResponse>('get',`${this.basePath}/api/v1/Movie/${encodeURIComponent(String(page))}/${encodeURIComponent(String(size))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
