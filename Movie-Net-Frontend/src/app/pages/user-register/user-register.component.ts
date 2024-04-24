@@ -11,10 +11,10 @@ import {AuthenticationService} from "../../services/swagger";
     ReactiveFormsModule,
     NgIf
   ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  templateUrl: './user-register.component.html',
+  styleUrl: './user-register.component.css'
 })
-export class RegisterComponent {
+export class UserRegisterComponent {
 
   errorMessage: string | null = null;
 

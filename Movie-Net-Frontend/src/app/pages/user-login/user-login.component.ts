@@ -10,10 +10,10 @@ import {TokenService} from "../../services/token/token.service";
   imports: [
     ReactiveFormsModule
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './user-login.component.html',
+  styleUrl: './user-login.component.css'
 })
-export class LoginComponent {
+export class UserLoginComponent {
 
   constructor(
     private authenticationService: AuthenticationService,

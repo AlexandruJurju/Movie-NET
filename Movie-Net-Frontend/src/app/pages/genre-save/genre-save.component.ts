@@ -15,7 +15,9 @@ import {GenreDto, GenreService} from "../../services/swagger";
 })
 export class GenreSaveComponent {
 
-  constructor(private genreService: GenreService, private router: Router) {
+  constructor(
+    private genreService: GenreService,
+    private router: Router) {
   }
 
   onSubmit(genreForm: NgForm) {

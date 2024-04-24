@@ -15,7 +15,9 @@ import {MovieDto, MovieService} from "../../services/swagger";
 export class MovieSaveComponent {
 
 
-  constructor(private movieService: MovieService, private router: Router) {
+  constructor(
+    private movieService: MovieService,
+    private router: Router) {
   }
 
 
@@ -24,8 +26,7 @@ export class MovieSaveComponent {
 
     this.movieService.saveMovie(movie).subscribe({
       next: (response) => {
-        this.router.navigate(["/home"]).then(() => {
-        });
+        this.router.navigate(["/home"]);
         console.log('Upload successful', response);
       },
       error: (error) => {

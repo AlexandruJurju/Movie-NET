@@ -2,8 +2,8 @@ import {Routes} from '@angular/router';
 import {HomeComponent} from "./pages/home/home.component";
 import {MovieSaveComponent} from "./pages/movie-save/movie-save.component";
 import {MovieListComponent} from "./pages/movie-list/movie-list.component";
-import {RegisterComponent} from "./pages/user-register/register.component";
-import {LoginComponent} from "./pages/user-login/login.component";
+import {UserRegisterComponent} from "./pages/user-register/user-register.component";
+import {UserLoginComponent} from "./pages/user-login/user-login.component";
 import {MovieDetailsComponent} from "./pages/movie-details/movie-details.component";
 import {ErrorComponent} from "./pages/error/error.component";
 import {MovieEditComponent} from "./pages/movie-edit/movie-edit.component";
@@ -14,8 +14,8 @@ import {GenreEditComponent} from "./pages/genre-edit/genre-edit.component";
 export const routes: Routes = [
   {path: 'home', component: HomeComponent},
 
-  {path: 'user-register', component: RegisterComponent},
-  {path: 'user-login', component: LoginComponent},
+  {path: 'user-register', component: UserRegisterComponent},
+  {path: 'user-login', component: UserLoginComponent},
 
   {path: 'movie-save', component: MovieSaveComponent},
   {path: 'movie-list', component: MovieListComponent},
