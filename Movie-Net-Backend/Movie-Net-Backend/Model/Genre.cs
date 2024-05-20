@@ -6,7 +6,7 @@ namespace Movie_Net_Backend.Model;
 [Table("genre")]
 public class Genre
 {
-    [Key] public int Id { get; set; }
-    public string Name { get; set; }
+    [Key] [Column("id")] public int Id { get; set; }
+    [Column("name")] public string Name { get; set; }
     public virtual ICollection<Movie> Movies { get; set; }
 }

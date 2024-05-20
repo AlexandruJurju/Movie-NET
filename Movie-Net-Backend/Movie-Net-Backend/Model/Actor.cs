@@ -6,11 +6,12 @@ namespace Movie_Net_Backend.Model;
 [Table("actor")]
 public class Actor
 {
-    [Key] public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public DateOnly BirthDate { get; set; }
-    public string Biography { get; set; }
-    public string ProfilePictureUrl { get; set; }
+    [Key] [Column("id")] public int Id { get; set; }
+    [Column("first_name")] public string FirstName { get; set; }
+    [Column("last_name")] public string LastName { get; set; }
+    [Column("birth_date")] public DateOnly BirthDate { get; set; }
+    [Column("biography")] public string Biography { get; set; }
+    [Column("profile_picture_url")] public string ProfilePictureUrl { get; set; }
+
     public virtual ICollection<MovieActor> MovieActors { get; set; }
 }
