@@ -1,10 +1,12 @@
-﻿namespace Movie_Net_Backend.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Movie_Net_Backend.Dto;
 
 public class MovieActorDto
 {
-    public int Id { get; set; }
-    public int MovieId { get; set; }
-    public int ActorId { get; set; }
-    public string Role { get; set; }
-    public int DisplayOrder { get; set; }
+    [Required] public int Id { get; set; }
+    [Required] public ActorDto Actor { get; set; }
+    [Required] public string Role { get; set; }
+    [Required] public int displayOrder { get; set; }
+    [Required] public string CharacterImageUrl { get; set; }
 }

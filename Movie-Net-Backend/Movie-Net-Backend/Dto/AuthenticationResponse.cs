@@ -1,6 +1,8 @@
-﻿namespace Movie_Net_Backend.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Movie_Net_Backend.Dto;
 
 public class AuthenticationResponse
 {
-    public string Token { get; set; }
+    [Required] public string Token { get; set; }
 }

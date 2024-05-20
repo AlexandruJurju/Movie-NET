@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Movie_Net_Backend.Model;
 
+[Table("movie_actor")]
 public class MovieActor
 {
     [Key] public int Id { get; set; }

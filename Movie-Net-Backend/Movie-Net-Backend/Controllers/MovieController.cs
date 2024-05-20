@@ -13,17 +13,16 @@ namespace Movie_Net_Backend.Controllers;
 public class MovieController : ControllerBase
 {
     private readonly IMovieService _movieService;
-    private readonly ILogger<MovieController> _logger;
     private readonly IMapper _mapper;
 
-    public MovieController(IMovieService movieService, ILogger<MovieController> logger, IMapper mapper)
+    public MovieController(IMovieService movieService, IMapper mapper)
     {
         _movieService = movieService ?? throw new ArgumentNullException(nameof(movieService));
-        _logger = logger;
         _mapper = mapper;
     }
 
     [HttpGet]
+    [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public IActionResult FindAllMovies()
     {
         var movies = _mapper.Map<List<MovieDto>>(_movieService.FindAllMovies());
@@ -31,19 +30,20 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("{movieId}")]
+    [ProducesResponseType(200, Type = typeof(DetailedMovieDto))]
     public IActionResult FindMovieById([FromRoute] int movieId)
     {
         var result = _movieService.FindMovieById(movieId);
         if (result.IsFailed) return NotFound();
 
-        var movie = _mapper.Map<MovieDto>(result.Value);
+        var movie = _mapper.Map<DetailedMovieDto>(result.Value);
 
         return Ok(movie);
     }
 
     [HttpGet("{page}/{size}")]
     [ProducesResponseType(200, Type = typeof(PageResponse<MovieDto>))]
-    public IActionResult FindAllMovies([FromRoute] int page, [FromRoute] int size)
+    public IActionResult FindAllMoviesPages([FromRoute] int page, [FromRoute] int size)
     {
         var movies = _mapper.Map<List<MovieDto>>(_movieService.FindAllMovies());
         var totalElements = movies.Count();
@@ -121,40 +121,5 @@ public class MovieController : ControllerBase
         if (removeGenreResult.IsFailed) return NotFound();
 
         return Ok();
-    }
-
-    [HttpPost("{movieId}/actors")]
-    public IActionResult AddActorToMovie([FromRoute] int movieId, [FromBody] MovieActorDto movieActorDto)
-    {
-        if (movieId != movieActorDto.MovieId) return BadRequest();
-
-        var movieActor = _mapper.Map<MovieActor>(movieActorDto);
-
-        var addActorResult = _movieService.AddActorToMovie(movieActor);
-
-        if (addActorResult.IsFailed) return NotFound();
-
-        return Ok();
-    }
-
-    [HttpDelete("{movieId}/actors/{actorId}")]
-    public IActionResult RemoveActorFromMovie([FromRoute] int movieId, [FromRoute] int actorId)
-    {
-        var removeActorResult = _movieService.RemoveActorFromMovie(movieId, actorId);
-        if (removeActorResult.IsFailed) return NotFound();
-
-        return Ok();
-    }
-
-    [HttpGet("{movieId}/actors")]
-    public IActionResult GetActorsInMovie([FromRoute] int movieId)
-    {
-        var movieActors = _movieService.GetActorsOfMovie(movieId);
-
-        if (movieActors.IsFailed) return BadRequest();
-
-        var actors = _mapper.Map<List<ActorDto>>(movieActors.Value);
-
-        return Ok(actors);
     }
 }
