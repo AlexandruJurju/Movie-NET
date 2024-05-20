@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
-import {ActorDto, GenreDto, MovieDto, MovieService} from "../../services/swagger";
+import {DetailedMovieDto, GenreDto, MovieService} from "../../services/swagger";
 
 @Component({
   selector: 'app-movie-details',
@@ -15,7 +15,7 @@ import {ActorDto, GenreDto, MovieDto, MovieService} from "../../services/swagger
   styleUrl: './movie-details.component.css'
 })
 export class MovieDetailsComponent implements OnInit {
-  movie: MovieDto = {} as MovieDto;
+  movie: DetailedMovieDto = {} as DetailedMovieDto;
   genres: GenreDto[] = [];
 
   constructor(
@@ -73,4 +73,9 @@ export class MovieDetailsComponent implements OnInit {
       }
     });
   }
+
+  navigateToActorDetails(actorId: number) {
+    this.router.navigate(['/actor-details', actorId]);
+  }
+
 }

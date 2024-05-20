@@ -17,7 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { MovieActorDto } from '../model/movieActorDto';
+import { DetailedMovieDto } from '../model/detailedMovieDto';
 import { MovieDto } from '../model/movieDto';
 import { MovieDtoPageResponse } from '../model/movieDtoPageResponse';
 
@@ -56,56 +56,6 @@ export class MovieService {
         return false;
     }
 
-
-    /**
-     * 
-     * 
-     * @param movieId 
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public addActorToMovie(movieId: number, body?: MovieActorDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public addActorToMovie(movieId: number, body?: MovieActorDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public addActorToMovie(movieId: number, body?: MovieActorDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public addActorToMovie(movieId: number, body?: MovieActorDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (movieId === null || movieId === undefined) {
-            throw new Error('Required parameter movieId was null or undefined when calling addActorToMovie.');
-        }
-
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<any>('post',`${this.basePath}/api/v1/Movie/${encodeURIComponent(String(movieId))}/actors`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
 
     /**
      * 
@@ -198,15 +148,18 @@ export class MovieService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllMovies(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public findAllMovies(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public findAllMovies(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public findAllMovies(observe?: 'body', reportProgress?: boolean): Observable<Array<MovieDto>>;
+    public findAllMovies(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<MovieDto>>>;
+    public findAllMovies(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<MovieDto>>>;
     public findAllMovies(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -217,7 +170,7 @@ export class MovieService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Movie`,
+        return this.httpClient.request<Array<MovieDto>>('get',`${this.basePath}/api/v1/Movie`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -235,17 +188,17 @@ export class MovieService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllMovies_1(page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<MovieDtoPageResponse>;
-    public findAllMovies_1(page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MovieDtoPageResponse>>;
-    public findAllMovies_1(page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MovieDtoPageResponse>>;
-    public findAllMovies_1(page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public findAllMoviesPages(page: number, size: number, observe?: 'body', reportProgress?: boolean): Observable<MovieDtoPageResponse>;
+    public findAllMoviesPages(page: number, size: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MovieDtoPageResponse>>;
+    public findAllMoviesPages(page: number, size: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MovieDtoPageResponse>>;
+    public findAllMoviesPages(page: number, size: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findAllMovies_1.');
+            throw new Error('Required parameter page was null or undefined when calling findAllMoviesPages.');
         }
 
         if (size === null || size === undefined) {
-            throw new Error('Required parameter size was null or undefined when calling findAllMovies_1.');
+            throw new Error('Required parameter size was null or undefined when calling findAllMoviesPages.');
         }
 
         let headers = this.defaultHeaders;
@@ -282,9 +235,9 @@ export class MovieService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findMovieById(movieId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public findMovieById(movieId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public findMovieById(movieId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public findMovieById(movieId: number, observe?: 'body', reportProgress?: boolean): Observable<DetailedMovieDto>;
+    public findMovieById(movieId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DetailedMovieDto>>;
+    public findMovieById(movieId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DetailedMovieDto>>;
     public findMovieById(movieId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (movieId === null || movieId === undefined) {
@@ -295,6 +248,9 @@ export class MovieService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -305,47 +261,7 @@ export class MovieService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Movie/${encodeURIComponent(String(movieId))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param movieId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getActorsInMovie(movieId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public getActorsInMovie(movieId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public getActorsInMovie(movieId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public getActorsInMovie(movieId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (movieId === null || movieId === undefined) {
-            throw new Error('Required parameter movieId was null or undefined when calling getActorsInMovie.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Movie/${encodeURIComponent(String(movieId))}/actors`,
+        return this.httpClient.request<DetailedMovieDto>('get',`${this.basePath}/api/v1/Movie/${encodeURIComponent(String(movieId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -386,51 +302,6 @@ export class MovieService {
         ];
 
         return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Movie/${encodeURIComponent(String(movieId))}/genres`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param movieId 
-     * @param actorId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public removeActorFromMovie(movieId: number, actorId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public removeActorFromMovie(movieId: number, actorId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public removeActorFromMovie(movieId: number, actorId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public removeActorFromMovie(movieId: number, actorId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (movieId === null || movieId === undefined) {
-            throw new Error('Required parameter movieId was null or undefined when calling removeActorFromMovie.');
-        }
-
-        if (actorId === null || actorId === undefined) {
-            throw new Error('Required parameter actorId was null or undefined when calling removeActorFromMovie.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<any>('delete',`${this.basePath}/api/v1/Movie/${encodeURIComponent(String(movieId))}/actors/${encodeURIComponent(String(actorId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

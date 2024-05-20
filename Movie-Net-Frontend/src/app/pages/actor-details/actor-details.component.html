@@ -1,0 +1,19 @@
+<div class="d-flex justify-content-center align-items-center">
+  <div style="max-width: 1200px">
+    <div class="d-flex">
+      <div>
+        <img [src]="actor.profilePictureUrl" alt="{{ actor.firstName }} {{ actor.lastName }}" class="mr-5" style="width: 300px; margin-right: 50px; height: 450px">
+        <div class="d-flex align-items-center">
+          <h5>Birthdate: </h5>
+          <h5 class="ml-2"> {{ actor.birthDate }}</h5>
+        </div>
+      </div>
+
+      <div>
+        <h2>{{ actor.firstName }} {{ actor.lastName }}</h2>
+        <h5>Biography</h5>
+        <p>{{ actor.biography }}</p>
+      </div>
+    </div>
+  </div>
+</div>

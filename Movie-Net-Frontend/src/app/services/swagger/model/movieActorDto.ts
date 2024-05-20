@@ -9,11 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ActorDto } from './actorDto';
 
 export interface MovieActorDto { 
-    id?: number;
-    movieId?: number;
-    actorId?: number;
-    role?: string;
-    displayOrder?: number;
+    id: number;
+    actor: ActorDto;
+    role: string;
+    displayOrder: number;
+    characterImageUrl: string;
 }

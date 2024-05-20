@@ -9,13 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { GenreDto } from './genreDto';
+import { MovieActorDto } from './movieActorDto';
 
-export interface MovieDto { 
+export interface DetailedMovieDto { 
     id: number;
     title: string;
     headline: string;
     overview: string;
-    runtimeInMinutes?: number;
     releaseDate: string;
     posterUrl: string;
+    genres: Array<GenreDto>;
+    movieActors: Array<MovieActorDto>;
 }

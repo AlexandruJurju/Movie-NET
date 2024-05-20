@@ -29,10 +29,10 @@ export class MovieListComponent implements OnInit {
 
   private findAllMoviesPaged() {
     console.log(this.page + " " + this.size);
-    this.movieService.findAllMovies_1(this.page, this.size)
+    this.movieService.findAllMoviesPages(this.page, this.size)
       .subscribe({
-        next: (books) => {
-          this.movieResponse = books;
+        next: (movies) => {
+          this.movieResponse = movies;
           console.log(this.movieResponse.content);
           this.pages = Array(this.movieResponse.totalPages)
             .fill(0)
