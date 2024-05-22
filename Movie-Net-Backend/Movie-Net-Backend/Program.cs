@@ -1,11 +1,10 @@
-using System.Diagnostics;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Movie_Net_Backend.Data;
-using Movie_Net_Backend.Model;
+using Movie_Net_Backend.Helper;
 using Movie_Net_Backend.Service;
 using Movie_Net_Backend.Service.Interface;
 
@@ -51,8 +50,18 @@ builder.Services.AddSwaggerGen(c =>
 // add automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.Configure<SmtpSettings>(options =>
+{
+    options.Host = Environment.GetEnvironmentVariable("SMTP_HOST");
+    options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT"));
+    options.User = Environment.GetEnvironmentVariable("SMTP_EMAIL");
+    options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+    options.EmailFrom = Environment.GetEnvironmentVariable("SMTP_EMAIL_FROM");
+});
+
 // add services to DI
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();

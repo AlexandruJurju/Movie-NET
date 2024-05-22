@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Movie_Net_Backend.Model;
 
+// todo: make it so a user cant have more than 1 review for a movie
 [Table("review")]
 public class Review
 {

@@ -9,11 +9,13 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IUserService _userService;
     private readonly IJwtService _jwtService;
+    private readonly IEmailService _emailService;
 
-    public AuthenticationService(IUserService userService, IJwtService jwtService)
+    public AuthenticationService(IUserService userService, IJwtService jwtService, IEmailService emailService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         _jwtService = jwtService;
+        _emailService = emailService;
     }
 
 
@@ -32,6 +34,8 @@ public class AuthenticationService : IAuthenticationService
             Password = BCrypt.Net.BCrypt.HashPassword(registerRequest.Password)
         };
 
+        _emailService.Send(user.Email, "Register", "Registered to website");
+
         return _userService.SaveUser(user);
     }
 
@@ -40,7 +44,8 @@ public class AuthenticationService : IAuthenticationService
         var userResult = _userService.FindUserByEmail(loginRequest.Email);
         if (userResult.IsFailed) return userResult.ToResult();
 
-        if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, userResult.Value.Password)) return Result.Fail("Passwords dont match");
+        if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, userResult.Value.Password))
+            return Result.Fail("Passwords dont match");
 
         return Result.Ok(new AuthenticationResponse
         {
