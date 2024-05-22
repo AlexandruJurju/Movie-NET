@@ -37,6 +37,14 @@ public class AuthenticationController : ControllerBase
         return CreatedAtAction(nameof(RegisterUser), new { id = registerResult.Value.Id }, registerResult.Value);
     }
 
+    [HttpPost("reset")]
+    public IActionResult ResetPassword([FromBody] PasswordResetDto passwordResetDto)
+    {
+        _authenticationService.ResetPassword(passwordResetDto);
+
+        return Ok();
+    }
+
     [Authorize]
     [HttpGet]
     public IActionResult Test()

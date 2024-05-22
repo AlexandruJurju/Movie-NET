@@ -52,4 +52,9 @@ public class AuthenticationService : IAuthenticationService
             Token = _jwtService.GenerateToken(loginRequest)
         });
     }
+
+    public void ResetPassword(PasswordResetDto passwordResetDto)
+    {
+        _emailService.Send(passwordResetDto.Email, "Password Reset", "RESET");
+    }
 }
