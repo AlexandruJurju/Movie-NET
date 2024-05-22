@@ -19,5 +19,6 @@ public class MappingProfiles : Profile
         CreateMap<Movie, DetailedMovieDto>();
         CreateMap<Review, ReviewDto>();
         CreateMap<ReviewDto, Review>();
+        CreateMap<Review, DisplayReviewDto>();
     }
 }
