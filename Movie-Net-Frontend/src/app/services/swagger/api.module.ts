@@ -7,6 +7,7 @@ import { ActorService } from './api/actor.service';
 import { AuthenticationService } from './api/authentication.service';
 import { GenreService } from './api/genre.service';
 import { MovieService } from './api/movie.service';
+import { ReviewService } from './api/review.service';
 import { UserService } from './api/user.service';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { UserService } from './api/user.service';
     AuthenticationService,
     GenreService,
     MovieService,
+    ReviewService,
     UserService ]
 })
 export class ApiModule {

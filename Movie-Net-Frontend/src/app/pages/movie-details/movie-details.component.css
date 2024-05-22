@@ -1,4 +1,17 @@
+.review-header {
+  background-color: #f0f0f0; /* Change to your desired background color */
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
 
-.actor-link {
-  cursor: pointer;
+.user-id, .score {
+  color: #333; /* Change to your desired text color */
+  font-weight: bold;
+}
+
+.review-text {
+  margin-left: 20px; /* Adjust as needed for spacing */
 }
