@@ -23,5 +23,10 @@ public class AppDbContext : DbContext
             .HasMany(m => m.Genres)
             .WithMany(g => g.Movies)
             .UsingEntity(j => j.ToTable("movie_genre"));
+
+        modelBuilder.Entity<Movie>()
+            .HasMany(m => m.Users)
+            .WithMany(u => u.Movies)
+            .UsingEntity(watchlist => watchlist.ToTable("watchlist"));
     }
 }

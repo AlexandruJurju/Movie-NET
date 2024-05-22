@@ -15,4 +15,5 @@ public class Movie
     public virtual ICollection<Genre> Genres { get; set; }
     public virtual ICollection<MovieActor> MovieActors { get; set; }
     public virtual ICollection<Review> Reviews { get; set; }
+    public virtual ICollection<User> Users { get; set; }
 }

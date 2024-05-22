@@ -41,7 +41,6 @@ public class AuthenticationController : ControllerBase
     public IActionResult ResetPassword([FromBody] PasswordResetDto passwordResetDto)
     {
         _authenticationService.ResetPassword(passwordResetDto);
-
         return Ok();
     }
 
