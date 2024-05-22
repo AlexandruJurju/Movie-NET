@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
+
 
 namespace Movie_Net_Backend.Controllers;
 

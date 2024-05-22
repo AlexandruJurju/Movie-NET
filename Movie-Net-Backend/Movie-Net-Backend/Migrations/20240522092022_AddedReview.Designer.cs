@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Movie_Net_Backend.Data;
 
@@ -10,9 +11,11 @@ using Movie_Net_Backend.Data;
 namespace Movie_Net_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240522092022_AddedReview")]
+    partial class AddedReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,39 +162,6 @@ namespace Movie_Net_Backend.Migrations
                     b.ToTable("movie_actor");
                 });
 
-            modelBuilder.Entity("Movie_Net_Backend.Model.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int")
-                        .HasColumnName("movie_id");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("int")
-                        .HasColumnName("score");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("review_text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("review");
-                });
-
             modelBuilder.Entity("Movie_Net_Backend.Model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -251,25 +221,6 @@ namespace Movie_Net_Backend.Migrations
                     b.Navigation("Actor");
 
                     b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("Movie_Net_Backend.Model.Review", b =>
-                {
-                    b.HasOne("Movie_Net_Backend.Model.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Movie_Net_Backend.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Movie_Net_Backend.Model.Actor", b =>

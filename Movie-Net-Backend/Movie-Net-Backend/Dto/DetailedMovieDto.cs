@@ -12,4 +12,5 @@ public class DetailedMovieDto
     [Required] public string PosterUrl { get; set; }
     [Required] public IEnumerable<GenreDto> Genres { get; set; }
     [Required] public IEnumerable<MovieActorDto> MovieActors { get; set; }
+    [Required] public IEnumerable<ReviewDto> Reviews { get; set; }
 }

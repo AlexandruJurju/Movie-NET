@@ -17,5 +17,7 @@ public class MappingProfiles : Profile
         CreateMap<User, UserDto>();
         CreateMap<MovieActor, MovieActorDto>();
         CreateMap<Movie, DetailedMovieDto>();
+        CreateMap<Review, ReviewDto>();
+        CreateMap<ReviewDto, Review>();
     }
 }

@@ -1,9 +1,11 @@
+using System.Diagnostics;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Movie_Net_Backend.Data;
+using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service;
 using Movie_Net_Backend.Service.Interface;
 
@@ -11,9 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
 
-
 // setup jwt authentication
-var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!;
+var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY");
 
 builder.Services.AddAuthentication(x =>
 {
@@ -56,6 +57,7 @@ builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IActorService, ActorService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 // create mysql connection
