@@ -1,5 +1,5 @@
 .review-header {
-  background-color: #f0f0f0; /* Change to your desired background color */
+  background-color: #f0f0f0;
   padding: 8px 12px;
   display: flex;
   justify-content: space-between;
@@ -8,10 +8,14 @@
 }
 
 .user-id, .score {
-  color: #333; /* Change to your desired text color */
+  color: #333;
   font-weight: bold;
 }
 
 .review-text {
-  margin-left: 20px; /* Adjust as needed for spacing */
+  margin-left: 20px;
+}
+
+.actor-link {
+  cursor: pointer;
 }

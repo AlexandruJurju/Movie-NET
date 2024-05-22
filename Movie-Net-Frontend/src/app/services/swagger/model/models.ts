@@ -6,6 +6,7 @@ export * from './loginRequestDto';
 export * from './movieActorDto';
 export * from './movieDto';
 export * from './movieDtoPageResponse';
+export * from './passwordResetDto';
 export * from './registerRequestDto';
 export * from './reviewDto';
 export * from './userDto';
