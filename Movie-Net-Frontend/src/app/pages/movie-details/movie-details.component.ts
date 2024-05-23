@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
-import {DetailedMovieDto, MovieService, ReviewDto, ReviewService} from "../../services/swagger";
+import {DetailedMovieDto, MovieService, ReviewDto, ReviewService, WatchListService} from "../../services/swagger";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
@@ -23,6 +23,7 @@ export class MovieDetailsComponent implements OnInit {
   constructor(
     private movieService: MovieService,
     private reviewService: ReviewService,
+    private watchlistService: WatchListService,
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
@@ -34,10 +35,10 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMovieInformation();
+    this.getMovieDetails();
   }
 
-  private getMovieInformation() {
+  private getMovieDetails() {
     const movieId = +this.route.snapshot.paramMap.get('id')!;
     if (movieId === null || isNaN(movieId)) {
       this.router.navigate(['/error']);
@@ -92,5 +93,15 @@ export class MovieDetailsComponent implements OnInit {
         }
       });
     }
+  }
+
+  addToWatchlist() {
+    console.log("add to watchlist")
+    this.watchlistService.addMovieToWatchlist(Number(localStorage.getItem('userId')), this.movie.id).subscribe({})
+  }
+
+  removeFromWatchlist() {
+    console.log("remove from watchlist")
+    this.watchlistService.removeMovieFromWatchlist(Number(localStorage.getItem('userId')), this.movie.id).subscribe({})
   }
 }

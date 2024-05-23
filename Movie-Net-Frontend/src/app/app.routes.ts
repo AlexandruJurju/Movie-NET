@@ -14,6 +14,7 @@ import {authGuard} from "./services/guard/auth.guard";
 import {ActorDetailsComponent} from "./pages/actor-details/actor-details.component";
 import {UserForgotPassword} from "./pages/user-forgot-password/user-forgot-password";
 import {UserResetPassword} from "./pages/user-reset-password/user-reset-password";
+import {UserWatchlistComponent} from "./pages/user-watchlist/user-watchlist.component";
 
 export const routes: Routes = [
   {
@@ -36,6 +37,10 @@ export const routes: Routes = [
   {
     path: 'user-reset-password/:id',
     component: UserResetPassword
+  },
+  {
+    path: 'user-watchlist',
+    component: UserWatchlistComponent
   },
 
   {

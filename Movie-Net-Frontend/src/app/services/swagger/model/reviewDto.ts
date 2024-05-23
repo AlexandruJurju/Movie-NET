@@ -12,8 +12,8 @@
 
 export interface ReviewDto { 
     id?: number;
-    text?: string;
-    score?: number;
-    movieId?: number;
-    userId?: number;
+    text: string;
+    score: number;
+    movieId: number;
+    userId: number;
 }

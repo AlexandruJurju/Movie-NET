@@ -9,8 +9,13 @@
     <!-- Display Movie details -->
     <div class="col-md-8">
       <h1>{{ movie.title }}</h1>
-      <p class="text-muted">{{ movie.releaseDate }}</p>
-      <p class="font-weight-bold">{{ movie.headline }}</p>
+      <p>{{ movie.releaseDate }}</p> <!-- Date of the movie -->
+
+      <!-- Buttons for adding and removing from watchlist -->
+      <button class="btn btn-primary mb-3" (click)="addToWatchlist()">Add to Watchlist</button>
+      <button class="btn btn-danger mb-3" (click)="removeFromWatchlist()">Remove from Watchlist</button>
+
+      <p class="h5">{{ movie.headline }}</p>
       <p>{{ movie.overview }}</p>
       <p>Genres: <span *ngFor="let genre of movie.genres; let isLast=last">{{ genre.name }}{{ isLast ? '' : ', ' }}</span></p>
       <button class="btn btn-primary mb-3" (click)="navigateToUpdateMovie()">Update Movie</button>
@@ -42,7 +47,7 @@
     </div>
   </div>
 
-  <!--  Display section for adding reviews -->
+  <!-- Display section for adding reviews -->
   <div class="row">
     <div class="col-md-12 mt-4">
       <div class="card">

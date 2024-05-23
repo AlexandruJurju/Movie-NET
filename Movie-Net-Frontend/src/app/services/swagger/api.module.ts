@@ -9,6 +9,7 @@ import { GenreService } from './api/genre.service';
 import { MovieService } from './api/movie.service';
 import { ReviewService } from './api/review.service';
 import { UserService } from './api/user.service';
+import { WatchListService } from './api/watchList.service';
 
 @NgModule({
   imports:      [],
@@ -20,7 +21,8 @@ import { UserService } from './api/user.service';
     GenreService,
     MovieService,
     ReviewService,
-    UserService ]
+    UserService,
+    WatchListService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

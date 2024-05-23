@@ -10,4 +10,6 @@ export * from './review.service';
 import { ReviewService } from './review.service';
 export * from './user.service';
 import { UserService } from './user.service';
-export const APIS = [ActorService, AuthenticationService, GenreService, MovieService, ReviewService, UserService];
+export * from './watchList.service';
+import { WatchListService } from './watchList.service';
+export const APIS = [ActorService, AuthenticationService, GenreService, MovieService, ReviewService, UserService, WatchListService];
