@@ -62,7 +62,7 @@ public class AuthenticationController : ControllerBase
 
         if (result.IsFailed) return BadRequest(result.Errors);
 
-        return Ok("Password changed successfully");
+        return Ok();
     }
 
     [Authorize]
