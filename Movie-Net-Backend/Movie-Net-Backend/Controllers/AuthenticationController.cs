@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Service.Interface;
@@ -10,10 +11,12 @@ namespace Movie_Net_Backend.Controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
+    private readonly IMapper _mapper;
 
-    public AuthenticationController(IAuthenticationService authenticationService)
+    public AuthenticationController(IAuthenticationService authenticationService, IMapper mapper)
     {
         _authenticationService = authenticationService;
+        _mapper = mapper;
     }
 
 
@@ -37,11 +40,29 @@ public class AuthenticationController : ControllerBase
         return CreatedAtAction(nameof(RegisterUser), new { id = registerResult.Value.Id }, registerResult.Value);
     }
 
-    [HttpPost("reset")]
-    public IActionResult ResetPassword([FromBody] PasswordResetDto passwordResetDto)
+    [HttpPost("forgot-password")]
+    [ProducesResponseType(200, Type = typeof(UserDto))]
+    public IActionResult ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
     {
-        _authenticationService.ResetPassword(passwordResetDto);
-        return Ok();
+        var result = _authenticationService.ForgotPasswordRequest(forgotPasswordDto);
+
+        if (result.IsFailed) return BadRequest(result.Errors);
+
+        var user = _mapper.Map<UserDto>(result.Value);
+
+        return Ok(user);
+    }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    [ProducesResponseType(200)]
+    public IActionResult ChangePassword([FromBody] ResetPasswordDto changePasswordDto)
+    {
+        var result = _authenticationService.ChangePassword(changePasswordDto);
+
+        if (result.IsFailed) return BadRequest(result.Errors);
+
+        return Ok("Password changed successfully");
     }
 
     [Authorize]

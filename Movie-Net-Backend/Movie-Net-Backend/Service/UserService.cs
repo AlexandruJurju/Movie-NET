@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using Movie_Net_Backend.Data;
+using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
@@ -56,6 +57,23 @@ public class UserService : IUserService
         _appDbContext.Users.Add(user);
         _appDbContext.SaveChanges();
         return user;
+    }
+
+    public Result<User> UpdateUser(int userId, User user)
+    {
+        var userResult = FindUserById(userId);
+
+        if (userResult.IsFailed) return userResult.ToResult();
+
+        var existingUser = userResult.Value;
+
+        existingUser.Username = user.Username ?? existingUser.Username;
+        existingUser.Email = user.Email ?? existingUser.Email;
+        existingUser.Password = user.Password ?? existingUser.Password;
+
+        _appDbContext.SaveChanges();
+
+        return existingUser;
     }
 
     public IEnumerable<User> FindAllUsers()

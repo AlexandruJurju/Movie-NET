@@ -19,6 +19,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(200, Type = typeof(List<UserDto>))]
     public IActionResult FindAllUsers()
     {
         var users = _mapper.Map<List<UserDto>>(_userService.FindAllUsers());
@@ -26,6 +27,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{userId}")]
+    [ProducesResponseType(200, Type = typeof(UserDto))]
     public IActionResult FindUserById([FromRoute] int userId)
     {
         var result = _userService.FindUserById(userId);
@@ -37,6 +39,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{userId}")]
+    [ProducesResponseType(200)]
     public IActionResult DeleteUserById([FromRoute] int userId)
     {
         var result = _userService.DeleteUserById(userId);
@@ -45,4 +48,5 @@ public class UserController : ControllerBase
 
         return Ok();
     }
+    
 }
