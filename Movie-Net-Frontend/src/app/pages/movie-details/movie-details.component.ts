@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
-import {DetailedMovieDto, GenreDto, MovieService} from "../../services/swagger";
+import {DetailedMovieDto, MovieService} from "../../services/swagger";
 
 @Component({
   selector: 'app-movie-details',
@@ -16,7 +16,6 @@ import {DetailedMovieDto, GenreDto, MovieService} from "../../services/swagger";
 })
 export class MovieDetailsComponent implements OnInit {
   movie: DetailedMovieDto = {} as DetailedMovieDto;
-  genres: GenreDto[] = [];
 
   constructor(
     private movieService: MovieService,
@@ -32,19 +31,6 @@ export class MovieDetailsComponent implements OnInit {
   // Navigate to update movie page
   navigateToUpdateMovie() {
     this.router.navigate(['/movie-edit', this.movie.id]);
-  }
-
-  private getGenresOfMovie() {
-    console.log(this.movie.id);
-    this.movieService.getGenresOfMovie(this.movie.id).subscribe({
-      next: genres => {
-        console.log(genres);
-        this.genres = genres;
-      },
-      error: error => {
-        console.error('Error fetching genres:', error);
-      }
-    });
   }
 
   private getMovieInformation() {
@@ -65,7 +51,6 @@ export class MovieDetailsComponent implements OnInit {
         console.log('MOVIE ID ' + movie.id);
         this.movie = movie;
         // Call getGenresOfMovie after getting movie information
-        this.getGenresOfMovie();
       },
       error: error => {
         console.error('Error fetching movie:', error);

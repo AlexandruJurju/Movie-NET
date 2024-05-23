@@ -10,6 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface PasswordResetDto { 
+export interface ForgotPasswordDto { 
     email?: string;
 }

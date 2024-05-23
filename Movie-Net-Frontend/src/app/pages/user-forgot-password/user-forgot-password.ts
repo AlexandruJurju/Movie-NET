@@ -1,18 +1,18 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthenticationService, PasswordResetDto} from "../../services/swagger";
+import {AuthenticationService, ForgotPasswordDto, UserDto} from "../../services/swagger";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-user-reset-password',
+  selector: 'app-user-forgot-password',
   standalone: true,
   imports: [
     ReactiveFormsModule
   ],
-  templateUrl: './user-reset-password.component.html',
-  styleUrl: './user-reset-password.component.css'
+  templateUrl: './user-forgot-password.html',
+  styleUrl: './user-forgot-password.css'
 })
-export class UserResetPasswordComponent {
+export class UserForgotPassword {
   form: FormGroup;
 
   constructor(private router: Router,
@@ -23,15 +23,15 @@ export class UserResetPasswordComponent {
     });
   }
 
-  onResetPassword() {
+  onForgotPassword() {
     if (this.form.valid) {
-      const passwordResetDto: PasswordResetDto = {
+      const forgotPasswordDto: ForgotPasswordDto = {
         email: this.form.value.email
       };
-      this.authenticationService.resetPassword(passwordResetDto).subscribe({
-        next: (response) => {
-          // todo: redirect to code request for new password
-          console.log('Reset password email sent', response);
+      this.authenticationService.forgotPassword(forgotPasswordDto).subscribe({
+        next: (userDto: UserDto) => {
+          console.log('Reset password email sent', userDto);
+          this.router.navigate(['user-reset-password', userDto.id]);
         },
         error: (error) => {
           console.error('Error resetting password', error);

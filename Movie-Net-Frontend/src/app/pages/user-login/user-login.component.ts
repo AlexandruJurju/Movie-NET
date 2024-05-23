@@ -59,6 +59,6 @@ export class UserLoginComponent {
 
   onForgotPassword() {
     console.log("ForgotPassword clicked");
-    this.router.navigate(["/user-reset-password"])
+    this.router.navigate(["/user-forgot-password"])
   }
 }

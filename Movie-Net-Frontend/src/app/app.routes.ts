@@ -12,7 +12,8 @@ import {GenreSaveComponent} from "./pages/genre-save/genre-save.component";
 import {GenreEditComponent} from "./pages/genre-edit/genre-edit.component";
 import {authGuard} from "./services/guard/auth.guard";
 import {ActorDetailsComponent} from "./pages/actor-details/actor-details.component";
-import {UserResetPasswordComponent} from "./pages/user-reset-password/user-reset-password.component";
+import {UserForgotPassword} from "./pages/user-forgot-password/user-forgot-password";
+import {UserResetPassword} from "./pages/user-reset-password/user-reset-password";
 
 export const routes: Routes = [
   {
@@ -29,8 +30,12 @@ export const routes: Routes = [
     component: UserLoginComponent
   },
   {
-    path: 'user-reset-password',
-    component: UserResetPasswordComponent
+    path: 'user-forgot-password',
+    component: UserForgotPassword
+  },
+  {
+    path: 'user-reset-password/:id',
+    component: UserResetPassword
   },
 
   {

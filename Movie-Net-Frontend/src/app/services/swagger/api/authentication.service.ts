@@ -17,9 +17,11 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { ForgotPasswordDto } from '../model/forgotPasswordDto';
 import { LoginRequestDto } from '../model/loginRequestDto';
-import { PasswordResetDto } from '../model/passwordResetDto';
 import { RegisterRequestDto } from '../model/registerRequestDto';
+import { ResetPasswordDto } from '../model/resetPasswordDto';
+import { UserDto } from '../model/userDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -56,6 +58,99 @@ export class AuthenticationService {
         return false;
     }
 
+
+    /**
+     * 
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public changePassword(body?: ResetPasswordDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public changePassword(body?: ResetPasswordDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public changePassword(body?: ResetPasswordDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public changePassword(body?: ResetPasswordDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<any>('post',`${this.basePath}/api/v1/Authentication/change-password`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param body 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public forgotPassword(body?: ForgotPasswordDto, observe?: 'body', reportProgress?: boolean): Observable<UserDto>;
+    public forgotPassword(body?: ForgotPasswordDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDto>>;
+    public forgotPassword(body?: ForgotPasswordDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDto>>;
+    public forgotPassword(body?: ForgotPasswordDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<UserDto>('post',`${this.basePath}/api/v1/Authentication/forgot-password`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * 
@@ -137,51 +232,6 @@ export class AuthenticationService {
         }
 
         return this.httpClient.request<any>('post',`${this.basePath}/api/v1/Authentication/register`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public resetPassword(body?: PasswordResetDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public resetPassword(body?: PasswordResetDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public resetPassword(body?: PasswordResetDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public resetPassword(body?: PasswordResetDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<any>('post',`${this.basePath}/api/v1/Authentication/reset`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

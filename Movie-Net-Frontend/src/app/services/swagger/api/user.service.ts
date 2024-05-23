@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { UserDto } from '../model/userDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -100,15 +101,18 @@ export class UserService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllUsers(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public findAllUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public findAllUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public findAllUsers(observe?: 'body', reportProgress?: boolean): Observable<Array<UserDto>>;
+    public findAllUsers(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserDto>>>;
+    public findAllUsers(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserDto>>>;
     public findAllUsers(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -119,7 +123,7 @@ export class UserService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/User`,
+        return this.httpClient.request<Array<UserDto>>('get',`${this.basePath}/api/v1/User`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -136,9 +140,9 @@ export class UserService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findUserById(userId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public findUserById(userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public findUserById(userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public findUserById(userId: number, observe?: 'body', reportProgress?: boolean): Observable<UserDto>;
+    public findUserById(userId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDto>>;
+    public findUserById(userId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDto>>;
     public findUserById(userId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (userId === null || userId === undefined) {
@@ -149,6 +153,9 @@ export class UserService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -159,7 +166,7 @@ export class UserService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/User/${encodeURIComponent(String(userId))}`,
+        return this.httpClient.request<UserDto>('get',`${this.basePath}/api/v1/User/${encodeURIComponent(String(userId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
