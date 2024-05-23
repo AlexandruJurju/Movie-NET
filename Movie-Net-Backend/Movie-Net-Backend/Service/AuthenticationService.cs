@@ -49,7 +49,8 @@ public class AuthenticationService : IAuthenticationService
 
         return Result.Ok(new AuthenticationResponse
         {
-            Token = _jwtService.GenerateToken(loginRequest)
+            Token = _jwtService.GenerateToken(loginRequest),
+            UserId = userResult.Value.Id
         });
     }
 

@@ -1,10 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Movie_Net_Backend.Dto;
 
 public class ReviewDto
 {
-    public int Id { get; set; }
-    public string Text { get; set; }
-    public int Score { get; set; }
-    public int MovieId { get; set; }
-    public int UserId { get; set; }
+    [Required] public int Id { get; set; }
+    [Required] public string Text { get; set; }
+    [Required] public int Score { get; set; }
+    [Required] public int MovieId { get; set; }
+    [Required] public int UserId { get; set; }
 }

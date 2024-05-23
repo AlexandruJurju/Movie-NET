@@ -21,6 +21,7 @@ public class AuthenticationController : ControllerBase
 
 
     [HttpPost("login")]
+    [ProducesResponseType(200, Type = typeof(AuthenticationResponse))]
     public IActionResult LoginUser([FromBody] LoginRequestDto loginRequest)
     {
         var loginResult = _authenticationService.LoginUser(loginRequest);
