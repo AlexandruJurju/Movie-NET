@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {AuthenticationService, LoginRequestDto} from "../../services/swagger";
 import {TokenService} from "../../services/token/token.service";
 
@@ -8,7 +8,8 @@ import {TokenService} from "../../services/token/token.service";
   selector: 'app-user-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.css'
@@ -38,7 +39,6 @@ export class UserLoginComponent {
     }
   }
 
-
   private login(loginRequestDto: LoginRequestDto) {
     this.authenticationService.loginUser(loginRequestDto).subscribe({
       next: (response) => {
@@ -55,10 +55,5 @@ export class UserLoginComponent {
         console.error('Login failed', error);
       }
     })
-  }
-
-  onForgotPassword() {
-    console.log("ForgotPassword clicked");
-    this.router.navigate(["/user-forgot-password"])
   }
 }

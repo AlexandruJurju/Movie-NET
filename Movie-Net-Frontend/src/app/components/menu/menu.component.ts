@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {TokenService} from "../../services/token/token.service";
-import {NgIf} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
+import {UserDto} from "../../services/swagger";
 
 @Component({
   selector: 'app-menu',
@@ -9,7 +10,8 @@ import {NgIf} from "@angular/common";
   imports: [
     RouterLink,
     RouterLinkActive,
-    NgIf
+    NgIf,
+    NgOptimizedImage
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
@@ -17,6 +19,7 @@ import {NgIf} from "@angular/common";
 
 export class MenuComponent {
   title = "Movie"
+  currentUser: UserDto = {} as UserDto;
 
   constructor(
     private tokenService: TokenService,
