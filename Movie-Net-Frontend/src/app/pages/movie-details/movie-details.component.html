@@ -1,31 +1,66 @@
-<div class="d-flex justify-content-center align-items-center">
-  <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="mr-5" style="width: 250px;margin-right: 50px">
-  <div style="max-width: 800px;">
-    <h1>{{ movie.title }}</h1>
-    <p class="text-muted mb-2">{{ movie.releaseDate }}</p>
-    <p class="font-weight-bold display-6">{{ movie.headline }}</p>
-    <p class="mb-2 lead">{{ movie.overview }}</p>
-    <p class="mb-2 lead">Genres: <span *ngFor="let genre of movie.genres; let isLast=last">{{ genre.name }}{{ isLast ? '' : ', ' }}</span></p>
-    <button class="btn btn-primary mb-3" (click)="navigateToUpdateMovie()">Update Movie</button>
-    <div class="d-flex flex-wrap justify-content-start">
-      <div *ngFor="let movieActor of movie.movieActors" class="text-center mr-4 mb-4 actor-link" (click)="navigateToActorDetails(movieActor.actor.id)">
-        <img [src]="movieActor.actor.profilePictureUrl" alt="{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}" class="mb-2" style="width: 120px;">
-        <div>{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}</div>
-        <div class="text-muted"><small>{{ movieActor.role }}</small></div>
+<div class="container">
+  <div class="row">
+
+    <!-- Display Movie poster -->
+    <div class="col-md-4">
+      <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="img-fluid poster">
+    </div>
+
+    <!-- Display Movie details -->
+    <div class="col-md-8">
+      <h1>{{ movie.title }}</h1>
+      <p class="text-muted">{{ movie.releaseDate }}</p>
+      <p class="font-weight-bold">{{ movie.headline }}</p>
+      <p>{{ movie.overview }}</p>
+      <p>Genres: <span *ngFor="let genre of movie.genres; let isLast=last">{{ genre.name }}{{ isLast ? '' : ', ' }}</span></p>
+      <button class="btn btn-primary mb-3" (click)="navigateToUpdateMovie()">Update Movie</button>
+
+      <!-- Display Actors -->
+      <div class="d-flex flex-wrap">
+        <div *ngFor="let movieActor of movie.movieActors" class="text-center mr-4 mb-4 actor-link" (click)="navigateToActorDetails(movieActor.actor.id)">
+          <img [src]="movieActor.actor.profilePictureUrl" alt="{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}" class="mb-2" style="width: 120px;">
+          <div>{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}</div>
+          <div class="text-muted"><small>{{ movieActor.role }}</small></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="d-flex justify-content-center">
-  <div class="reviews" style="width: 800px;">
-    <h2>Reviews</h2>
-    <div *ngFor="let review of movie.reviews" class="review">
-      <div class="review-header">
-        <div class="user-id">{{ review.user?.username }}</div>
-        <div class="score">{{ review.score }}</div>
+  <!-- Display movie reviews -->
+  <div class="row">
+    <div class="col-md-12 mt-4">
+      <h2>Reviews</h2>
+      <div *ngFor="let review of movie.reviews" class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+          <div class="user-id">{{ review.user.username }}</div>
+          <div class="score">{{ review.score }}</div>
+        </div>
+        <div class="card-body">
+          <p class="card-text review-text">{{ review.text }}</p>
+        </div>
       </div>
-      <div class="review-text">{{ review.text }}</div>
+    </div>
+  </div>
+
+  <!--  Display section for adding reviews -->
+  <div class="row">
+    <div class="col-md-12 mt-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Add a Review</h2>
+          <form [formGroup]="form" (ngSubmit)="submitReview()">
+            <div class="form-group">
+              <label for="reviewText">Review</label>
+              <textarea id="reviewText" class="form-control" formControlName="text" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="reviewScore">Score</label>
+              <input type="number" id="reviewScore" class="form-control" formControlName="score" required min="1" max="10">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>
