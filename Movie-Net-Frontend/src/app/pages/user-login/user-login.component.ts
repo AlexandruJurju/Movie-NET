@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
-import {AuthenticationService, LoginRequestDto} from "../../services/swagger";
-import {TokenService} from "../../services/token/token.service";
+import {AuthenticationResponse, AuthenticationService, LoginRequestDto} from "../../services/swagger";
 
 @Component({
   selector: 'app-user-login',
@@ -18,7 +17,6 @@ export class UserLoginComponent {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private tokenService: TokenService,
     private router: Router,
     private formBuilder: FormBuilder) {
   }
@@ -41,11 +39,13 @@ export class UserLoginComponent {
 
   private login(loginRequestDto: LoginRequestDto) {
     this.authenticationService.loginUser(loginRequestDto).subscribe({
-      next: (response) => {
+      next: (response: AuthenticationResponse) => {
         console.log("Login successful logged in", response);
 
         // save token to local storage
+        // todo: find a better way to store the current logged in user
         localStorage.setItem('token', response.token);
+        localStorage.setItem('userId', response.userId.toString());
         console.log(response.token);
 
         this.router.navigate(["/home"]).then(() => {

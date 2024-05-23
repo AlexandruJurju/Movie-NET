@@ -1,4 +1,5 @@
 export * from './actorDto';
+export * from './authenticationResponse';
 export * from './detailedMovieDto';
 export * from './displayReviewDto';
 export * from './forgotPasswordDto';
