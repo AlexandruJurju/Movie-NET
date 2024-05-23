@@ -61,6 +61,7 @@ builder.Services.Configure<SmtpSettings>(options =>
 
 // add services to DI
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IWatchlistService, WatchlistService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
