@@ -12,8 +12,8 @@
       <p>{{ movie.releaseDate }}</p> <!-- Date of the movie -->
 
       <!-- Buttons for adding and removing from watchlist -->
-      <button class="btn btn-primary mb-3" (click)="addToWatchlist()">Add to Watchlist</button>
-      <button class="btn btn-danger mb-3" (click)="removeFromWatchlist()">Remove from Watchlist</button>
+      <button *ngIf="!isMovieInWatchlist()" class="btn btn-primary mb-3" (click)="addToWatchlist()">Add to Watchlist</button>
+      <button *ngIf="isMovieInWatchlist()" class="btn btn-danger mb-3" (click)="removeFromWatchlist()">Remove from Watchlist</button>
 
       <p class="h5">{{ movie.headline }}</p>
       <p>{{ movie.overview }}</p>

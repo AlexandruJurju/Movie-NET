@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
-import {DetailedMovieDto, MovieService, ReviewDto, ReviewService, WatchListService} from "../../services/swagger";
+import {DetailedMovieDto, MovieDto, MovieService, ReviewDto, ReviewService, WatchListService} from "../../services/swagger";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
@@ -18,6 +18,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 })
 export class MovieDetailsComponent implements OnInit {
   movie: DetailedMovieDto = {} as DetailedMovieDto;
+  watchlist: MovieDto[] = [];
   form: FormGroup;
 
   constructor(
@@ -36,6 +37,7 @@ export class MovieDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.getMovieDetails();
+    this.loadUserWatchlist();
   }
 
   private getMovieDetails() {
@@ -98,10 +100,30 @@ export class MovieDetailsComponent implements OnInit {
   addToWatchlist() {
     console.log("add to watchlist")
     this.watchlistService.addMovieToWatchlist(Number(localStorage.getItem('userId')), this.movie.id).subscribe({})
+    window.location.reload();
   }
 
   removeFromWatchlist() {
     console.log("remove from watchlist")
     this.watchlistService.removeMovieFromWatchlist(Number(localStorage.getItem('userId')), this.movie.id).subscribe({})
+    window.location.reload();
   }
+
+  private loadUserWatchlist() {
+    const userId = Number(localStorage.getItem('userId'));
+    this.watchlistService.findUserWatchlist(userId).subscribe({
+      next: movies => {
+        this.watchlist = movies;
+      },
+      error: error => {
+        console.error('Error loading watchlist', error);
+      }
+    })
+  }
+
+  isMovieInWatchlist(): boolean {
+    const movieId = this.movie.id;
+    return this.watchlist.some(movie => movie.id === movieId);
+  }
+
 }
