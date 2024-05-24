@@ -18,7 +18,6 @@ import {UserDto} from "../../services/swagger";
 })
 
 export class MenuComponent {
-  title = "Movie"
   currentUser: UserDto = {} as UserDto;
 
   constructor(
