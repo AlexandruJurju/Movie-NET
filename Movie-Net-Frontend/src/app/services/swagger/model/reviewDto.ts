@@ -11,7 +11,6 @@
  */
 
 export interface ReviewDto { 
-    id?: number;
     text: string;
     score: number;
     movieId: number;
