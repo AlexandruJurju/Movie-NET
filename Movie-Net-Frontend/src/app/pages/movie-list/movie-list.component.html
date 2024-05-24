@@ -16,7 +16,7 @@
       <ul class="pagination">
         <li class="page-item" *ngFor="let pageIndex of pages">
           <a
-            (click)="gotToPage(pageIndex)" class="page-link" [class.active]="page === pageIndex" href="javascript:void(0)"
+            (click)="goToPage(pageIndex)" class="page-link" [class.active]="page === pageIndex" href="javascript:void(0)"
           >{{ pageIndex + 1 }}</a>
         </li>
       </ul>

@@ -41,7 +41,7 @@ export class MovieListComponent implements OnInit {
       });
   }
 
-  gotToPage(page: number) {
+  goToPage(page: number) {
     this.page = page + 1;
     this.findAllMoviesPaged();
   }
