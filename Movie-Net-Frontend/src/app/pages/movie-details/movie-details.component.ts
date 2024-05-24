@@ -11,7 +11,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
     NgForOf,
     NgIf,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.css']

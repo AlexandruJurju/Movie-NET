@@ -2,8 +2,26 @@
   <div class="container py-5 flex-grow-1">
     <div *ngIf="movieResponse" class="row row-cols-1 row-cols-md-3 g-4">
       <div *ngFor="let movie of movieResponse.content" class="col">
-        <div class="card h-100 text-center p-3">
-          <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="card-img-top" (click)="goToMovieDetails(movie.id!)">
+        <div class="card h-100 text-center p-3 position-relative">
+          <div class="position-relative">
+            <img
+              [src]="movie.posterUrl"
+              alt="{{ movie.title }} Poster"
+              class="card-img-top"
+              (click)="goToMovieDetails(movie.id)"
+            />
+            <div class="hover-buttons position-absolute bottom-0 start-50 translate-middle-x mb-3">
+              <button
+                class="btn btn-primary btn-sm me-2"
+                (click)="addToWatchlist(movie.id)"
+              >
+                <fa-icon [icon]="faPlus"></fa-icon>
+              </button>
+              <button class="btn btn-secondary btn-sm">
+                <fa-icon [icon]="faHeart"></fa-icon>
+              </button>
+            </div>
+          </div>
           <div class="card-body">
             <h5 class="card-title">{{ movie.title }}</h5>
           </div>
@@ -16,8 +34,12 @@
       <ul class="pagination">
         <li class="page-item" *ngFor="let pageIndex of pages">
           <a
-            (click)="goToPage(pageIndex)" class="page-link" [class.active]="page === pageIndex" href="javascript:void(0)"
-          >{{ pageIndex + 1 }}</a>
+            (click)="goToPage(pageIndex)"
+            class="page-link"
+            [class.active]="page === pageIndex"
+            href="javascript:void(0)"
+          >{{ pageIndex + 1 }}</a
+          >
         </li>
       </ul>
     </nav>

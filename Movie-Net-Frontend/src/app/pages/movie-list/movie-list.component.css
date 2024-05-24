@@ -8,12 +8,8 @@
 
 img {
   cursor: pointer;
-  transition: transform 0.3s ease;
-  width: 200px;
-  height: 300px;
-  object-fit: cover;
+  width: 300px;
+  height: 400px;
 }
 
- img:hover {
-  transform: scale(1.1);
-}
+
