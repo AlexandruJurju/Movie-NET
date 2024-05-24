@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
@@ -7,6 +8,7 @@ using Movie_Net_Backend.Service.Interface;
 namespace Movie_Net_Backend.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1/[controller]")]
 public class GenreController : ControllerBase
 {

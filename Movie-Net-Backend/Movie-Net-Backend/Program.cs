@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -40,11 +41,36 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // add swagger information
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie-Net-Backend", Version = "1.0" });
-    c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
-    c.AddServer(new OpenApiServer { Url = "http://localhost:5076", Description = "Local server" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie-Net-Backend", Version = "1.0" });
+    options.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Add JWT Token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+
+    options.AddServer(new OpenApiServer { Url = "http://localhost:5076", Description = "Local server" });
 });
 
 // add automapper
@@ -85,6 +111,8 @@ builder.Services.AddLogging(logging =>
     logging.AddConsole();
     logging.AddDebug();
 });
+
+// setup roles
 
 
 var app = builder.Build();
