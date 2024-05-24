@@ -8,10 +8,12 @@ namespace Movie_Net_Backend.Service;
 public class ReviewService : IReviewService
 {
     private readonly AppDbContext _appDbContext;
+    private readonly IUserService _userService;
 
-    public ReviewService(AppDbContext appDbContext)
+    public ReviewService(AppDbContext appDbContext, IUserService userService)
     {
         _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
+        _userService = userService;
     }
 
     public IEnumerable<Review> FindAllReviews()
@@ -56,5 +58,14 @@ public class ReviewService : IReviewService
         _appDbContext.Reviews.Add(review);
         _appDbContext.SaveChanges();
         return review;
+    }
+
+    public Result<List<Review>> FindReviewsOfUser(int userId)
+    {
+        var userResult = _userService.FindUserById(userId);
+
+        if (userResult.IsFailed) return userResult.ToResult();
+
+        return userResult.Value.Reviews.ToList();
     }
 }

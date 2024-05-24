@@ -36,4 +36,15 @@ public class ReviewController : ControllerBase
         var createdReview = _reviewService.SaveReview(review);
         return Ok();
     }
+
+    [HttpGet("{userId}")]
+    [ProducesResponseType(200, Type = typeof(List<ReviewDto>))]
+    public IActionResult FindReviewsOfUser([FromRoute] int userId)
+    {
+        var result = _reviewService.FindReviewsOfUser(userId);
+
+        if (result.IsFailed) return NotFound();
+
+        return Ok(_mapper.Map<List<ReviewDto>>(result.Value));
+    }
 }

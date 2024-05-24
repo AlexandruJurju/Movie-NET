@@ -12,4 +12,5 @@ public class User
     [Column("password")] public string Password { get; set; }
     [Column("profile_picture_url")] public string ProfilePictureUrl { get; set; }
     public virtual ICollection<Movie> Movies { get; set; }
+    public virtual ICollection<Review> Reviews { get; set; }
 }
