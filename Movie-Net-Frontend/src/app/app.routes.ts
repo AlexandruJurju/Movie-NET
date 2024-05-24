@@ -15,6 +15,7 @@ import {ActorDetailsComponent} from "./pages/actor-details/actor-details.compone
 import {UserForgotPassword} from "./pages/user-forgot-password/user-forgot-password";
 import {UserResetPassword} from "./pages/user-reset-password/user-reset-password";
 import {UserWatchlistComponent} from "./pages/user-watchlist/user-watchlist.component";
+import {UserProfileComponent} from "./pages/user-profile/user-profile.component";
 
 export const routes: Routes = [
   {
@@ -40,7 +41,13 @@ export const routes: Routes = [
   },
   {
     path: 'user-watchlist',
-    component: UserWatchlistComponent
+    component: UserWatchlistComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user-profile',
+    component: UserProfileComponent,
+    canActivate: [authGuard]
   },
 
   {
@@ -66,6 +73,7 @@ export const routes: Routes = [
   {
     path: 'genre-list',
     component: GenreListComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'genre-save',
