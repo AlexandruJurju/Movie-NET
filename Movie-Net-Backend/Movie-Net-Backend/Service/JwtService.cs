@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Service.Interface;
+using Org.BouncyCastle.Pqc.Crypto.Saber;
 
 namespace Movie_Net_Backend.Service;
 
@@ -20,27 +21,29 @@ public class JwtService : IJwtService
 
     public string GenerateToken(LoginRequestDto loginRequest)
     {
-        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!);
-
-        var tokenDescriptor = new SecurityTokenDescriptor()
+        List<Claim> claims = new List<Claim>
         {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, loginRequest.Email),
-                new Claim(JwtRegisteredClaimNames.Email, loginRequest.Email)
-            }),
-            Expires = DateTime.UtcNow.Add(TokenLifeSpan),
-            Issuer = _configuration["JwtSettings:Issuer"],
-            Audience = _configuration["JwtSettings:Audience"],
-            SigningCredentials = new SigningCredentials
-                (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            new(ClaimTypes.Email, loginRequest.Email),
+            new(ClaimTypes.Name, loginRequest.Email),
+            new(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+            // new(ClaimTypes.Role, "User")
         };
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        var tokenString = tokenHandler.WriteToken(token);
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!));
 
-        return tokenString;
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
+        var token = new JwtSecurityToken(
+            issuer: _configuration["JwtSettings:Issuer"],
+            audience: _configuration["JwtSettings:Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.Add(TokenLifeSpan),
+            signingCredentials: credentials
+        );
+
+        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+        return jwt;
     }
 }

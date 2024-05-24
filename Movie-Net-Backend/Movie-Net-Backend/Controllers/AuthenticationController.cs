@@ -7,6 +7,7 @@ using Movie_Net_Backend.Service.Interface;
 namespace Movie_Net_Backend.Controllers;
 
 [AllowAnonymous]
+[ApiController]
 [Route("api/v1/[controller]")]
 public class AuthenticationController : ControllerBase
 {

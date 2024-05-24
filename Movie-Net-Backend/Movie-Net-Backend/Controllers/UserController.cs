@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Service.Interface;

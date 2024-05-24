@@ -22,6 +22,8 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(200, Type = typeof(List<GenreDto>))]
     public IActionResult FindAllGenres()
     {
         var genres = _mapper.Map<List<GenreDto>>(_genreService.GetAllGenres());
@@ -29,6 +31,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet("{genreId}")]
+    [ProducesResponseType(200, Type = typeof(GenreDto))]
     public IActionResult FindGenreById([FromRoute] int genreId)
     {
         var genreResult = _genreService.GetGenreById(genreId);
@@ -40,6 +43,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(200)]
     public IActionResult SaveGenre([FromBody] GenreDto genreDto)
     {
         var genre = _mapper.Map<Genre>(genreDto);
@@ -70,12 +74,13 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet("{genreId}/movies")]
+    [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public IActionResult GetMoviesWithGenre([FromRoute] int genreId)
     {
         var moviesResult = _genreService.GetMoviesWithGenre(genreId);
         if (moviesResult.IsFailed) return NotFound();
 
-        var movies = _mapper.Map<List<Movie>>(moviesResult.Value);
+        var movies = _mapper.Map<List<MovieDto>>(moviesResult.Value);
         return Ok(movies);
     }
 }
