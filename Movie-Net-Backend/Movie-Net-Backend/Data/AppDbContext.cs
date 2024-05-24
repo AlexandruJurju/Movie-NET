@@ -28,5 +28,8 @@ public class AppDbContext : DbContext
             .HasMany(m => m.Users)
             .WithMany(u => u.Movies)
             .UsingEntity(watchlist => watchlist.ToTable("watchlist"));
+
+        modelBuilder.Entity<Review>()
+            .HasKey(r => new { r.UserId, r.MovieId });
     }
 }

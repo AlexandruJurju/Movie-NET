@@ -6,7 +6,7 @@ namespace Movie_Net_Backend.Service.Interface;
 public interface IReviewService
 {
     IEnumerable<Review> FindAllReviews();
-    Result<Review> GetReviewById(int id);
-    Result DeleteReview(int id);
+    Result<Review> FindReviewById(int userId, int movieId);
+    Result DeleteReview(int userId, int movieId);
     Review SaveReview(Review review);
 }

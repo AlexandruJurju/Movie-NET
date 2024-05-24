@@ -19,20 +19,20 @@ public class ReviewService : IReviewService
         return _appDbContext.Reviews.ToList();
     }
 
-    public Result<Review> GetReviewById(int id)
+    public Result<Review> FindReviewById(int userId, int movieId)
     {
-        var review = _appDbContext.Reviews.FirstOrDefault(r => r.Id == id);
+        var review = _appDbContext.Reviews.FirstOrDefault(r => r.UserId == userId && r.MovieId == movieId);
 
-        if (review == null) return Result.Fail($"Review with id {id} not found");
+        if (review == null) return Result.Fail($"Review not found");
 
         return Result.Ok(review);
     }
 
-    public Result DeleteReview(int id)
+    public Result DeleteReview(int userId, int movieId)
     {
-        var review = _appDbContext.Reviews.FirstOrDefault(r => r.Id == id);
+        var review = _appDbContext.Reviews.FirstOrDefault(r => r.UserId == userId && r.MovieId == movieId);
 
-        if (review == null) return Result.Fail($"Review with id {id} not found");
+        if (review == null) return Result.Fail($"Review not found");
 
         _appDbContext.Reviews.Remove(review);
         _appDbContext.SaveChanges();
@@ -41,6 +41,18 @@ public class ReviewService : IReviewService
 
     public Review SaveReview(Review review)
     {
+        var reviewResult = FindReviewById(review.UserId, review.MovieId);
+
+        // update existing review
+        if (!reviewResult.IsFailed)
+        {
+            var existingReview = reviewResult.Value;
+            existingReview.Text = review.Text;
+            existingReview.Score = review.Score;
+            _appDbContext.SaveChanges();
+            return existingReview;
+        }
+
         _appDbContext.Reviews.Add(review);
         _appDbContext.SaveChanges();
         return review;

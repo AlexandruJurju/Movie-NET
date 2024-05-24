@@ -34,8 +34,6 @@ public class ReviewController : ControllerBase
     {
         var review = _mapper.Map<Review>(reviewDto);
         var createdReview = _reviewService.SaveReview(review);
-        return CreatedAtAction(nameof(SaveReview), new { id = createdReview.Id });
+        return Ok();
     }
-    
-    
 }
