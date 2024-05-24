@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {NgIf} from "@angular/common";
-import {AuthenticationService} from "../../services/swagger";
+import {AuthenticationService, RegisterRequestDto} from "../../services/swagger";
 
 @Component({
   selector: 'app-user-register',
@@ -43,7 +43,7 @@ export class UserRegisterComponent {
     }
   }
 
-  private register(registerRequestDto: { username: string, email: string, password: string }) {
+  private register(registerRequestDto: RegisterRequestDto) {
     this.authenticationService.registerUser(registerRequestDto).subscribe({
       next: (response) => {
         console.log("Registration successful", response);
