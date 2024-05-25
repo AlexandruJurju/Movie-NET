@@ -27,7 +27,7 @@ public class AuthenticationController : ControllerBase
     {
         var loginResult = _authenticationService.LoginUser(loginRequest);
 
-        if (loginResult.IsFailed) return BadRequest(loginResult.ToResult());
+        if (loginResult.IsFailed) return BadRequest(loginResult.Reasons);
 
         return Ok(loginResult.Value);
     }
