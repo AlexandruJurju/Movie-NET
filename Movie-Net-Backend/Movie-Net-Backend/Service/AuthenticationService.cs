@@ -31,6 +31,7 @@ public class AuthenticationService : IAuthenticationService
         {
             Username = registerRequest.Username,
             Email = registerRequest.Email,
+            Role = Role.User,
             Password = BCrypt.Net.BCrypt.HashPassword(registerRequest.Password)
         };
 

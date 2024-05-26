@@ -22,7 +22,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,User")]
     [ProducesResponseType(200, Type = typeof(List<GenreDto>))]
     public IActionResult FindAllGenres()
     {
@@ -31,6 +31,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet("{genreId}")]
+    [Authorize(Roles = "User")]
     [ProducesResponseType(200, Type = typeof(GenreDto))]
     public IActionResult FindGenreById([FromRoute] int genreId)
     {
