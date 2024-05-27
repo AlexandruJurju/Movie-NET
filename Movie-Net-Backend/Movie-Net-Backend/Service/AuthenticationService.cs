@@ -72,7 +72,7 @@ public class AuthenticationService : IAuthenticationService
         if (userResult.IsFailed)
             return Result.Fail<User>("User not found");
 
-        userResult.Value.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.Password);
+        userResult.Value.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
 
         return _userService.UpdateUser(changePasswordDto.UserId, userResult.Value);
     }

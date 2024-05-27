@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Service.Interface;
@@ -38,6 +39,7 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{userId}")]
     [ProducesResponseType(200)]
     public IActionResult DeleteUserById([FromRoute] int userId)
@@ -48,5 +50,4 @@ public class UserController : ControllerBase
 
         return Ok();
     }
-    
 }

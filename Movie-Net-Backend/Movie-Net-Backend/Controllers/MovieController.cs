@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
@@ -7,6 +8,7 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
 
+[AllowAnonymous]
 [ApiController]
 [Route("api/v1/[controller]")]
 public class MovieController : ControllerBase
@@ -61,6 +63,7 @@ public class MovieController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult SaveMovie([FromBody] MovieDto movieDto)
     {
@@ -69,6 +72,7 @@ public class MovieController : ControllerBase
         return CreatedAtAction(nameof(SaveMovie), new { id = createdMovie.Id });
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{movieId}")]
     public IActionResult DeleteMovie([FromRoute] int movieId)
     {
@@ -78,6 +82,7 @@ public class MovieController : ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{movieId}")]
     public IActionResult UpdateMovie([FromRoute] int movieId, [FromBody] MovieDto updatedMovie)
     {
@@ -90,7 +95,8 @@ public class MovieController : ControllerBase
 
         return Ok();
     }
-
+    
+    [Authorize(Roles = "Admin")]
     [HttpPost("{movieId}/genres/{genreId}")]
     public IActionResult AddGenreToMovie([FromRoute] int movieId, [FromRoute] int genreId)
     {
@@ -113,6 +119,7 @@ public class MovieController : ControllerBase
         return Ok(genres);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{movieId}/genres/{genreId}")]
     public IActionResult RemoveGenreFromMovie([FromRoute] int movieId, [FromRoute] int genreId)
     {
@@ -121,6 +128,4 @@ public class MovieController : ControllerBase
 
         return Ok();
     }
-    
-    
 }

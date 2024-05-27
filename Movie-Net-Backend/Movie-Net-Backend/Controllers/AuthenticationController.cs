@@ -41,7 +41,7 @@ public class AuthenticationController : ControllerBase
 
         return CreatedAtAction(nameof(RegisterUser), new { id = registerResult.Value.Id }, registerResult.Value);
     }
-
+    
     [HttpPost("forgot-password")]
     [ProducesResponseType(200, Type = typeof(UserDto))]
     public IActionResult ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
