@@ -19,10 +19,12 @@ import {UserDto} from "../../services/swagger";
 
 export class MenuComponent {
   currentUser: UserDto = {} as UserDto;
+  roles: string[] = [];
 
   constructor(
     private tokenService: TokenService,
     private router: Router) {
+    this.roles = this.tokenService.getUserRoles();
   }
 
   logout() {

@@ -63,7 +63,7 @@
         </ul>
       </div>
 
-      <a *ngIf="isUserLoggedIn()"
+      <a *ngIf="isUserLoggedIn() && roles.includes('Admin')"
          class="btn btn-outline-light"
          routerLink="/genre-list"
          routerLinkActive="btn-primary"

@@ -41,16 +41,15 @@ export class TokenService {
     return !this.isTokenValid();
   }
 
-  get userRoles(): string[] {
+  public getUserRoles(): string[] {
     const token = this.token;
     if (token) {
       const jwtHelper = new JwtHelperService();
       const decodedToken = jwtHelper.decodeToken(token);
-      console.log(decodedToken.authorities);
-      return decodedToken.authorities;
+      const roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      return roles ? (Array.isArray(roles) ? roles : [roles]) : [];
     }
     return [];
   }
-
 }
 
