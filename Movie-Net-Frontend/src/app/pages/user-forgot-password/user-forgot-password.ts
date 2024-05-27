@@ -31,7 +31,7 @@ export class UserForgotPassword {
       this.authenticationService.forgotPassword(forgotPasswordDto).subscribe({
         next: (userDto: UserDto) => {
           console.log('Reset password email sent', userDto);
-          this.router.navigate(['user-reset-password', userDto.id]);
+          this.router.navigate(['/user-reset-password', userDto.id]);
         },
         error: (error) => {
           console.error('Error resetting password', error);

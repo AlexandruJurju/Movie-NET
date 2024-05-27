@@ -25,6 +25,7 @@ export class UserResetPassword implements OnInit {
     private authenticationService: AuthenticationService
   ) {
     this.form = this.formBuilder.group({
+      code: ['', [Validators.required]],
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]]
     }, {validator: this.passwordMatchValidator});
@@ -60,6 +61,7 @@ export class UserResetPassword implements OnInit {
   onResetPassword() {
     if (this.form.valid) {
       const resetPasswordDto: ResetPasswordDto = {
+        code: this.form.value.code,
         userId: this.userDto.id,
         newPassword: this.form.value.password
       };
