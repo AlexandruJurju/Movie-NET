@@ -1,8 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {TokenService} from "../../services/token/token.service";
 import {NgIf, NgOptimizedImage} from "@angular/common";
-import {UserDto} from "../../services/swagger";
+import {UserDto, UserService} from "../../services/swagger";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
+import {MatToolbar} from "@angular/material/toolbar";
 
 @Component({
   selector: 'app-menu',
@@ -11,22 +15,29 @@ import {UserDto} from "../../services/swagger";
     RouterLink,
     RouterLinkActive,
     NgIf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatMenu,
+    MatMenuItem,
+    MatIconButton,
+    MatMenuTrigger,
+    MatIcon,
+    MatButton,
+    MatToolbar
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
 })
 
 export class MenuComponent {
-  currentUser: UserDto = {} as UserDto;
   roles: string[] = [];
 
   constructor(
     private tokenService: TokenService,
+    private userService: UserService,
     private router: Router) {
     this.roles = this.tokenService.getUserRoles();
-    console.log(this.roles);
   }
+
 
   logout() {
     this.tokenService.removeToken();

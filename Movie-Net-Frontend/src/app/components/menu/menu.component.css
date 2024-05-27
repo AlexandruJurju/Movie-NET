@@ -1,13 +1,4 @@
-.user-profile {
-  cursor: pointer;
-}
-
-.title-container {
+.centered-menu {
   display: flex;
-  align-items: center;
-}
-
-.logo-wrapper {
-  flex-shrink: 0; /* prevents logo from shrinking */
-  margin-right: 10px;
+  justify-content: center;
 }
