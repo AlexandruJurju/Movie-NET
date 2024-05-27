@@ -42,7 +42,7 @@
           Movies
         </button>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-          <li>
+          <li *ngIf="roles.includes('Admin')">
             <a
               class="dropdown-item"
               routerLink="/movie-save"

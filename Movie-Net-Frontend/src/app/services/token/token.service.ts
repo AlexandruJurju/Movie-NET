@@ -46,6 +46,7 @@ export class TokenService {
     if (token) {
       const jwtHelper = new JwtHelperService();
       const decodedToken = jwtHelper.decodeToken(token);
+      console.log(decodedToken)
       const roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
       return roles ? (Array.isArray(roles) ? roles : [roles]) : [];
     }

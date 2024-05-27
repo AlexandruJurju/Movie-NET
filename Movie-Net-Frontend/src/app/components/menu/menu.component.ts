@@ -25,10 +25,12 @@ export class MenuComponent {
     private tokenService: TokenService,
     private router: Router) {
     this.roles = this.tokenService.getUserRoles();
+    console.log(this.roles);
   }
 
   logout() {
     this.tokenService.removeToken();
+    localStorage.clear();
     this.router.navigate(["/home"])
   }
 
