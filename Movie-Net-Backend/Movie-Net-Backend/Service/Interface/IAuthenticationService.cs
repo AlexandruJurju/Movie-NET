@@ -8,6 +8,5 @@ public interface IAuthenticationService
 {
     Result<User> RegisterUser(RegisterRequestDto registerRequest);
     Result<AuthenticationResponse> LoginUser(LoginRequestDto loginRequest);
-    Result<User> ForgotPasswordRequest(ForgotPasswordDto forgotPasswordDto);
     Result<User> ChangePassword(ResetPasswordDto changePasswordDto);
 }

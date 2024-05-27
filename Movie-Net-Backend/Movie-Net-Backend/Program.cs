@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Helper;
+using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service;
 using Movie_Net_Backend.Service.Interface;
 
@@ -87,6 +88,7 @@ builder.Services.Configure<SmtpSettings>(options =>
 
 // add services to DI
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IPasswordCodeService, PasswordCodeService>();
 builder.Services.AddScoped<IWatchlistService, WatchlistService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IGenreService, GenreService>();

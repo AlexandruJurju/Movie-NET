@@ -14,7 +14,6 @@ public class ReviewController : ControllerBase
     private readonly IReviewService _reviewService;
     private readonly IMapper _mapper;
 
-
     public ReviewController(IReviewService reviewService, IMapper mapper)
     {
         _reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
@@ -46,5 +45,15 @@ public class ReviewController : ControllerBase
         if (result.IsFailed) return NotFound();
 
         return Ok(_mapper.Map<List<ReviewDto>>(result.Value));
+    }
+
+    [HttpGet("{userId}/{movieId}")]
+    [ProducesResponseType(200, Type = typeof(ReviewDto))]
+    public IActionResult FindUserReviewForMovie([FromRoute] int userId, [FromRoute] int movieId)
+    {
+        var result = _reviewService.FindReviewOfUserForMovie(userId, movieId);
+        if (result.IsFailed) return NotFound(result.Reasons);
+
+        return Ok(_mapper.Map<ReviewDto>(result.Value));
     }
 }

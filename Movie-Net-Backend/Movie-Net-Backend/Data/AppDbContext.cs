@@ -10,8 +10,8 @@ public class AppDbContext : DbContext
     public DbSet<Actor> Actors { get; set; }
     public DbSet<MovieActor> MovieActors { get; set; }
     public DbSet<User> Users { get; set; }
-
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<PasswordCode> PasswordCodes { get; set; }
 
     public AppDbContext(DbContextOptions options) : base(options)
     {

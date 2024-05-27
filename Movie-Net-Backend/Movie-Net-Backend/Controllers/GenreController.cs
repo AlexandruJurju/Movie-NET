@@ -22,7 +22,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,User")]
     [ProducesResponseType(200, Type = typeof(List<GenreDto>))]
     public IActionResult FindAllGenres()
     {
@@ -31,6 +31,7 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet("{genreId}")]
+    [Authorize(Roles = "User,Admin")]
     [ProducesResponseType(200, Type = typeof(GenreDto))]
     public IActionResult FindGenreById([FromRoute] int genreId)
     {
@@ -42,6 +43,7 @@ public class GenreController : ControllerBase
         return Ok(genre);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     [ProducesResponseType(200)]
     public IActionResult SaveGenre([FromBody] GenreDto genreDto)
@@ -51,6 +53,7 @@ public class GenreController : ControllerBase
         return CreatedAtAction(nameof(SaveGenre), new { id = createdGenre.Id });
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{genreId}")]
     public IActionResult DeleteGenre([FromRoute] int genreId)
     {
@@ -60,7 +63,9 @@ public class GenreController : ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{genreId}")]
+    [ProducesResponseType(200)]
     public IActionResult UpdateGenre([FromRoute] int genreId, [FromBody] GenreDto updatedGenre)
     {
         if (genreId != updatedGenre.Id) return BadRequest(ModelState);
@@ -73,6 +78,7 @@ public class GenreController : ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "User,Admin")]
     [HttpGet("{genreId}/movies")]
     [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public IActionResult GetMoviesWithGenre([FromRoute] int genreId)

@@ -13,20 +13,25 @@ public class JwtService : IJwtService
     private static readonly TimeSpan TokenLifeSpan = TimeSpan.FromHours(4);
 
     private readonly IConfiguration _configuration;
+    private readonly IUserService _userService;
 
-    public JwtService(IConfiguration configuration)
+    public JwtService(IConfiguration configuration, IUserService userService)
     {
         _configuration = configuration;
+        _userService = userService;
     }
 
     public string GenerateToken(LoginRequestDto loginRequest)
     {
+        var user = _userService.FindUserByEmail(loginRequest.Email).Value;
+
+        // Todo: add username to claims
         List<Claim> claims = new List<Claim>
         {
             new(ClaimTypes.Email, loginRequest.Email),
             new(ClaimTypes.Name, loginRequest.Email),
             new(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
-            // new(ClaimTypes.Role, "User")
+            new(ClaimTypes.Role, user.Role.ToString())
         };
 
         var key = new SymmetricSecurityKey(

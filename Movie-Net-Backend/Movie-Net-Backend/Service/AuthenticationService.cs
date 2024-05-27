@@ -9,15 +9,14 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IUserService _userService;
     private readonly IJwtService _jwtService;
-    private readonly IEmailService _emailService;
+    private readonly IPasswordCodeService _passwordCodeService;
 
-    public AuthenticationService(IUserService userService, IJwtService jwtService, IEmailService emailService)
+    public AuthenticationService(IUserService userService, IJwtService jwtService, IPasswordCodeService passwordCodeService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         _jwtService = jwtService;
-        _emailService = emailService;
+        _passwordCodeService = passwordCodeService;
     }
-
 
     public Result<User> RegisterUser(RegisterRequestDto registerRequest)
     {
@@ -31,10 +30,11 @@ public class AuthenticationService : IAuthenticationService
         {
             Username = registerRequest.Username,
             Email = registerRequest.Email,
+            Role = Role.User,
             Password = BCrypt.Net.BCrypt.HashPassword(registerRequest.Password)
         };
 
-        _emailService.Send(user.Email, "Register", "Registered to website");
+        // _emailService.Send(user.Email, "Register", "Registered to website");
 
         return _userService.SaveUser(user);
     }
@@ -54,40 +54,17 @@ public class AuthenticationService : IAuthenticationService
         });
     }
 
-    public Result<User> ForgotPasswordRequest(ForgotPasswordDto forgotPasswordDto)
-    {
-        var userResult = _userService.FindUserByEmail(forgotPasswordDto.Email);
-
-        if (userResult.IsFailed) return userResult.ToResult();
-
-        SendResetRequestEmail(forgotPasswordDto);
-        return Result.Ok(userResult.Value);
-    }
-
     public Result<User> ChangePassword(ResetPasswordDto changePasswordDto)
     {
         var userResult = _userService.FindUserById(changePasswordDto.UserId);
+        if (userResult.IsFailed) return Result.Fail<User>("User not found");
 
-        if (userResult.IsFailed)
-            return Result.Fail<User>("User not found");
+        var matchResult = _passwordCodeService.CodesMatch(userResult.Value, changePasswordDto.Code);
+        if (matchResult.IsFailed) return matchResult.ToResult();
 
-        userResult.Value.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.Password);
+        _passwordCodeService.DeleteCode(userResult.Value);
+        userResult.Value.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
 
         return _userService.UpdateUser(changePasswordDto.UserId, userResult.Value);
-    }
-
-    private void SendResetRequestEmail(ForgotPasswordDto forgotPasswordDto)
-    {
-        string code = GenerateResetCode(16);
-        string message = "Please enter this code to reset your password: \n" + code;
-        _emailService.Send(forgotPasswordDto.Email, "Password Reset", message);
-    }
-
-    private string GenerateResetCode(int length)
-    {
-        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var random = new Random();
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }

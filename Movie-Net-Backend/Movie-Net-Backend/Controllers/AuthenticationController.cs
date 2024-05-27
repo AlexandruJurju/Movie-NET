@@ -12,12 +12,14 @@ namespace Movie_Net_Backend.Controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
+    private readonly IPasswordCodeService _passwordCodeService;
     private readonly IMapper _mapper;
 
-    public AuthenticationController(IAuthenticationService authenticationService, IMapper mapper)
+    public AuthenticationController(IAuthenticationService authenticationService, IMapper mapper, IPasswordCodeService passwordCodeService)
     {
         _authenticationService = authenticationService;
         _mapper = mapper;
+        _passwordCodeService = passwordCodeService;
     }
 
 
@@ -46,8 +48,7 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(200, Type = typeof(UserDto))]
     public IActionResult ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
     {
-        var result = _authenticationService.ForgotPasswordRequest(forgotPasswordDto);
-
+        var result = _passwordCodeService.ForgotPasswordRequest(forgotPasswordDto);
         if (result.IsFailed) return BadRequest(result.Errors);
 
         var user = _mapper.Map<UserDto>(result.Value);
@@ -61,7 +62,6 @@ public class AuthenticationController : ControllerBase
     public IActionResult ChangePassword([FromBody] ResetPasswordDto changePasswordDto)
     {
         var result = _authenticationService.ChangePassword(changePasswordDto);
-
         if (result.IsFailed) return BadRequest(result.Errors);
 
         return Ok();
