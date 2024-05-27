@@ -9,11 +9,13 @@ public class ReviewService : IReviewService
 {
     private readonly AppDbContext _appDbContext;
     private readonly IUserService _userService;
+    private readonly IMovieService _movieService;
 
-    public ReviewService(AppDbContext appDbContext, IUserService userService)
+    public ReviewService(AppDbContext appDbContext, IUserService userService, IMovieService movieService)
     {
         _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
         _userService = userService;
+        _movieService = movieService;
     }
 
     public IEnumerable<Review> FindAllReviews()
@@ -67,5 +69,19 @@ public class ReviewService : IReviewService
         if (userResult.IsFailed) return userResult.ToResult();
 
         return userResult.Value.Reviews.ToList();
+    }
+
+    public Result<Review> FindReviewOfUserForMovie(int userId, int movieId)
+    {
+        var userResult = _userService.FindUserById(userId);
+        if (userResult.IsFailed) return userResult.ToResult();
+
+        var movieResult = _movieService.FindMovieById(movieId);
+        if (movieResult.IsFailed) return movieResult.ToResult();
+
+        var result = _appDbContext.Reviews.FirstOrDefault(review => review.UserId == userId && review.MovieId == movieId);
+        if (result == null) return Result.Fail($"Movie {movieId} has no review for user {userId}");
+
+        return Result.Ok(result);
     }
 }

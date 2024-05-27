@@ -10,4 +10,5 @@ public interface IReviewService
     Result DeleteReview(int userId, int movieId);
     Review SaveReview(Review review);
     Result<List<Review>> FindReviewsOfUser(int userId);
+    Result<Review> FindReviewOfUserForMovie(int userId, int movieId);
 }
