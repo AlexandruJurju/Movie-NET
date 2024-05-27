@@ -12,16 +12,9 @@
             />
             <div class="hover-buttons position-absolute bottom-0 start-50 translate-middle-x mb-3">
               <button
-                class="btn btn-danger btn-sm me-2"
-                (click)="removeFromWatchlist(movie.id)"
-                *ngIf="watchlistContainsMovie(movie.id)">
-                <fa-icon [icon]="faMinus"></fa-icon>
-              </button>
-              <button
                 class="btn btn-primary btn-sm me-2"
-                (click)="addToWatchlist(movie.id)"
-                *ngIf="!watchlistContainsMovie(movie.id)">
-                <fa-icon [icon]="faPlus"></fa-icon>
+                (click)="toggleWatchlist(movie.id)">
+                <fa-icon [icon]="watchlistContainsMovie(movie.id) ? faMinus : faPlus"></fa-icon>
               </button>
             </div>
           </div>

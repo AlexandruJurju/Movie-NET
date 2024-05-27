@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { GenreDto } from '../model/genreDto';
+import { MovieDto } from '../model/movieDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -73,6 +74,13 @@ export class GenreService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (Bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -101,15 +109,25 @@ export class GenreService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllGenres(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public findAllGenres(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public findAllGenres(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public findAllGenres(observe?: 'body', reportProgress?: boolean): Observable<Array<GenreDto>>;
+    public findAllGenres(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<GenreDto>>>;
+    public findAllGenres(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<GenreDto>>>;
     public findAllGenres(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
+        // authentication (Bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -120,7 +138,7 @@ export class GenreService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Genre`,
+        return this.httpClient.request<Array<GenreDto>>('get',`${this.basePath}/api/v1/Genre`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -137,9 +155,9 @@ export class GenreService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findGenreById(genreId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public findGenreById(genreId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public findGenreById(genreId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public findGenreById(genreId: number, observe?: 'body', reportProgress?: boolean): Observable<GenreDto>;
+    public findGenreById(genreId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenreDto>>;
+    public findGenreById(genreId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenreDto>>;
     public findGenreById(genreId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (genreId === null || genreId === undefined) {
@@ -148,8 +166,18 @@ export class GenreService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (Bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -160,7 +188,7 @@ export class GenreService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Genre/${encodeURIComponent(String(genreId))}`,
+        return this.httpClient.request<GenreDto>('get',`${this.basePath}/api/v1/Genre/${encodeURIComponent(String(genreId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -177,9 +205,9 @@ export class GenreService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getMoviesWithGenre(genreId: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public getMoviesWithGenre(genreId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public getMoviesWithGenre(genreId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public getMoviesWithGenre(genreId: number, observe?: 'body', reportProgress?: boolean): Observable<Array<MovieDto>>;
+    public getMoviesWithGenre(genreId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<MovieDto>>>;
+    public getMoviesWithGenre(genreId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<MovieDto>>>;
     public getMoviesWithGenre(genreId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (genreId === null || genreId === undefined) {
@@ -188,8 +216,18 @@ export class GenreService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (Bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -200,7 +238,7 @@ export class GenreService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/api/v1/Genre/${encodeURIComponent(String(genreId))}/movies`,
+        return this.httpClient.request<Array<MovieDto>>('get',`${this.basePath}/api/v1/Genre/${encodeURIComponent(String(genreId))}/movies`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -225,6 +263,13 @@ export class GenreService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (Bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -275,6 +320,13 @@ export class GenreService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (Bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];

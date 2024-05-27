@@ -10,7 +10,7 @@ import {MovieEditComponent} from "./pages/movie-edit/movie-edit.component";
 import {GenreListComponent} from "./pages/genre-list/genre-list.component";
 import {GenreSaveComponent} from "./pages/genre-save/genre-save.component";
 import {GenreEditComponent} from "./pages/genre-edit/genre-edit.component";
-import {authGuard} from "./services/guard/auth.guard";
+import {authGuard} from "./services/guard/auth-guard/auth.guard";
 import {ActorDetailsComponent} from "./pages/actor-details/actor-details.component";
 import {UserForgotPassword} from "./pages/user-forgot-password/user-forgot-password";
 import {UserResetPassword} from "./pages/user-reset-password/user-reset-password";

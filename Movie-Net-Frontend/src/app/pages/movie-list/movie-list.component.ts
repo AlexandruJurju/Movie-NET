@@ -67,18 +67,26 @@ export class MovieListComponent implements OnInit {
     this.router.navigate(['/movie-details', id]);
   }
 
-  addToWatchlist(movieId: number) {
+  private addToWatchlist(movieId: number) {
     const userId = Number(localStorage.getItem('userId'));
     this.watchlistService.addMovieToWatchlist(userId, movieId).subscribe({})
   }
 
-  removeFromWatchlist(movieId: number) {
+  private removeFromWatchlist(movieId: number) {
     const userId = Number(localStorage.getItem('userId'));
     this.watchlistService.removeMovieFromWatchlist(userId, movieId).subscribe({})
   }
 
-  watchlistContainsMovie(movieId: number) {
+  public watchlistContainsMovie(movieId: number) {
     return this.watchlist.includes(movieId);
+  }
+
+  toggleWatchlist(movieId: number) {
+    if (this.watchlistContainsMovie(movieId)) {
+      this.removeFromWatchlist(movieId);
+    } else {
+      this.addToWatchlist(movieId);
+    }
   }
 
   protected readonly faPlus = faPlus;

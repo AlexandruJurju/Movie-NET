@@ -61,7 +61,7 @@ export class UserResetPassword implements OnInit {
     if (this.form.valid) {
       const resetPasswordDto: ResetPasswordDto = {
         userId: this.userDto.id,
-        password: this.form.value.password
+        newPassword: this.form.value.password
       };
       this.authenticationService.changePassword(resetPasswordDto).subscribe({
         next: () => {

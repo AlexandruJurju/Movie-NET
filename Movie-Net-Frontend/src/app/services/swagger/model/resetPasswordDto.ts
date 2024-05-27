@@ -12,5 +12,5 @@
 
 export interface ResetPasswordDto { 
     userId: number;
-    password: string;
+    newPassword: string;
 }

@@ -14,5 +14,5 @@ export interface UserDto {
     id: number;
     email: string;
     username: string;
-    profilePictureUrl?: string;
+    profilePictureUrl: string;
 }
