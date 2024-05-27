@@ -10,7 +10,7 @@ import {MovieDto, MovieService} from "../../services/swagger";
     FormsModule
   ],
   templateUrl: './movie-save.component.html',
-  styleUrl: './movie-save.component.css'
+  styleUrl: './movie-save.component.scss'
 })
 export class MovieSaveComponent {
 

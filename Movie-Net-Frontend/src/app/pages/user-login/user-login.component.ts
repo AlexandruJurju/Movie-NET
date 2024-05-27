@@ -24,7 +24,7 @@ import {MatButton} from "@angular/material/button";
     MatCardHeader
   ],
   templateUrl: './user-login.component.html',
-  styleUrl: './user-login.component.css'
+  styleUrl: './user-login.component.scss'
 })
 export class UserLoginComponent {
 

@@ -10,7 +10,7 @@ import {NgForOf} from "@angular/common";
     NgForOf
   ],
   templateUrl: './user-watchlist.component.html',
-  styleUrl: './user-watchlist.component.css'
+  styleUrl: './user-watchlist.component.scss'
 })
 export class UserWatchlistComponent implements OnInit {
 

@@ -11,7 +11,7 @@ import {GenreDto, GenreService} from "../../services/swagger";
     FormsModule
   ],
   templateUrl: './genre-save.component.html',
-  styleUrl: './genre-save.component.css'
+  styleUrl: './genre-save.component.scss'
 })
 export class GenreSaveComponent {
 

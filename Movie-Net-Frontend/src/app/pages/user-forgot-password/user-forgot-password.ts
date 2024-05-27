@@ -10,7 +10,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
     ReactiveFormsModule
   ],
   templateUrl: './user-forgot-password.html',
-  styleUrl: './user-forgot-password.css'
+  styleUrl: './user-forgot-password.scss'
 })
 export class UserForgotPassword {
   form: FormGroup;

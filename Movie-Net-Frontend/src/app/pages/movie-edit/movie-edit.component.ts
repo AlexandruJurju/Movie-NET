@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule, NgForm} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {GenreDto, MovieDto, MovieService} from "../../services/swagger";
+import {DxButtonModule} from "devextreme-angular";
 
 
 
@@ -11,10 +12,11 @@ import {GenreDto, MovieDto, MovieService} from "../../services/swagger";
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf
+    NgForOf,
+    DxButtonModule
   ],
   templateUrl: './movie-edit.component.html',
-  styleUrl: './movie-edit.component.css'
+  styleUrl: './movie-edit.component.scss'
 })
 export class MovieEditComponent implements OnInit {
   movie: MovieDto = {} as MovieDto;

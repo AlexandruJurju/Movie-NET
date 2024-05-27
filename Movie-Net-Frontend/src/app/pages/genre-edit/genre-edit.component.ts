@@ -10,7 +10,7 @@ import {GenreDto, GenreService} from "../../services/swagger";
   imports: [
     FormsModule
   ],
-  styleUrl: './genre-edit.component.css'
+  styleUrl: './genre-edit.component.scss'
 })
 export class GenreEditComponent implements OnInit {
   genre: GenreDto = {} as GenreDto;

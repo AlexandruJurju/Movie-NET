@@ -7,7 +7,7 @@ import {ActorDto, ActorService} from "../../services/swagger";
   standalone: true,
   imports: [],
   templateUrl: './actor-details.component.html',
-  styleUrl: './actor-details.component.css'
+  styleUrl: './actor-details.component.scss'
 })
 export class ActorDetailsComponent implements OnInit {
 

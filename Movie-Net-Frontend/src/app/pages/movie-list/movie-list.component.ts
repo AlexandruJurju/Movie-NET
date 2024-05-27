@@ -14,7 +14,7 @@ import {faHeart, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
     FontAwesomeModule
   ],
   templateUrl: './movie-list.component.html',
-  styleUrl: './movie-list.component.css'
+  styleUrl: './movie-list.component.scss'
 })
 
 export class MovieListComponent implements OnInit {

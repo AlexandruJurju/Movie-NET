@@ -12,7 +12,7 @@ import {AuthenticationService, RegisterRequestDto} from "../../services/swagger"
     NgIf
   ],
   templateUrl: './user-register.component.html',
-  styleUrl: './user-register.component.css'
+  styleUrl: './user-register.component.scss'
 })
 export class UserRegisterComponent {
 

@@ -12,7 +12,7 @@ import {ApiModule} from "./services/swagger";
     ApiModule
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Movie-Net-Frontend';

@@ -10,7 +10,7 @@ import {NgOptimizedImage} from "@angular/common";
     NgOptimizedImage
   ],
   templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.css'
+  styleUrl: './user-profile.component.scss'
 })
 export class UserProfileComponent implements OnInit {
 

@@ -10,7 +10,7 @@ import {GenreDto, GenreService} from "../../services/swagger";
     NgForOf
   ],
   templateUrl: './genre-list.component.html',
-  styleUrl: './genre-list.component.css'
+  styleUrl: './genre-list.component.scss'
 })
 export class GenreListComponent implements OnInit {
   genres: GenreDto[] = [];

@@ -11,7 +11,7 @@ import {AuthenticationService, ResetPasswordDto, UserDto, UserService} from "../
     ReactiveFormsModule
   ],
   templateUrl: './user-reset-password.html',
-  styleUrls: ['./user-reset-password.css']
+  styleUrls: ['./user-reset-password.scss']
 })
 export class UserResetPassword implements OnInit {
   userDto = {} as UserDto;
