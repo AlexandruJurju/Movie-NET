@@ -23,20 +23,16 @@ export class UserWatchlistComponent implements OnInit {
 
   ngOnInit(): void {
     this.findUserWatchlist();
-    console.log(this.movies);
   }
 
   private findUserWatchlist() {
-    console.log("find watchlist")
     const userId = Number(localStorage.getItem('userId'));
-    console.log(userId);
     this.watchlistService.findUserWatchlist(userId).subscribe({
       next: (result) => {
         this.movies = result;
       }
     })
   }
-
 
   goToMovieDetails(movieId: number) {
     this.router.navigate(['/movie-details', movieId]);

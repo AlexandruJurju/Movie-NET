@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
-import {MovieDtoPageResponse, MovieService, WatchListService} from "../../services/swagger";
+import {MovieDto, MovieDtoPageResponse, MovieService, WatchListService} from "../../services/swagger";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {faHeart, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faHeart, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-movie-list',
@@ -22,6 +22,7 @@ export class MovieListComponent implements OnInit {
   page = 0;
   size = 6;
   pages: any = [];
+  watchlist: number[] = [];
 
   constructor(
     private movieService: MovieService,
@@ -30,10 +31,20 @@ export class MovieListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.findAllMoviesPaged();
+    this.findMoviesPaged();
+    this.findUserWatchlist();
   }
 
-  private findAllMoviesPaged() {
+  private findUserWatchlist() {
+    const userId = Number(localStorage.getItem('userId'));
+    this.watchlistService.findUserWatchlist(userId).subscribe({
+      next: (result) => {
+        this.watchlist = result.map(movie => movie.id);
+      }
+    })
+  }
+
+  private findMoviesPaged() {
     console.log(this.page + " " + this.size);
     this.movieService.findAllMoviesPages(this.page, this.size)
       .subscribe({
@@ -49,20 +60,27 @@ export class MovieListComponent implements OnInit {
 
   goToPage(page: number) {
     this.page = page + 1;
-    this.findAllMoviesPaged();
+    this.findMoviesPaged();
   }
 
   goToMovieDetails(id: number) {
     this.router.navigate(['/movie-details', id]);
   }
 
-  protected readonly localStorage = localStorage;
-
   addToWatchlist(movieId: number) {
     const userId = Number(localStorage.getItem('userId'));
-    this.watchlistService.addMovieToWatchlist(Number(localStorage.getItem('userId')), movieId).subscribe({})
+    this.watchlistService.addMovieToWatchlist(userId, movieId).subscribe({})
   }
 
-  protected readonly faHeart = faHeart;
+  removeFromWatchlist(movieId: number) {
+    const userId = Number(localStorage.getItem('userId'));
+    this.watchlistService.removeMovieFromWatchlist(userId, movieId).subscribe({})
+  }
+
+  watchlistContainsMovie(movieId: number) {
+    return this.watchlist.includes(movieId);
+  }
+
   protected readonly faPlus = faPlus;
+  protected readonly faMinus = faMinus;
 }
