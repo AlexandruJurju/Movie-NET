@@ -4,6 +4,12 @@ import {Router} from "@angular/router";
 import {MovieDto, MovieDtoPageResponse, MovieService, WatchListService} from "../../services/swagger";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {faHeart, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {MatSidenavContainer} from "@angular/material/sidenav";
+import {MatGridList, MatGridTile} from "@angular/material/grid-list";
+import {MatCard, MatCardContent} from "@angular/material/card";
+import {MatIcon} from "@angular/material/icon";
+import {MatMiniFabButton} from "@angular/material/button";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-movie-list',
@@ -11,7 +17,15 @@ import {faHeart, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
   imports: [
     NgIf,
     NgForOf,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatSidenavContainer,
+    MatGridList,
+    MatGridTile,
+    MatCard,
+    MatIcon,
+    MatMiniFabButton,
+    MatCardContent,
+    MatPaginator
   ],
   templateUrl: './movie-list.component.html',
   styleUrl: './movie-list.component.scss'
@@ -59,7 +73,7 @@ export class MovieListComponent implements OnInit {
   }
 
   goToPage(page: number) {
-    this.page = page + 1;
+    this.page = page;
     this.findMoviesPaged();
   }
 
