@@ -1,29 +1,33 @@
-<div class="movie-grid">
-  <div *ngFor="let movie of movieResponse.content">
-    <mat-card>
-      <img
-        [src]="movie.posterUrl"
-        alt="{{ movie.title }} Poster"
-        (click)="goToMovieDetails(movie.id)"
-      />
-      <button
-        mat-mini-fab
-        color="primary"
-        (click)="toggleWatchlist(movie.id)">
-        <mat-icon>{{ watchlistContainsMovie(movie.id) ? 'remove' : 'add' }}</mat-icon>
-      </button>
-      <mat-card-content>
-        <h5>{{ movie.title }}</h5>
-      </mat-card-content>
-    </mat-card>
+<div class="container">
+  <div class="movie-grid">
+    <div *ngFor="let movie of movieResponse.content">
+      <mat-card>
+        <img
+          [src]="movie.posterUrl"
+          alt="{{ movie.title }} Poster"
+          (click)="goToMovieDetails(movie.id)"
+        />
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="toggleWatchlist(movie.id)">
+          <mat-icon>{{ watchlistContainsMovie(movie.id) ? 'remove' : 'add' }}</mat-icon>
+        </button>
+        <mat-card-content>
+          <h5>{{ movie.title }}</h5>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div>
+    <mat-paginator
+      [length]="movieResponse.totalElements"
+      [pageSize]="size"
+      [pageIndex]="page - 1"
+      (page)="goToPage($event.pageIndex + 1)">
+    </mat-paginator>
   </div>
 </div>
 
-<div>
-  <mat-paginator
-    [length]="movieResponse.totalElements"
-    [pageSize]="size"
-    [pageIndex]="page - 1"
-    (page)="goToPage($event.pageIndex + 1)">
-  </mat-paginator>
-</div>
+

@@ -4,10 +4,20 @@
   margin: 100px 0;
 }
 
-.movie-grid {
+.container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  flex-direction: column;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  justify-content: center;
+}
+
+.movie-item {
+  width: 100%;
 }
 
 .mat-card {
