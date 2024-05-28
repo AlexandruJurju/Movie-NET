@@ -6,7 +6,7 @@ import {UserDto, UserService} from "../../services/swagger";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {MatToolbar} from "@angular/material/toolbar";
+import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 
 @Component({
   selector: 'app-menu',
@@ -22,7 +22,8 @@ import {MatToolbar} from "@angular/material/toolbar";
     MatMenuTrigger,
     MatIcon,
     MatButton,
-    MatToolbar
+    MatToolbar,
+    MatToolbarRow
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'

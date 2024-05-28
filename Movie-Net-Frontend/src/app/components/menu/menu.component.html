@@ -1,12 +1,5 @@
-<div class="centered-menu">
-  <!-- User Register and Login if not authenticated -->
-  <div *ngIf="!isUserLoggedIn()">
-    <button mat-button routerLink="/user-login">Login</button>
-    <button mat-button routerLink="/user-register">Register</button>
-  </div>
-
-  <!-- Display Zone if Authenticated -->
-  <div *ngIf="isUserLoggedIn()">
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
     <img
       ngSrc="assets/logo.svg" [width]="35" [height]="35"
       alt="Logo"
@@ -15,21 +8,30 @@
     />
     <button mat-button routerLink="/">Letterboxd</button>
 
-    <button mat-button [matMenuTriggerFor]="movieMenu">Movies</button>
-    <button mat-button routerLink="/genre-list" *ngIf="roles.includes('Admin')">Genres</button>
-    <button mat-button [matMenuTriggerFor]="profileMenu">
-      <img
-        ngSrc="assets/default-profile.png" [width]="35" [height]="35"
-        alt="User Profile"
-        class="rounded-circle me-2"
-        id="userDropdownMenuButton"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      />
-    </button>
-    <button mat-button (click)="logout()">Logout</button>
-  </div>
-</div>
+    <span class="example-spacer"></span>
+
+    <div *ngIf="!isUserLoggedIn()">
+      <button mat-button routerLink="/user-login">Login</button>
+      <button mat-button routerLink="/user-register">Register</button>
+    </div>
+
+    <div *ngIf="isUserLoggedIn()">
+      <button mat-button [matMenuTriggerFor]="movieMenu">Movies</button>
+      <button mat-button routerLink="/genre-list" *ngIf="roles.includes('Admin')">Genres</button>
+      <button mat-button [matMenuTriggerFor]="profileMenu">
+        <img
+          ngSrc="assets/default-profile.png" [width]="35" [height]="35"
+          alt="User Profile"
+          class="rounded-circle me-2"
+          id="userDropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        />
+      </button>
+      <button mat-button (click)="logout()">Logout</button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 <mat-menu #movieMenu="matMenu">
   <button mat-menu-item routerLink="/movie-list">Find Movies</button>
