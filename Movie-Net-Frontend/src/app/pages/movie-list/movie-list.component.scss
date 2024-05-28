@@ -1,4 +1,16 @@
-img {
-  width: 100%;
-  cursor: pointer
+.movie-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.mat-card {
+  position: relative;
+}
+
+button {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
