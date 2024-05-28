@@ -1,6 +1,26 @@
-.container{
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0;
+}
+
+.container {
   display: flex;
   flex-direction: row;
   justify-content: center; /* center horizontally */
   align-items: center; /* center vertically */
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container mat-form-field {
+  width: 600px;
 }

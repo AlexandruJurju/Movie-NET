@@ -3,7 +3,7 @@ import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {AuthenticationResponse, AuthenticationService, LoginRequestDto} from "../../services/swagger";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
-import {MatFormField} from "@angular/material/form-field";
+import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {MatButton} from "@angular/material/button";
@@ -21,7 +21,8 @@ import {MatButton} from "@angular/material/button";
     MatInput,
     NgIf,
     MatButton,
-    MatCardHeader
+    MatCardHeader,
+    MatError
   ],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss'
@@ -34,17 +35,17 @@ export class UserLoginComponent {
     private formBuilder: FormBuilder) {
   }
 
-  form = this.formBuilder.nonNullable.group({
+  loginForm = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(1)]],
   })
 
   login() {
     console.log("login")
-    if (this.form.valid) {
+    if (this.loginForm.valid) {
       const loginRequestDto: LoginRequestDto = {
-        email: this.form.value.email!,
-        password: this.form.value.password!,
+        email: this.loginForm.value.email!,
+        password: this.loginForm.value.password!,
       }
 
       this.authenticationService.loginUser(loginRequestDto).subscribe({
