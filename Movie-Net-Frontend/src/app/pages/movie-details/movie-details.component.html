@@ -1,75 +1,63 @@
-<div class="container">
-  <div class="row">
+<mat-card>
+  <mat-grid-list cols="2" rowHeight="2:1">
 
     <!-- Display Movie poster -->
-    <div class="col-md-4">
-      <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" class="img-fluid poster">
-    </div>
+    <mat-grid-tile>
+      <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster">
+    </mat-grid-tile>
 
     <!-- Display Movie details -->
-    <div class="col-md-8">
+    <mat-grid-tile>
       <h1>{{ movie.title }}</h1>
       <p>{{ movie.releaseDate }}</p> <!-- Date of the movie -->
 
       <!-- Buttons for adding and removing from watchlist -->
-      <button *ngIf="!isMovieInWatchlist()" class="btn btn-primary mb-3" (click)="addToWatchlist()">Add to Watchlist</button>
-      <button *ngIf="isMovieInWatchlist()" class="btn btn-danger mb-3" (click)="removeFromWatchlist()">Remove from Watchlist</button>
+      <button *ngIf="!isMovieInWatchlist()" mat-raised-button color="primary" (click)="addToWatchlist()">Add to Watchlist</button>
+      <button *ngIf="isMovieInWatchlist()" mat-raised-button color="warn" (click)="removeFromWatchlist()">Remove from Watchlist</button>
 
       <p class="h5">{{ movie.headline }}</p>
       <p>{{ movie.overview }}</p>
       <p>Genres: <span *ngFor="let genre of movie.genres; let isLast=last">{{ genre.name }}{{ isLast ? '' : ', ' }}</span></p>
-      <button class="btn btn-primary mb-3" (click)="navigateToUpdateMovie()">Update Movie</button>
+      <button mat-raised-button color="primary" (click)="navigateToUpdateMovie()">Update Movie</button>
 
       <!-- Display Actors -->
-      <div class="d-flex flex-wrap">
-        <div *ngFor="let movieActor of movie.movieActors" class="text-center mr-4 mb-4 actor-link" (click)="navigateToActorDetails(movieActor.actor.id)">
-          <img [src]="movieActor.actor.profilePictureUrl" alt="{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}" class="mb-2" style="width: 120px;">
+      <div fxLayout="row wrap" fxLayoutGap="16px grid">
+        <div *ngFor="let movieActor of movie.movieActors" (click)="navigateToActorDetails(movieActor.actor.id)">
+          <img [src]="movieActor.actor.profilePictureUrl" alt="{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}">
           <div>{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}</div>
-          <div class="text-muted"><small>{{ movieActor.role }}</small></div>
+          <div><small>{{ movieActor.role }}</small></div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!--  todo: display the current users review first-->
-  <!-- Displays the current user's review  -->
-
+    </mat-grid-tile>
+  </mat-grid-list>
 
   <!-- Display movie reviews -->
-  <div class="row">
-    <div class="col-md-12 mt-4">
-      <h2>Reviews</h2>
-      <div *ngFor="let review of movie.reviews" class="card mb-3">
-        <div class="card-header d-flex justify-content-between">
-          <div class="user-id">{{ review.user.username }}</div>
-          <div class="score">{{ review.score }}</div>
-        </div>
-        <div class="card-body">
-          <p class="card-text review-text">{{ review.text }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <h2>Reviews</h2>
+  <mat-card *ngFor="let review of movie.reviews">
+    <mat-card-header>
+      <mat-card-title>{{ review.user.username }}</mat-card-title>
+      <mat-card-subtitle>{{ review.score }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ review.text }}</p>
+    </mat-card-content>
+  </mat-card>
 
   <!-- Display section for adding reviews -->
-  <div class="row">
-    <div class="col-md-12 mt-4">
-      <div class="card">
-        <div class="card-body">
-          <h2 class="card-title">Add a Review</h2>
-          <form [formGroup]="form" (ngSubmit)="submitReview()">
-            <div class="form-group">
-              <label for="reviewText">Review</label>
-              <textarea id="reviewText" class="form-control" formControlName="text" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="reviewScore">Score</label>
-              <input type="number" id="reviewScore" class="form-control" formControlName="score" required min="1" max="10">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  <h2>Add a Review</h2>
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submitReview()">
+        <mat-form-field class="full-width">
+          <textarea matInput id="reviewText" formControlName="text" required></textarea>
+          <mat-label>Review</mat-label>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="number" id="reviewScore" formControlName="score" required min="1" max="10">
+          <mat-label>Score</mat-label>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Submit</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-card>

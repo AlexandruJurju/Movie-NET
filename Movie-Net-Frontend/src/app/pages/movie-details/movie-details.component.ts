@@ -3,6 +3,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
 import {DetailedMovieDto, MovieDto, MovieService, ReviewDto, ReviewService, WatchListService} from "../../services/swagger";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatButton} from "@angular/material/button";
+import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 
 @Component({
   selector: 'app-movie-details',
@@ -12,6 +17,17 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
     NgIf,
     FormsModule,
     ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardContent,
+    MatFormField,
+    MatInput,
+    MatButton,
+    MatGridTile,
+    MatCardSubtitle,
+    MatCardTitle,
+    MatLabel,
+    MatGridList,
   ],
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.scss']
