@@ -143,15 +143,12 @@ export class MovieDetailsComponent implements OnInit {
     return this.watchlist.some(movie => movie.id === movieId);
   }
 
-  private loadUserReview() {
-    const userId = Number(localStorage.getItem('userId'));
-    this.reviewService.findUserReviewForMovie(userId, this.movie.id).subscribe({
-      next: review => {
-        this.review = review;
-      },
-      error: err => {
-        this.review = null;
-      }
-    })
+
+  toggleWatchlist() {
+    if (this.isMovieInWatchlist()) {
+      this.removeFromWatchlist();
+    } else {
+      this.addToWatchlist();
+    }
   }
 }
