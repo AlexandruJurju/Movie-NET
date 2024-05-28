@@ -12,8 +12,8 @@ using Movie_Net_Backend.Data;
 namespace Movie_Net_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240526072746_AddedRoles")]
-    partial class AddedRoles
+    [Migration("20240529060944_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,6 +188,28 @@ namespace Movie_Net_Backend.Migrations
                     b.ToTable("movie_actor");
                 });
 
+            modelBuilder.Entity("Movie_Net_Backend.Model.PasswordCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PasswordCodes");
+                });
+
             modelBuilder.Entity("Movie_Net_Backend.Model.Review", b =>
                 {
                     b.Property<int>("UserId")
@@ -239,7 +261,8 @@ namespace Movie_Net_Backend.Migrations
                         .HasColumnName("profile_picture_url");
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("role");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -298,6 +321,17 @@ namespace Movie_Net_Backend.Migrations
                     b.Navigation("Actor");
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("Movie_Net_Backend.Model.PasswordCode", b =>
+                {
+                    b.HasOne("Movie_Net_Backend.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Movie_Net_Backend.Model.Review", b =>

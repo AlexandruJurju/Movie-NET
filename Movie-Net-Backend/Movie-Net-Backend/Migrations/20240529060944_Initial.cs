@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Movie_Net_Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedRoles : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -86,7 +86,7 @@ namespace Movie_Net_Backend.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Role = table.Column<int>(type: "int", nullable: false),
+                    role = table.Column<int>(type: "int", nullable: false),
                     profile_picture_url = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -146,6 +146,28 @@ namespace Movie_Net_Backend.Migrations
                         name: "FK_movie_genre_movie_MoviesId",
                         column: x => x.MoviesId,
                         principalTable: "movie",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PasswordCodes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PasswordCodes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PasswordCodes_user_UserId",
+                        column: x => x.UserId,
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -220,6 +242,11 @@ namespace Movie_Net_Backend.Migrations
                 column: "MoviesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PasswordCodes_UserId",
+                table: "PasswordCodes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_review_MovieId",
                 table: "review",
                 column: "MovieId");
@@ -238,6 +265,9 @@ namespace Movie_Net_Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "movie_genre");
+
+            migrationBuilder.DropTable(
+                name: "PasswordCodes");
 
             migrationBuilder.DropTable(
                 name: "review");

@@ -39,7 +39,6 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpDelete("{userId}")]
     [ProducesResponseType(200)]
     public IActionResult DeleteUserById([FromRoute] int userId)

@@ -25,11 +25,10 @@ public class JwtService : IJwtService
     {
         var user = _userService.FindUserByEmail(loginRequest.Email).Value;
 
-        // Todo: add username to claims
         List<Claim> claims = new List<Claim>
         {
             new(ClaimTypes.Email, loginRequest.Email),
-            new(ClaimTypes.Name, loginRequest.Email),
+            new(ClaimTypes.Name, user.Username),
             new(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
             new(ClaimTypes.Role, user.Role.ToString())
         };

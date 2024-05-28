@@ -6,7 +6,7 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
 
-[Authorize]
+
 [ApiController]
 [Route("api/v1/[controller]")]
 public class WatchListController : ControllerBase

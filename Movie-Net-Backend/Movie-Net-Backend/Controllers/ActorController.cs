@@ -38,7 +38,6 @@ public class ActorController : ControllerBase
         return Ok(actor);
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult SaveActor([FromBody] ActorDto actorDto)
     {
@@ -47,7 +46,6 @@ public class ActorController : ControllerBase
         return CreatedAtAction(nameof(SaveActor), actorDto);
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpDelete("{actorId}")]
     public IActionResult DeleteActor([FromRoute] int actorId)
     {
@@ -57,7 +55,6 @@ public class ActorController : ControllerBase
         return Ok();
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpPut("{actorId}")]
     public IActionResult UpdateActor([FromRoute] int actorId, [FromBody] ActorDto updatedActor)
     {

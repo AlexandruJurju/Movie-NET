@@ -6,7 +6,6 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
 
-[AllowAnonymous]
 [ApiController]
 [Route("api/v1/[controller]")]
 public class AuthenticationController : ControllerBase
@@ -56,7 +55,6 @@ public class AuthenticationController : ControllerBase
         return Ok(user);
     }
 
-    [Authorize]
     [HttpPost("change-password")]
     [ProducesResponseType(200)]
     public IActionResult ChangePassword([FromBody] ResetPasswordDto changePasswordDto)
@@ -67,7 +65,6 @@ public class AuthenticationController : ControllerBase
         return Ok();
     }
 
-    [Authorize]
     [HttpGet]
     public IActionResult Test()
     {
