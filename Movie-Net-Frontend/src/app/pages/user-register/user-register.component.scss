@@ -1,0 +1,27 @@
+// todo: add this to all
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container mat-form-field {
+  width: 600px;
+}
+
+.error {
+  padding: 16px;
+  width: 300px;
+  color: white;
+  background-color: red;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+}

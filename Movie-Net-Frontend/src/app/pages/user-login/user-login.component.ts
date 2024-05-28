@@ -39,34 +39,31 @@ export class UserLoginComponent {
     password: ['', [Validators.required, Validators.minLength(1)]],
   })
 
-  onSubmit() {
+  login() {
     console.log("login")
     if (this.form.valid) {
       const loginRequestDto: LoginRequestDto = {
         email: this.form.value.email!,
         password: this.form.value.password!,
       }
-      this.login(loginRequestDto);
+
+      this.authenticationService.loginUser(loginRequestDto).subscribe({
+        next: (response: AuthenticationResponse) => {
+          console.log("Login successful logged in", response);
+
+          // save token to local storage
+          // todo: find a better way to store the current logged in user
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userId', response.userId.toString());
+          console.log(response.token);
+
+          this.router.navigate(["/home"]).then(() => {
+          })
+        },
+        error: (error) => {
+          console.error('Login failed', error);
+        }
+      })
     }
-  }
-
-  private login(loginRequestDto: LoginRequestDto) {
-    this.authenticationService.loginUser(loginRequestDto).subscribe({
-      next: (response: AuthenticationResponse) => {
-        console.log("Login successful logged in", response);
-
-        // save token to local storage
-        // todo: find a better way to store the current logged in user
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userId', response.userId.toString());
-        console.log(response.token);
-
-        this.router.navigate(["/home"]).then(() => {
-        })
-      },
-      error: (error) => {
-        console.error('Login failed', error);
-      }
-    })
   }
 }
