@@ -1,0 +1,16 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; /* center horizontally */
+  align-items: center; /* center vertically */
+  flex: 1; /* allow the form container to grow and take remaining space */
+}
+
+.image-container {
+  flex: 0 0 20%;
+  margin-right: 20px; /* add spacing between image and form */
+}
+
+.wide-input {
+  width: 100%;
+}

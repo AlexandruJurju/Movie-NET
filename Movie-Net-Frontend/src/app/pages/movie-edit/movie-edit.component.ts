@@ -4,7 +4,11 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {GenreDto, MovieDto, MovieService} from "../../services/swagger";
 import {DxButtonModule} from "devextreme-angular";
-
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatCard} from "@angular/material/card";
+import {MatButton} from "@angular/material/button";
+import {MatInput} from "@angular/material/input";
+import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle} from "@angular/material/dialog";
 
 
 @Component({
@@ -13,7 +17,16 @@ import {DxButtonModule} from "devextreme-angular";
   imports: [
     FormsModule,
     NgForOf,
-    DxButtonModule
+    MatLabel,
+    DxButtonModule,
+    MatFormField,
+    MatCard,
+    MatButton,
+    MatInput,
+    MatDialogTitle,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogClose
   ],
   templateUrl: './movie-edit.component.html',
   styleUrl: './movie-edit.component.scss'
@@ -21,28 +34,15 @@ import {DxButtonModule} from "devextreme-angular";
 export class MovieEditComponent implements OnInit {
   movie: MovieDto = {} as MovieDto;
   movieCopy: MovieDto = {} as MovieDto;
-  genres: GenreDto[] = [];
 
   constructor(private movieService: MovieService,
               private router: Router,
-              private route: ActivatedRoute,) {
+              private route: ActivatedRoute,
+  ) {
   }
 
   ngOnInit() {
     this.findMovieFromPath();
-
-    this.getGenresOfMovie();
-  }
-
-  private getGenresOfMovie() {
-    this.movieService.getGenresOfMovie(this.movie.id).subscribe({
-      next: genres => {
-        this.genres = genres;
-      },
-      error: error => {
-        console.error('Error fetching genres:', error);
-      }
-    });
   }
 
   private findMovieFromPath() {
@@ -73,20 +73,18 @@ export class MovieEditComponent implements OnInit {
     });
   }
 
-  onSubmit(form: NgForm) {
-    if (form.valid) {
-      this.movieService.updateMovie(this.movie.id, this.movie).subscribe({
-        next: () => {
-          this.router.navigate(["/movie-details", this.movie.id]).then(() => {
-          });
-        },
-        error: error => {
-          this.router.navigate(["/error"]).then(() => {
-          });
-          console.error('Error updating movie:', error);
-        }
-      });
-    }
+  update() {
+    this.movieService.updateMovie(this.movie.id, this.movie).subscribe({
+      next: () => {
+        this.router.navigate(["/movie-details", this.movie.id]).then(() => {
+        });
+      },
+      error: error => {
+        this.router.navigate(["/error"]).then(() => {
+        });
+        console.error('Error updating movie:', error);
+      }
+    });
   }
 
   deleteMovieById(movieId: number) {
@@ -105,4 +103,6 @@ export class MovieEditComponent implements OnInit {
   resetForm() {
     this.movie = {...this.movieCopy};
   }
+
 }
+
