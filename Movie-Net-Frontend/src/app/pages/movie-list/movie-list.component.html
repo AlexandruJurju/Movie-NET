@@ -1,38 +1,29 @@
+<mat-grid-list cols="3">
+  <mat-grid-tile *ngFor="let movie of movieResponse.content">
+    <mat-card>
+      <img
+        [src]="movie.posterUrl"
+        alt="{{ movie.title }} Poster"
+        (click)="goToMovieDetails(movie.id)"
+      />
+      <button
+        mat-mini-fab
+        color="primary"
+        (click)="toggleWatchlist(movie.id)">
+        <mat-icon>{{ watchlistContainsMovie(movie.id) ? 'remove' : 'add' }}</mat-icon>
+      </button>
+      <mat-card-content>
+        <h5>{{ movie.title }}</h5>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+
 <div>
-  <div>
-    <div *ngIf="movieResponse">
-      <mat-grid-list cols="3" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let movie of movieResponse.content">
-          <mat-card class="h-100 text-center p-3 position-relative">
-            <div class="position-relative">
-              <img
-                [src]="movie.posterUrl"
-                alt="{{ movie.title }} Poster"
-                (click)="goToMovieDetails(movie.id)"
-              />
-              <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3">
-                <button
-                  mat-mini-fab
-                  color="primary"
-                  (click)="toggleWatchlist(movie.id)">
-                  <mat-icon>{{ watchlistContainsMovie(movie.id) ? 'remove' : 'add' }}</mat-icon>
-                </button>
-              </div>
-            </div>
-            <mat-card-content>
-              <h5>{{ movie.title }}</h5>
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
-    </div>
-  </div>
-  <div class="d-flex justify-content-center mt-3">
-    <mat-paginator
-      [length]="movieResponse.totalElements"
-      [pageSize]="size"
-      [pageIndex]="page - 1"
-      (page)="goToPage($event.pageIndex + 1)">
-    </mat-paginator>
-  </div>
+  <mat-paginator
+    [length]="movieResponse.totalElements"
+    [pageSize]="size"
+    [pageIndex]="page - 1"
+    (page)="goToPage($event.pageIndex + 1)">
+  </mat-paginator>
 </div>
