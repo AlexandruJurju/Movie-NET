@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteMovieComponent } from './delete-movie.component';
+import { GenreEditDialogComponent } from './genre-edit-dialog.component';
 
-describe('DeleteMovieComponent', () => {
-  let component: DeleteMovieComponent;
-  let fixture: ComponentFixture<DeleteMovieComponent>;
+describe('EditGenreComponent', () => {
+  let component: GenreEditDialogComponent;
+  let fixture: ComponentFixture<GenreEditDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeleteMovieComponent]
+      imports: [GenreEditDialogComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(DeleteMovieComponent);
+
+    fixture = TestBed.createComponent(GenreEditDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

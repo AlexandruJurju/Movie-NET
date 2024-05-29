@@ -1,4 +1,12 @@
 <div class="container">
+  <!--  todo: add search bar-->
+  <!--  todo: add dialog for saving a genre-->
+  <button mat-raised-button
+          color="primary"
+          matTooltip="Add a new Genre">
+    Add a new Genre
+  </button>
+
   <mat-table [dataSource]="this.genres" matSort>
     <!--    First Column - Id -->
     <ng-container matColumnDef="id">
@@ -19,7 +27,7 @@
         <button mat-raised-button
                 color="primary"
                 matTooltip="Click to edit"
-                (click)="editGenre(genre)">
+                (click)="openEditDialog('0ms','0ms', genre)">
           Edit
         </button>
       </mat-cell>
@@ -28,7 +36,10 @@
     <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef> Delete</mat-header-cell>
       <mat-cell *matCellDef="let genre">
-        <button mat-raised-button color="warn" matTooltip="Click to Delete">
+        <button mat-raised-button
+                color="warn"
+                matTooltip="Click to Delete"
+                (click)="openDeleteDialog('0ms','0ms',genre)">
           Delete
         </button>
       </mat-cell>

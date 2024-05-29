@@ -7,6 +7,9 @@ import {MatButton} from "@angular/material/button";
 import {MatSort} from "@angular/material/sort";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatPaginator} from "@angular/material/paginator";
+import {MatDialog} from "@angular/material/dialog";
+import {GenreEditDialogComponent} from "../../components/dialogues/edit-genre-dialog/genre-edit-dialog.component";
+import {DeleteDialogComponent} from "../../components/dialogues/delete-dialog/delete-dialog.component";
 
 @Component({
   selector: 'app-genre-list',
@@ -35,7 +38,9 @@ export class GenreListComponent implements OnInit {
   genres: GenreDto[] = [];
   displayedColumns = ['id', 'genreName', 'edit', 'delete']
 
-  constructor(private genreService: GenreService, private router: Router) {
+  constructor(
+    private genreService: GenreService,
+    private dialog: MatDialog,) {
   }
 
   ngOnInit() {
@@ -49,13 +54,39 @@ export class GenreListComponent implements OnInit {
 
   // TODO: pass the whole object to page, not just the id, get rid of the call
 
-  editGenre(genre: GenreDto): void {
-    this.router.navigate(['/genre-edit', genre.id]);
+  openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string, genreDto: GenreDto): void {
+    const dialogRef = this.dialog.open(GenreEditDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {
+        genreId: genreDto.id,
+        genreName: genreDto.name
+      }
+    });
+
+    // todo: update genre with date from dialog
+    dialogRef.afterOpened().subscribe({})
+
   }
 
-  deleteGenre(genreId: number): void {
-    this.genreService.deleteGenre(genreId).subscribe(() => {
-      this.findAllGenres();
-    });
+  openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string, genreDto: GenreDto): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result == true) {
+        this.genreService.deleteGenre(genreDto.id).subscribe({
+          next: result => {
+            // reload all genres
+            this.findAllGenres()
+          }
+        });
+      }
+    })
   }
 }

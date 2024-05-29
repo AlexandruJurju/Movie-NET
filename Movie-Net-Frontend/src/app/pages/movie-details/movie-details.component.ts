@@ -9,7 +9,7 @@ import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatDialog} from "@angular/material/dialog";
-import {DeleteMovieComponent} from "../../components/dialogues/delete-movie/delete-movie.component";
+import {DeleteDialogComponent} from "../../components/dialogues/delete-dialog/delete-dialog.component";
 import DevExpress from "devextreme";
 import dialog = DevExpress.ui.dialog;
 
@@ -157,7 +157,7 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    const dialogRef = this.dialog.open(DeleteMovieComponent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
