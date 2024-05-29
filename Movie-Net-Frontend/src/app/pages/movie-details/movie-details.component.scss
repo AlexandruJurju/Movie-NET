@@ -26,6 +26,7 @@
 }
 
 .reviews-container {
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,4 +43,12 @@
   flex-direction: row;
   gap: 10px;
   margin-bottom: 10px;
+}
+
+.reviews-container mat-card-title,mat-card-subtle{
+  width:500px;
+}
+
+mat-form-field{
+  width: 500px;
 }

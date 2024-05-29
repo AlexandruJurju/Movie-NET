@@ -52,11 +52,11 @@
     <mat-card>
       <mat-card-content>
         <form [formGroup]="form" class="add-review-container" (ngSubmit)="submitReview()">
-          <mat-form-field class="full-width">
+          <mat-form-field>
             <textarea matInput id="reviewText" formControlName="text" required></textarea>
             <mat-label>Review</mat-label>
           </mat-form-field>
-          <mat-form-field class="full-width">
+          <mat-form-field>
             <input matInput type="number" id="reviewScore" formControlName="score" required min="1" max="10">
             <mat-label>Score</mat-label>
           </mat-form-field>
