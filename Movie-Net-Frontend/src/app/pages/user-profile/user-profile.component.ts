@@ -54,4 +54,7 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
+  // todo: account settings
+  // todo: upload avatar
+//   todo: change password for account settings, logged in user
 }

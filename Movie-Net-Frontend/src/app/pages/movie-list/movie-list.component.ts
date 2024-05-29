@@ -33,6 +33,7 @@ import {MatPaginator} from "@angular/material/paginator";
 
 export class MovieListComponent implements OnInit {
   movieResponse: MovieDtoPageResponse = {};
+  // todo: better paging
   page = 0;
   size = 6;
   pages: any = [];
