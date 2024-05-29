@@ -1,35 +1,44 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <img
-      ngSrc="assets/logo.svg" [width]="35" [height]="35"
-      alt="Logo"
-      class="rounded-circle me-2"
-      aria-expanded="false"
-    />
-    <button mat-button routerLink="/">Letterboxd</button>
 
-    <span class="example-spacer"></span>
-
-    <div *ngIf="!isUserLoggedIn()">
-      <button mat-button routerLink="/user-login">Login</button>
-      <button mat-button routerLink="/user-register">Register</button>
+    <!--    Left side of the bar-->
+    <div class="title">
+      <img
+        ngSrc="assets/logo.svg" [width]="35" [height]="35"
+        alt="Logo"
+        class="rounded-circle me-2"
+        aria-expanded="false"
+      />
+      <button mat-button routerLink="/">Letterboxd</button>
     </div>
 
+    <!--    Middle of the bar-->
     <div *ngIf="isUserLoggedIn()">
       <button mat-button [matMenuTriggerFor]="movieMenu">Movies</button>
       <button mat-button routerLink="/genre-list" *ngIf="roles.includes('Admin')">Genres</button>
-      <button mat-button [matMenuTriggerFor]="profileMenu">
-        <img
-          ngSrc="assets/default-profile.png" [width]="35" [height]="35"
-          alt="User Profile"
-          class="rounded-circle me-2"
-          id="userDropdownMenuButton"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        />
-      </button>
-      <button mat-button (click)="logout()">Logout</button>
     </div>
+
+    <!--    Right side -->
+    <div class="user-items">
+      <div *ngIf="!isUserLoggedIn()">
+        <button mat-button routerLink="/user-login">Login</button>
+        <button mat-button routerLink="/user-register">Register</button>
+      </div>
+
+      <div *ngIf="isUserLoggedIn()">
+        <button mat-button [matMenuTriggerFor]="profileMenu">
+          <img
+            ngSrc="assets/default-profile.png" [width]="35" [height]="35"
+            alt="User Profile"
+            class="rounded-circle"
+            id="userDropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          />
+        </button>
+      </div>
+    </div>
+
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -41,4 +50,5 @@
 <mat-menu #profileMenu="matMenu">
   <button mat-menu-item routerLink="/user-profile">User Profile</button>
   <button mat-menu-item routerLink="/user-watchlist">Watchlist</button>
+  <button mat-menu-item (click)="logout()">Logout</button>
 </mat-menu>

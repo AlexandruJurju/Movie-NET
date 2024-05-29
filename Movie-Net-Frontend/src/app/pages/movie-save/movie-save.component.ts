@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MovieDto, MovieService} from "../../services/swagger";
 import {MatCard} from "@angular/material/card";
@@ -43,25 +43,17 @@ export class MovieSaveComponent {
   }
 
   saveMovie() {
-    if (this.saveForm.valid) {
-      const movie: MovieDto = {
-        id: 0,
-        title: this.saveForm.value.title,
-        headline: this.saveForm.value.headline,
-        overview: this.saveForm.value.overview,
-        releaseDate: this.saveForm.value.releaseDate,
-        posterUrl: this.saveForm.value.posterUrl
-      }
+    const movie = this.saveForm.value;
 
-      this.movieService.saveMovie(movie).subscribe({
-        next: (response) => {
-          this.router.navigate(["/home"]);
-          console.log('Upload successful', response);
-        },
-        error: (error) => {
-          console.error('Upload failed', error);
-        }
-      });
-    }
+    this.movieService.saveMovie(movie).subscribe({
+      next: (response) => {
+        this.router.navigate(["/home"]);
+        console.log('Upload successful', response);
+      },
+      error: (error) => {
+        console.error('Upload failed', error);
+      }
+    });
+
   }
 }

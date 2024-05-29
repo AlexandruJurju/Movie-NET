@@ -4,6 +4,8 @@
       <mat-card>
         <img
           [src]="movie.posterUrl"
+          [width]="250"
+          [height]="400"
           alt="{{ movie.title }} Poster"
           (click)="goToMovieDetails(movie.id)"
         />
