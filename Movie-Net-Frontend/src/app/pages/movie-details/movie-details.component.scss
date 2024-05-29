@@ -25,6 +25,10 @@
   gap: 16px;
 }
 
+.actors-container > div {
+  cursor: pointer;
+}
+
 .reviews-container {
   margin-top: 100px;
   display: flex;
@@ -45,10 +49,10 @@
   margin-bottom: 10px;
 }
 
-.reviews-container mat-card-title,mat-card-subtle{
-  width:500px;
+.reviews-container mat-card-title, mat-card-subtle {
+  width: 500px;
 }
 
-mat-form-field{
+mat-form-field {
   width: 500px;
 }

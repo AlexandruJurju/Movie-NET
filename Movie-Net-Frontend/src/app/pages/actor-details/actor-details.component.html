@@ -1,19 +1,16 @@
-<div class="d-flex justify-content-center align-items-center">
-  <div style="max-width: 1200px">
-    <div class="d-flex">
-      <div>
-        <img [src]="actor.profilePictureUrl" alt="{{ actor.firstName }} {{ actor.lastName }}" class="mr-5" style="width: 300px; margin-right: 50px; height: 450px">
-        <div class="d-flex align-items-center">
-          <h5>Birthdate: </h5>
-          <h5 class="ml-2"> {{ actor.birthDate }}</h5>
-        </div>
-      </div>
+<div class="container">
+  <div class="personal-info">
+    <img [src]="actor.profilePictureUrl"
+         alt="{{actor.firstName}} {{actor.lastName}}"
+         [width]="300" [height]="500"
+    >
+    <h2>Birthdate: {{ actor.birthDate }}</h2>
+  </div>
 
-      <div>
-        <h2>{{ actor.firstName }} {{ actor.lastName }}</h2>
-        <h5>Biography</h5>
-        <p>{{ actor.biography }}</p>
-      </div>
-    </div>
+  <div class="extra-info">
+    <h1>{{ actor.firstName }} {{ actor.lastName }}</h1>
+
+    <h2>Biography</h2>
+    <p>{{ actor.biography }}</p>
   </div>
 </div>

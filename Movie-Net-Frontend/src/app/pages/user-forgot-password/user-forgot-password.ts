@@ -23,6 +23,7 @@ export class UserForgotPassword {
     });
   }
 
+  // todo: change code verification and new password to separate pages
   onForgotPassword() {
     if (this.form.valid) {
       const forgotPasswordDto: ForgotPasswordDto = {
