@@ -11,6 +11,7 @@
           mat-mini-fab
           color="primary"
           (click)="toggleWatchlist(movie.id)">
+          <!-- todo: change icon on click-->
           <mat-icon>{{ watchlistContainsMovie(movie.id) ? 'remove' : 'add' }}</mat-icon>
         </button>
         <mat-card-content>

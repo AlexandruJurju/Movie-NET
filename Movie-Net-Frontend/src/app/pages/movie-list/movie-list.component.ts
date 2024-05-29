@@ -102,7 +102,4 @@ export class MovieListComponent implements OnInit {
       this.addToWatchlist(movieId);
     }
   }
-
-  protected readonly faPlus = faPlus;
-  protected readonly faMinus = faMinus;
 }
