@@ -8,6 +8,10 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
+import {MatDialog} from "@angular/material/dialog";
+import {DeleteMovieComponent} from "../../components/dialogues/delete-movie/delete-movie.component";
+import DevExpress from "devextreme";
+import dialog = DevExpress.ui.dialog;
 
 @Component({
   selector: 'app-movie-details',
@@ -35,7 +39,6 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 export class MovieDetailsComponent implements OnInit {
   movie: DetailedMovieDto = {} as DetailedMovieDto;
   watchlist: MovieDto[] = [];
-  review: ReviewDto | null = null;
   form: FormGroup;
 
   constructor(
@@ -44,7 +47,8 @@ export class MovieDetailsComponent implements OnInit {
     private watchlistService: WatchListService,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog,
   ) {
     this.form = this.formBuilder.group({
       text: ['', [Validators.required]],
@@ -150,5 +154,21 @@ export class MovieDetailsComponent implements OnInit {
     } else {
       this.addToWatchlist();
     }
+  }
+
+  openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    const dialogRef = this.dialog.open(DeleteMovieComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result == true) {
+        this.movieService.deleteMovie(this.movie.id).subscribe({});
+      }
+    })
+
   }
 }

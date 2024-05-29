@@ -12,6 +12,7 @@
 
       <!-- Buttons for adding and removing from watchlist -->
       <div class="button-container">
+        <button mat-raised-button color="warn" (click)="openDeleteDialog('0ms', '0ms')">Delete Movie</button>
         <button mat-raised-button color="primary" (click)="navigateToUpdateMovie()">Update Movie</button>
         <button mat-raised-button [color]="isMovieInWatchlist() ? 'warn' : 'primary'" (click)="toggleWatchlist()">
           {{ isMovieInWatchlist() ? 'Remove from Watchlist' : 'Add to Watchlist' }}

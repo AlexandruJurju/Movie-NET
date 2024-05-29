@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Delete movie</h2>
+<mat-dialog-content>
+  Delete this movie?
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close(true)" cdkFocusInitial>Yes</button>
+  <button mat-button (click)="dialogRef.close(false)">No</button>
+</mat-dialog-actions>
