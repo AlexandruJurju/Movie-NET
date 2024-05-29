@@ -1,6 +1,7 @@
 <mat-card>
   <div class="flex-row">
 
+    <!--    todo: add backdrop -->
     <!-- Display Movie poster -->
     <div class="poster-container">
       <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" [width]="250" [height]="400">
@@ -27,6 +28,7 @@
       <p>{{ movie.overview }}</p>
       <p>Genres: <span *ngFor="let genre of movie.genres; let isLast=last">{{ genre.name }}{{ isLast ? '' : ', ' }}</span></p>
 
+      <!--      todo: Cast, crew, details, genres separate -->
       <!-- Display Actors -->
       <div class="actors-container">
         <div *ngFor="let movieActor of movie.movieActors" (click)="navigateToActorDetails(movieActor.actor.id)">
