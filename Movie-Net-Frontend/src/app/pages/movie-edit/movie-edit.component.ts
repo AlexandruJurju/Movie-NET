@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormsModule, NgForm} from "@angular/forms";
+import {FormsModule} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {GenreDto, MovieDto, MovieService} from "../../services/swagger";
 import {DxButtonModule} from "devextreme-angular";
@@ -8,7 +8,8 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatCard} from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
-import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle} from "@angular/material/dialog";
+import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
+import {DeleteDialogComponent} from "../../components/dialogues/delete-dialog/delete-dialog.component";
 
 
 @Component({
@@ -33,11 +34,11 @@ import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialog
 })
 export class MovieEditComponent implements OnInit {
   movie: MovieDto = {} as MovieDto;
-  movieCopy: MovieDto = {} as MovieDto;
 
   constructor(private movieService: MovieService,
               private router: Router,
               private route: ActivatedRoute,
+              private dialog: MatDialog
   ) {
   }
 
@@ -53,8 +54,6 @@ export class MovieEditComponent implements OnInit {
       return;
     }
 
-    console.log(movieId);
-
     this.movieService.findMovieById(movieId).subscribe({
       next: movie => {
         if (!movie) {
@@ -63,7 +62,6 @@ export class MovieEditComponent implements OnInit {
           return;
         }
         this.movie = movie;
-        this.movieCopy = {...movie};
       },
       error: error => {
         console.error('Error fetching movie:', error);
@@ -87,21 +85,27 @@ export class MovieEditComponent implements OnInit {
     });
   }
 
-  deleteMovieById(movieId: number) {
-    this.movieService.deleteMovie(movieId).subscribe({
-      next: () => {
-        this.router.navigate(["/movie-list"]).then(() => {
+  openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result == true) {
+        this.movieService.deleteMovie(this.movie.id).subscribe({
+          next: result => {
+            //   todo: make a page for admin configuration, redirect to that page
+          }
         });
-      },
-      error: error => {
-        this.router.navigate(["/error"]).then(() => {
-        })
       }
     })
   }
 
   resetForm() {
-    this.movie = {...this.movieCopy};
+    this.findMovieFromPath();
   }
 
 }
