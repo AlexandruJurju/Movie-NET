@@ -1,34 +1,16 @@
-form {
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0;
+}
+
+.flex-container{
   display: flex;
   flex-direction: column;
-  width: 300px;
-  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
 }
 
-div {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input {
-  width: 100%;
-  padding: 5px;
-  box-sizing: border-box;
-}
-
-button {
-  padding: 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
+.flex-container mat-form-field {
+  width: 600px;
 }

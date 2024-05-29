@@ -1,23 +1,65 @@
-<form #movieForm="ngForm" (ngSubmit)="onSubmit(movieForm)">
-  <div>
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" ngModel>
+<mat-card>
+  <div class="flex-container">
+    <form [formGroup]="saveForm" (ngSubmit)="saveMovie()">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput type="text" name="title" id="title" required>
+
+          <mat-error *ngIf="this.saveForm.get('title')?.touched && this.saveForm.get('titles')?.hasError('required')">
+            Title is required
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Headline</mat-label>
+          <input matInput type="text" name="headline" id="headline" required>
+
+          <mat-error *ngIf="this.saveForm.get('headline')?.touched && this.saveForm.get('headline')?.hasError('required')">
+            Headline is required
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Overview</mat-label>
+          <input matInput type="text" name="overview" id="overview" required>
+
+          <mat-error *ngIf="this.saveForm.get('overview')?.touched && this.saveForm.get('overview')?.hasError('required')">
+            Overview is required
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Release Date</mat-label>
+          <input matInput type="date" name="releaseDate" id="releaseDate">
+
+          <mat-error *ngIf="this.saveForm.get('releaseDate')?.touched && this.saveForm.get('releaseDate')?.hasError('required')">
+            Release Date is required
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <!--        todo: use a poster upload instead of url upload-->
+        <mat-form-field appearance="fill">
+          <mat-label>Poster Url</mat-label>
+          <input matInput type="text" name="posterUrl" id="posterUrl">
+
+          <mat-error *ngIf="this.saveForm.get('posterUrl')?.touched && this.saveForm.get('posterUrl')?.hasError('required')">
+            Poster is required
+          </mat-error>
+        </mat-form-field>
+      </p>
+    </form>
+
+    <div>
+      <button type="submit" mat-raised-button [disabled]="!saveForm.valid">Save Movie</button>
+    </div>
   </div>
-  <div>
-    <label for="headline">Headline:</label>
-    <input type="text" id="headline" name="headline" ngModel>
-  </div>
-  <div>
-    <label for="overview">Overview:</label>
-    <input type="text" id="overview" name="overview" ngModel>
-  </div>
-  <div>
-    <label for="releaseDate">Release Date:</label>
-    <input type="date" id="releaseDate" name="releaseDate" ngModel>
-  </div>
-  <div>
-    <label for="posterUrl">Poster Image URL:</label>
-    <input type="text" id="posterUrl" name="posterUrl" ngModel>
-  </div>
-  <button type="submit">Upload Movie</button>
-</form>
+</mat-card>
