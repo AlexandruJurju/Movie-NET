@@ -15,7 +15,7 @@
     <!--    Middle of the bar-->
     <div *ngIf="isUserLoggedIn()">
       <button mat-button [matMenuTriggerFor]="movieMenu">Movies</button>
-      <button mat-button routerLink="/genre-list" *ngIf="roles.includes('Admin')">Genres</button>
+      <button mat-button routerLink="/genre-list">Genres</button>
     </div>
 
     <!--    Right side -->
