@@ -25,6 +25,7 @@ public class JwtService : IJwtService
     {
         var user = _userService.FindUserByEmail(loginRequest.Email).Value;
 
+        // todo: fix claims
         List<Claim> claims = new List<Claim>
         {
             new(ClaimTypes.Email, loginRequest.Email),

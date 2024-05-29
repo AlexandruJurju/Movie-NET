@@ -20,6 +20,12 @@ public class WatchListController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Adds a movie to a user's watchlist
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
+    /// <param name="movieId">The ID of the movie</param>
+
     [HttpPost("{userId}/watchlist/{movieId}")]
     [ProducesResponseType(200)]
     public IActionResult AddMovieToWatchlist([FromRoute] int userId, [FromRoute] int movieId)

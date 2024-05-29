@@ -8,6 +8,7 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Controllers;
 
+// todo: use async
 [AllowAnonymous]
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -22,6 +23,11 @@ public class MovieController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Retrieves a list with all the movies
+    /// </summary>
+    /// <returns>This endpoint returns a list with all the movies</returns>
+    /// <response code="200">Found all movies</response>
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public IActionResult FindAllMovies()
@@ -30,6 +36,13 @@ public class MovieController : ControllerBase
         return Ok(movies);
     }
 
+    /// <summary>
+    /// Retrives a movie using the given id
+    /// </summary>
+    /// <returns>This endpoint returns a movie given an id</returns>
+    /// <response code="200">Found the movie</response>
+    /// <response code="400">Could not find movie with the id </response>
+    // todo: response code when not found
     [HttpGet("{movieId}")]
     [ProducesResponseType(200, Type = typeof(DetailedMovieDto))]
     public IActionResult FindMovieById([FromRoute] int movieId)
@@ -42,6 +55,12 @@ public class MovieController : ControllerBase
         return Ok(movie);
     }
 
+    /// <summary>
+    ///  Find a list of movies ipaged
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="size"></param>
+    /// <returns> A list with movies </returns>
     [HttpGet("{page}/{size}")]
     [ProducesResponseType(200, Type = typeof(PageResponse<MovieDto>))]
     public IActionResult FindAllMoviesPages([FromRoute] int page, [FromRoute] int size)
@@ -63,6 +82,12 @@ public class MovieController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Save a movie
+    /// </summary>
+    /// <param name="movieDto"> The entity MovieDto received from the frontend</param>
+    /// <response code="201">Saved the movie</response>
+    /// <returns></returns>
     [HttpPost]
     public IActionResult SaveMovie([FromBody] MovieDto movieDto)
     {
@@ -71,6 +96,11 @@ public class MovieController : ControllerBase
         return CreatedAtAction(nameof(SaveMovie), new { id = createdMovie.Id });
     }
 
+    /// <summary>
+    ///  Delete a movie using an id 
+    /// </summary>
+    /// <param name="movieId"> The id of the movie to be deleted</param>
+    /// <returns></returns>
     [HttpDelete("{movieId}")]
     public IActionResult DeleteMovie([FromRoute] int movieId)
     {
@@ -80,6 +110,12 @@ public class MovieController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Update a movie
+    /// </summary>
+    /// <param name="movieId"> The id of the movie to be deleted</param>
+    /// <param name="updatedMovie">The updated movieDto that will be used to update the movie</param>
+    /// <returns></returns>
     [HttpPut("{movieId}")]
     public IActionResult UpdateMovie([FromRoute] int movieId, [FromBody] MovieDto updatedMovie)
     {
@@ -92,7 +128,7 @@ public class MovieController : ControllerBase
 
         return Ok();
     }
-    
+
     [HttpPost("{movieId}/genres/{genreId}")]
     public IActionResult AddGenreToMovie([FromRoute] int movieId, [FromRoute] int genreId)
     {
