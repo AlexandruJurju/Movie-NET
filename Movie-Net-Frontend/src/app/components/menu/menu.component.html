@@ -16,7 +16,7 @@
     <!--    Middle of the bar-->
     <div *ngIf="isUserLoggedIn()">
       <button mat-button [matMenuTriggerFor]="movieMenu">Movies</button>
-      <button mat-button routerLink="/genre-list">Genres</button>
+      <button mat-button *ngIf="roles.includes('Admin')" routerLink="/genre-list">Genres</button>
     </div>
 
     <!--    Right side -->
@@ -47,7 +47,7 @@
 
 <mat-menu #movieMenu="matMenu">
   <button mat-menu-item routerLink="/movie-list">Find Movies</button>
-  <button mat-menu-item *ngIf="isUserLoggedIn()" routerLink="/movie-save">Add Movies</button>
+  <button mat-menu-item *ngIf="roles.includes('Admin')" routerLink="/movie-save">Add Movies</button>
 </mat-menu>
 
 <mat-menu #profileMenu="matMenu">
