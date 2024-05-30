@@ -25,30 +25,33 @@ public class JwtService : IJwtService
     {
         var user = _userService.FindUserByEmail(loginRequest.Email).Value;
 
-        // todo: fix claims
-        List<Claim> claims = new List<Claim>
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!);
+        
+        var claims = new List<Claim>()
         {
-            new(ClaimTypes.Email, loginRequest.Email),
-            new(ClaimTypes.Name, user.Username),
-            new(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
-            new(ClaimTypes.Role, user.Role.ToString())
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Username),
+            new(JwtRegisteredClaimNames.Email, user.Email),
         };
 
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!));
+        // todo: make it so user can have multiple roles
+        claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        var tokenDescriptor = new SecurityTokenDescriptor()
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.Add(TokenLifeSpan),
+            Issuer = _configuration["JwtSettings:Issuer"],
+            Audience = _configuration["JwtSettings:Audience"],
+            SigningCredentials = new SigningCredentials
+                (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
 
-        var token = new JwtSecurityToken(
-            issuer: _configuration["JwtSettings:Issuer"],
-            audience: _configuration["JwtSettings:Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.Add(TokenLifeSpan),
-            signingCredentials: credentials
-        );
 
-        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var stringToken = tokenHandler.WriteToken(token);
 
-        return jwt;
+        return stringToken;
     }
 }
