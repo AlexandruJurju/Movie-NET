@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
-import {Router} from "@angular/router";
 import {GenreDto, GenreService} from "../../services/swagger";
 import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable} from "@angular/material/table";
 import {MatButton} from "@angular/material/button";
@@ -49,14 +48,11 @@ export class GenreListComponent implements OnInit {
 
   findAllGenres(): void {
     this.genreService.findAllGenres().subscribe(genres => this.genres = genres);
-    console.log(this.genres)
   }
-
-  // TODO: pass the whole object to page, not just the id, get rid of the call
 
   openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string, genreDto: GenreDto): void {
     const dialogRef = this.dialog.open(GenreEditDialogComponent, {
-      width: '250px',
+      width: '400px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: {
@@ -65,8 +61,22 @@ export class GenreListComponent implements OnInit {
       }
     });
 
-    // todo: update genre with date from dialog
-    dialogRef.afterOpened().subscribe({})
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newGenreName: string = result;
+        const newGenre: GenreDto = {
+          id: genreDto.id,
+          name: newGenreName,
+        };
+
+        this.genreService.updateGenre(genreDto.id, newGenre).subscribe({
+          next: result => {
+            console.log("genre updated successfully")
+            this.findAllGenres();
+          }
+        })
+      }
+    });
 
   }
 
@@ -82,7 +92,6 @@ export class GenreListComponent implements OnInit {
       if (result == true) {
         this.genreService.deleteGenre(genreDto.id).subscribe({
           next: result => {
-            // reload all genres
             this.findAllGenres()
           }
         });
