@@ -1,9 +1,10 @@
 <div class="container">
   <!--  todo: add search bar-->
-  <!--  todo: add dialog for saving a genre-->
+
   <button mat-raised-button
           color="primary"
-          matTooltip="Add a new Genre">
+          matTooltip="Add a new Genre"
+  (click)="openSaveGenreDialog('0ms','0ms')">
     Add a new Genre
   </button>
 
@@ -11,7 +12,7 @@
     <!--    First Column - Id -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> Genre ID</mat-header-cell>
-      <mat-cell *matCellDef="let genre">{{ genre.id }}</mat-cell>
+      <mat-cell *matCellDef="let genre; let i = index">{{ i + 1 }}</mat-cell>
     </ng-container>
 
     <!--    Second Column - Name -->

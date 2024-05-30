@@ -7,8 +7,9 @@ import {MatSort} from "@angular/material/sort";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatDialog} from "@angular/material/dialog";
-import {GenreEditDialogComponent} from "../../components/dialogues/edit-genre-dialog/genre-edit-dialog.component";
-import {DeleteDialogComponent} from "../../components/dialogues/delete-dialog/delete-dialog.component";
+import {GenreEditDialogComponent} from "../../components/dialogs/edit-genre-dialog/genre-edit-dialog.component";
+import {DeleteDialogComponent} from "../../components/dialogs/delete-dialog/delete-dialog.component";
+import {SaveGenreDialogComponent} from "../../components/dialogs/save-genre-dialog/save-genre-dialog.component";
 
 @Component({
   selector: 'app-genre-list',
@@ -96,6 +97,36 @@ export class GenreListComponent implements OnInit {
             this.findAllGenres()
           }
         });
+      }
+    })
+  }
+
+  openSaveGenreDialog(enterAnimationDuration: string, exitAnimationDuration: string) {
+    const dialogRef = this.dialog.open(SaveGenreDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {
+        presentGenres: this.genres.map(genre => genre.name),
+      }
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: result => {
+
+        const newGenre: GenreDto = {
+          id: 0,
+          name: result,
+        }
+
+        console.log(newGenre)
+
+        this.genreService.saveGenre(newGenre).subscribe({
+          next: result => {
+            console.log("Saved new Genre")
+            this.findAllGenres();
+          }
+        })
       }
     })
   }

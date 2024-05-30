@@ -9,7 +9,7 @@ import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatDialog} from "@angular/material/dialog";
-import {DeleteDialogComponent} from "../../components/dialogues/delete-dialog/delete-dialog.component";
+import {DeleteDialogComponent} from "../../components/dialogs/delete-dialog/delete-dialog.component";
 import DevExpress from "devextreme";
 import dialog = DevExpress.ui.dialog;
 

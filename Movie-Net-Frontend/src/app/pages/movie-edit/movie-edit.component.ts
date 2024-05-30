@@ -9,7 +9,7 @@ import {MatCard} from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
-import {DeleteDialogComponent} from "../../components/dialogues/delete-dialog/delete-dialog.component";
+import {DeleteDialogComponent} from "../../components/dialogs/delete-dialog/delete-dialog.component";
 
 
 @Component({
