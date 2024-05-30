@@ -12,6 +12,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DeleteDialogComponent} from "../../components/dialogs/delete-dialog/delete-dialog.component";
 import DevExpress from "devextreme";
 import dialog = DevExpress.ui.dialog;
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-movie-details',
@@ -32,6 +33,8 @@ import dialog = DevExpress.ui.dialog;
     MatCardTitle,
     MatLabel,
     MatGridList,
+    MatTabGroup,
+    MatTab,
   ],
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.scss']
