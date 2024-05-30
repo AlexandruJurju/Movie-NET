@@ -1,19 +1,21 @@
-<div class="container mt-4">
-  <div class="row justify-content-center align-items-center">
-    <div class="col-md-4 text-center">
-      <img class="rounded-circle me-2" ngSrc="assets/default-profile.png" alt="User Image" [width]="150" height="150">
-    </div>
-    <div class="col-md-8 text-center">
-      <h1>{{ user.username }}</h1>
-    </div>
-  </div>
-
-  <div>
-    Number of reviews: {{ reviews.length }}
-  </div>
-</div>
-
-
 <div class="container">
 
+  <div class="user-info">
+    <div class="user-details">
+      <img class="profile-image" [src]="user.profilePictureUrl ? user.profilePictureUrl : 'placeholder.jpg'" alt="User Image">
+      <div>
+        <h1>{{ user.username }}</h1>
+        <button mat-raised-button>EDIT PROFILE</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <p>Number of reviews: {{ reviews.length }}</p>
+      <p>Films watched: </p>
+    </div>
+  </div>
+
+  <div class="nav">
+    <!-- Navigation menu goes here -->
+  </div>
 </div>

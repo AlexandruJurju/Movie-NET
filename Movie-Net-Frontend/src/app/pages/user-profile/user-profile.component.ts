@@ -2,12 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {ReviewDto, ReviewService, UserDto, UserService} from "../../services/swagger";
 import {Router} from "@angular/router";
 import {NgOptimizedImage} from "@angular/common";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatButton
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss'
@@ -28,14 +30,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   private getUserReviews() {
-    console.log("get user reviews")
     this.reviewService.findReviewsOfUser(Number(localStorage.getItem('userId'))).subscribe({
       next: reviews => {
-        console.log(reviews);
         this.reviews = reviews;
-      },
-      error: error => {
-        console.error('Error posting review:', error);
       }
     });
   }
