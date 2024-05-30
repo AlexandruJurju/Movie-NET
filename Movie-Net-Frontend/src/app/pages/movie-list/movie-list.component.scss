@@ -1,16 +1,13 @@
-:host {
-  display: flex;
-  justify-content: center;
-  margin: 50px 0;
-}
 
-.hover-button{
+.hover-button {
   visibility: hidden;
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
 }
 
 .movie-grid {
@@ -24,8 +21,18 @@
   width: 100%;
 }
 
+.movie-title {
+  margin-top: 10px; /* Add some spacing between the poster and the title */
+  text-align: center; /* Center-align the movie titles */
+  font-size: 14px;
+}
+
 .mat-card {
   position: relative;
+}
+
+.movie-card {
+  cursor: pointer;
 }
 
 button {
