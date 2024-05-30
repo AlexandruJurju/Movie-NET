@@ -44,7 +44,11 @@ export class GenreEditDialogComponent implements OnInit {
   updateGenre() {
     if (this.form.valid) {
       const newGenre = this.form.value.genreName;
-      this.dialogRef.close(newGenre);
+      if (this.inputData.presentGenres.includes(newGenre)) {
+        this.form.controls['genreName'].setErrors({'alreadyPresent': true});
+      } else {
+        this.dialogRef.close(newGenre);
+      }
     }
   }
 }

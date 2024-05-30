@@ -57,7 +57,8 @@ export class GenreListComponent implements OnInit {
       exitAnimationDuration,
       data: {
         genreId: genreDto.id,
-        genreName: genreDto.name
+        genreName: genreDto.name,
+        presentGenres: this.genres.map(genre => genre.name),
       }
     });
 
