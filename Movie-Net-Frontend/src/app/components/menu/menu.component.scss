@@ -5,9 +5,13 @@
 
 .user-items {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
+.user-button {
+  display: flex;
+  align-items: center;
+}
 
 mat-toolbar-row {
   display: flex;

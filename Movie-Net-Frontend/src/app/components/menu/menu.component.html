@@ -27,17 +27,19 @@
       </div>
 
       <div *ngIf="isUserLoggedIn()">
-        <button mat-button [matMenuTriggerFor]="profileMenu">
+        <button mat-button [matMenuTriggerFor]="profileMenu" class="user-button">
+          <span>{{ this.username }}</span>
           <img
-            ngSrc="assets/default-profile.png" [width]="35" [height]="35"
+            src="assets/default-profile.png" [width]="30" [height]="30"
             alt="User Profile"
             class="rounded-circle"
             id="userDropdownMenuButton"
-            data-bs-toggle="dropdown"
             aria-expanded="false"
           />
         </button>
       </div>
+
+
     </div>
 
   </mat-toolbar-row>

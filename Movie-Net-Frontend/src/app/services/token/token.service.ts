@@ -46,11 +46,21 @@ export class TokenService {
     if (token) {
       const jwtHelper = new JwtHelperService();
       const decodedToken = jwtHelper.decodeToken(token);
-      console.log(decodedToken)
-      const roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-      return roles ? (Array.isArray(roles) ? roles : [roles]) : [];
+      return decodedToken.role;
     }
     return [];
   }
+
+  public getUsername(): string {
+    const token = this.token;
+    if (token) {
+      const jwtHelper = new JwtHelperService();
+      const decodedToken = jwtHelper.decodeToken(token);
+      return decodedToken.sub;
+
+    }
+    throw new Error("Username not found");
+  }
+
 }
 

@@ -31,14 +31,16 @@ import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 
 export class MenuComponent {
   roles: string[] = [];
+  username: string | undefined;
 
   constructor(
     private tokenService: TokenService,
-    private userService: UserService,
     private router: Router) {
-    this.roles = this.tokenService.getUserRoles();
+    if (this.isUserLoggedIn()) {
+      this.roles = this.tokenService.getUserRoles();
+      this.username = this.tokenService.getUsername();
+    }
   }
-
 
   logout() {
     this.tokenService.removeToken();
