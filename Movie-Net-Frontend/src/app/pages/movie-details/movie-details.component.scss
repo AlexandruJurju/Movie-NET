@@ -1,58 +1,47 @@
-.flex-row {
+.container {
+  display: flex;
+  margin: 100px 25%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.movie-info-container {
   display: flex;
   flex-direction: row;
-  margin-top: 50px;
-  justify-content: center;
+  gap: 30px;
 }
 
 .poster-container {
   flex: 30%;
-  margin-right: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
-.details-container {
-  flex: 70%;
-}
-
-.actors-container {
+.title-release-container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 16px;
+  align-items: flex-end;
+  gap: 10px;
 }
 
-.actors-container > div {
-  cursor: pointer;
+.headline-overview-container{
+  font-size: 16px;
 }
-
-.reviews-container {
-  margin-top: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.add-review-container {
-  display: flex;
-  flex-direction: column
-}
-
 
 .button-container {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.reviews-container mat-card-title, mat-card-subtle {
-  width: 500px;
+.button-container button {
+  width: 125px;
 }
 
-mat-form-field {
-  width: 500px;
+
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
 }

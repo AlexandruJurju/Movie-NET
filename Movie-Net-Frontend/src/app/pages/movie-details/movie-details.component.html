@@ -1,7 +1,6 @@
-<mat-card>
-  <div class="flex-row">
-
-    <!--    todo: add backdrop -->
+<div class="container">
+  <!--  Display the movie information -->
+  <div class="movie-info-container">
     <!-- Display Movie poster -->
     <div class="poster-container">
       <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" [width]="250" [height]="400">
@@ -9,28 +8,18 @@
 
     <!-- Display Movie details -->
     <div class="details-container">
-      <h1>{{ movie.title }}</h1>
-      <p>{{ movie.releaseDate }}</p>
-
-      <!-- Buttons for adding and removing from watchlist -->
-      <div class="button-container">
-        <button mat-raised-button color="warn" (click)="openDeleteDialog('0ms', '0ms')">Delete Movie</button>
-        <button mat-raised-button color="primary" (click)="navigateToUpdateMovie()">Update Movie</button>
-        <!-- todo: make it so changing the icons doesnt need to reload the page-->
-        <button mat-raised-button
-                [color]="isMovieInWatchlist() ? 'warn' : 'primary'" (click)="toggleWatchlist()">
-          {{ isMovieInWatchlist() ? 'Remove from Watchlist' : 'Add to Watchlist' }}
-        </button>
+      <div class="title-release-container">
+        <h1>{{ movie.title }}</h1>
+        <p>{{ movie.releaseDate }}</p>
       </div>
-
-
-      <h5>{{ movie.headline }}</h5>
-      <p>{{ movie.overview }}</p>
-      <p>Genres: <span *ngFor="let genre of movie.genres; let isLast=last">{{ genre.name }}{{ isLast ? '' : ', ' }}</span></p>
-
-      <!--      todo: Cast, crew, details, genres separate -->
+      <div class="headline-overview-container">
+        <h5>{{ movie.headline }}</h5>
+        <p>{{ movie.overview }}</p>
+        <p>Genres: <span *ngFor="let genre of movie.genres; let isLast=last">{{ genre.name }}{{ isLast ? '' : ', ' }}</span></p>
+      </div>
       <!-- Display Actors -->
       <div class="actors-container">
+        <!--      todo: Cast, crew, details, genres separate -->
         <div *ngFor="let movieActor of movie.movieActors" (click)="navigateToActorDetails(movieActor.actor.id)">
           <img [src]="movieActor.actor.profilePictureUrl" [height]="150" [width]="100" alt="{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}">
           <div>{{ movieActor.actor.firstName }} {{ movieActor.actor.lastName }}</div>
@@ -38,11 +27,25 @@
         </div>
       </div>
     </div>
+
+    <!-- Buttons for adding and removing from watchlist -->
+    <div class="button-container">
+      <button mat-raised-button color="warn" (click)="openDeleteDialog('0ms', '0ms')">Delete Movie</button>
+      <button mat-raised-button color="primary" (click)="navigateToUpdateMovie()">Update Movie</button>
+      <!-- todo: make it so changing the icons doesnt need to reload the page-->
+      <button mat-raised-button
+              [color]="isMovieInWatchlist() ? 'warn' : 'primary'" (click)="toggleWatchlist()">
+        {{ isMovieInWatchlist() ? 'Remove from Watchlist' : 'Add to Watchlist' }}
+      </button>
+    </div>
   </div>
 
   <!-- Display movie reviews -->
   <div class="reviews-container">
-    <h2>Reviews</h2>
+    <div class="reviews-header" style="display: flex; justify-content: space-between;">
+      <h2>Recent Reviews</h2>
+      <p>MORE</p>
+    </div>
     <mat-card *ngFor="let review of movie.reviews">
       <mat-card-header>
         <mat-card-title>{{ review.user.username }}</mat-card-title>
@@ -53,22 +56,25 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Display section for adding reviews -->
-    <h2>Add a Review</h2>
-    <mat-card>
-      <mat-card-content>
-        <form [formGroup]="form" class="add-review-container" (ngSubmit)="submitReview()">
-          <mat-form-field>
-            <textarea matInput id="reviewText" formControlName="text" required></textarea>
-            <mat-label>Review</mat-label>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput type="number" id="reviewScore" formControlName="score" required min="1" max="10">
-            <mat-label>Score</mat-label>
-          </mat-form-field>
-          <button mat-raised-button color="primary" type="submit">Submit</button>
-        </form>
-      </mat-card-content>
-    </mat-card>
+    <!--    Display section for adding reviews-->
+    <!--    todo: use a dialog-->
+    <div class="add-review-container">
+      <h2>Add a Review</h2>
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="form" class="add-review-container" (ngSubmit)="submitReview()">
+            <mat-form-field>
+              <textarea matInput id="reviewText" formControlName="text" required></textarea>
+              <mat-label>Review</mat-label>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" id="reviewScore" formControlName="score" required min="1" max="10">
+              <mat-label>Score</mat-label>
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
-</mat-card>
+</div>
