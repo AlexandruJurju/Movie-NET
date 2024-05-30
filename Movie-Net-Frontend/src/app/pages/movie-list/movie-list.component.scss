@@ -4,6 +4,10 @@
   margin: 50px 0;
 }
 
+.hover-button{
+  visibility: hidden;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -25,8 +29,14 @@
 }
 
 button {
-  position: absolute;
-  bottom: 10px;
+  position: absolute; /* Absolute position to put the buttons at the bottom of the movie poster */
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
+  opacity: 0; /* Initially hide the button */
+  transition: opacity 0.3s; /* Smooth transition for opacity */
+}
+
+.movie-card:hover button {
+  opacity: 1; /* Show the button when hovering over the card */
 }

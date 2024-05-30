@@ -1,6 +1,6 @@
 <div class="container">
   <div class="movie-grid">
-    <div *ngFor="let movie of movieResponse.content">
+    <div *ngFor="let movie of movieResponse.content" class="movie-card">
       <mat-card>
         <img
           [src]="movie.posterUrl"
@@ -8,12 +8,13 @@
           [height]="400"
           alt="{{ movie.title }} Poster"
           (click)="goToMovieDetails(movie.id)"
+          class="movie-image"
         />
         <button
           mat-mini-fab
           color="primary"
-          (click)="toggleWatchlist(movie.id)">
-          <!-- todo: change icon on click-->
+          (click)="toggleWatchlist(movie.id)"
+        >
           <mat-icon>{{ watchlistContainsMovie(movie.id) ? 'remove' : 'add' }}</mat-icon>
         </button>
         <mat-card-content>
@@ -28,9 +29,8 @@
       [length]="movieResponse.totalElements"
       [pageSize]="size"
       [pageIndex]="page - 1"
-      (page)="goToPage($event.pageIndex + 1)">
+      (page)="goToPage($event.pageIndex + 1)"
+    >
     </mat-paginator>
   </div>
 </div>
-
-
