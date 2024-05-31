@@ -13,7 +13,7 @@ public class User
     [Column("role")] public Role Role { get; set; }
 
     // todo: find a better way to store the default image
-    [Column("profile_picture_url")] public string ProfilePictureUrl { get; set; } = "https://static-00.iconduck.com/assets.00/profile-default-icon-512x511-v4sw4m29.png";
+    [Column("profile_picture_url")] public string ProfilePictureUrl { get; set; }
     public virtual ICollection<Movie> Movies { get; set; }
     public virtual ICollection<Review> Reviews { get; set; }
 }

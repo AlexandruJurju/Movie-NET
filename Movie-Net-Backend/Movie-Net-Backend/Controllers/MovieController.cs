@@ -15,6 +15,9 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
     private readonly IMovieService _movieService = movieService ?? throw new ArgumentNullException(nameof(movieService));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
+    /// <summary>
+    /// Retrieves all movies
+    /// </summary>
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public IActionResult FindAllMovies()
@@ -23,7 +26,10 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
         return Ok(movies);
     }
 
-    // todo: response code when not found
+    /// <summary>
+    /// Retrieves a movie by ID
+    /// </summary>
+    /// <param name="movieId">The ID of the movie to retrieve</param>
     [HttpGet("{movieId}")]
     [ProducesResponseType(200, Type = typeof(DetailedMovieDto))]
     public async Task<IActionResult> FindMovieById([FromRoute] int movieId)
@@ -36,6 +42,11 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
         return Ok(movie);
     }
 
+    /// <summary>
+    /// Retrieves movies with pagination
+    /// </summary>
+    /// <param name="page">The page number</param>
+    /// <param name="size">The page size</param>
     [HttpGet("{page}/{size}")]
     [ProducesResponseType(200, Type = typeof(PageResponse<MovieDto>))]
     public async Task<IActionResult> FindAllMoviesPages([FromRoute] int page, [FromRoute] int size)
@@ -57,6 +68,10 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
         return Ok(response);
     }
 
+    /// <summary>
+    /// Creates a new movie
+    /// </summary>
+    /// <param name="movieDto">The movie data</param>
     [HttpPost]
     public async Task<IActionResult> SaveMovie([FromBody] MovieDto movieDto)
     {
@@ -65,6 +80,10 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
         return CreatedAtAction(nameof(SaveMovie), new { id = createdMovie.Id });
     }
 
+    /// <summary>
+    /// Deletes a movie by ID
+    /// </summary>
+    /// <param name="movieId">The ID of the movie to delete</param>
     [HttpDelete("{movieId}")]
     public async Task<IActionResult> DeleteMovie([FromRoute] int movieId)
     {
@@ -74,6 +93,11 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
         return Ok();
     }
 
+    /// <summary>
+    /// Updates an existing movie
+    /// </summary>
+    /// <param name="movieId">The ID of the movie to update</param>
+    /// <param name="updatedMovie">The updated movie data</param>
     [HttpPut("{movieId}")]
     public async Task<IActionResult> UpdateMovie([FromRoute] int movieId, [FromBody] MovieDto updatedMovie)
     {
@@ -91,8 +115,6 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
     /// Find movies with a specific genre
     /// </summary>
     /// <param name="genreId">The ID of the genre to filter movies by</param>
-    /// <returns>A list of movies belonging to the specified genre</returns>
-    /// <response code="200">Successful response</response>
     [HttpGet("genre/{genreId}")]
     [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public async Task<IActionResult> FindMoviesWithGenre([FromRoute] int genreId)

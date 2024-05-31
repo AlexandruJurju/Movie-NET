@@ -13,6 +13,9 @@ public class GenreController(IGenreService genreService, IMapper mapper) : Contr
     private readonly IGenreService _genreService = genreService ?? throw new ArgumentNullException(nameof(genreService));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
+    /// <summary>
+    /// Retrieves all genres
+    /// </summary>
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<GenreDto>))]
     public async Task<IActionResult> FindAllGenresAsync()
@@ -21,6 +24,10 @@ public class GenreController(IGenreService genreService, IMapper mapper) : Contr
         return Ok(genres);
     }
 
+    /// <summary>
+    /// Retrieves a genre by ID
+    /// </summary>
+    /// <param name="genreId">The ID of the genre to retrieve</param>
     [HttpGet("{genreId}")]
     [ProducesResponseType(200, Type = typeof(GenreDto))]
     public async Task<IActionResult> FindGenreByIdAsync([FromRoute] int genreId)
@@ -32,6 +39,10 @@ public class GenreController(IGenreService genreService, IMapper mapper) : Contr
         return Ok(genre);
     }
 
+    /// <summary>
+    /// Creates a new genre
+    /// </summary>
+    /// <param name="genreDto">The genre data</param>
     [HttpPost]
     [ProducesResponseType(200)]
     public async Task<IActionResult> SaveGenreAsync([FromBody] GenreDto genreDto)
@@ -41,6 +52,10 @@ public class GenreController(IGenreService genreService, IMapper mapper) : Contr
         return CreatedAtAction(nameof(SaveGenreAsync), new { id = createdGenre.Id });
     }
 
+    /// <summary>
+    /// Deletes a genre by ID
+    /// </summary>
+    /// <param name="genreId">The ID of the genre to delete</param>
     [HttpDelete("{genreId}")]
     public async Task<IActionResult> DeleteGenreAsync([FromRoute] int genreId)
     {
@@ -50,6 +65,11 @@ public class GenreController(IGenreService genreService, IMapper mapper) : Contr
         return Ok();
     }
 
+    /// <summary>
+    /// Updates an existing genre
+    /// </summary>
+    /// <param name="genreId">The ID of the genre to update</param>
+    /// <param name="updatedGenre">The updated genre data</param>
     [HttpPut("{genreId}")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> UpdateGenreAsync([FromRoute] int genreId, [FromBody] GenreDto updatedGenre)
@@ -64,6 +84,10 @@ public class GenreController(IGenreService genreService, IMapper mapper) : Contr
         return Ok();
     }
 
+    /// <summary>
+    /// Retrieves movies associated with a genre
+    /// </summary>
+    /// <param name="genreId">The ID of the genre</param>
     [HttpGet("{genreId}/movies")]
     [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public async Task<IActionResult> GetMoviesWithGenreAsync([FromRoute] int genreId)

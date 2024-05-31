@@ -13,6 +13,12 @@ public class ReviewController(IReviewService reviewService, IMapper mapper) : Co
     private readonly IReviewService _reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
+
+    /// <summary>
+    /// Find all the reviews
+    /// </summary>
+    /// <returns>List of reviews</returns>
+    /// <response code="200">Successful response</response>
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<ReviewDto>))]
     public async Task<IActionResult> FindAllReviewsAsync()
@@ -21,6 +27,10 @@ public class ReviewController(IReviewService reviewService, IMapper mapper) : Co
         return Ok(reviews);
     }
 
+    /// <summary>
+    /// Saves a new review
+    /// </summary>
+    /// <param name="reviewDto">The review data</param>
     [HttpPost]
     public async Task<IActionResult> SaveReviewAsync([FromBody] ReviewDto reviewDto)
     {
@@ -29,6 +39,10 @@ public class ReviewController(IReviewService reviewService, IMapper mapper) : Co
         return Ok();
     }
 
+    /// <summary>
+    /// Retrieves reviews of a user
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
     [HttpGet("{userId}")]
     [ProducesResponseType(200, Type = typeof(List<ReviewDto>))]
     public async Task<IActionResult> FindReviewsOfUserAsync([FromRoute] int userId)
@@ -40,6 +54,11 @@ public class ReviewController(IReviewService reviewService, IMapper mapper) : Co
         return Ok(_mapper.Map<List<ReviewDto>>(result.Value));
     }
 
+    /// <summary>
+    /// Retrieves a review of a user for a specific movie
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
+    /// <param name="movieId">The ID of the movie</param>
     [HttpGet("{userId}/{movieId}")]
     [ProducesResponseType(200, Type = typeof(ReviewDto))]
     public async Task<IActionResult> FindUserReviewForMovieAsync([FromRoute] int userId, [FromRoute] int movieId)

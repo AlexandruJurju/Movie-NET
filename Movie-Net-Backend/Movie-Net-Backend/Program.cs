@@ -10,9 +10,7 @@ using Movie_Net_Backend.Service;
 using Movie_Net_Backend.Service.Interface;
 
 // Todo: add aws for file storage
-// Todo: jwt change claims to access them easier
 // todo: add one time password
-// todo: remove useless dtos
 // todo: add crew with directors, producers ...
 // todo: advanced search
 

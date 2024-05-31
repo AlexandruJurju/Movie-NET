@@ -12,6 +12,9 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
+    /// <summary>
+    /// Retrieves all users
+    /// </summary>
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<UserDto>))]
     public async Task<IActionResult> FindAllUsersAsync()
@@ -20,6 +23,10 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
         return Ok(users);
     }
 
+    /// <summary>
+    /// Retrieves a user by ID
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
     [HttpGet("{userId}")]
     [ProducesResponseType(200, Type = typeof(UserDto))]
     public async Task<IActionResult> FindUserByIdAsync([FromRoute] int userId)
@@ -32,6 +39,10 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
         return Ok(user);
     }
 
+    /// <summary>
+    /// Deletes a user by ID
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
     [HttpDelete("{userId}")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> DeleteUserByIdAsync([FromRoute] int userId)

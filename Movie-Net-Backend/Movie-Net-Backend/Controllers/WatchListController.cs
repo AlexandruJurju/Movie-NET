@@ -12,6 +12,11 @@ public class WatchListController(IWatchlistService watchlistService, IMapper map
     private readonly IWatchlistService _watchlistService = watchlistService ?? throw new ArgumentNullException(nameof(watchlistService));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
+    /// <summary>
+    /// Adds a movie to the user's watchlist
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
+    /// <param name="movieId">The ID of the movie</param>
     [HttpPost("{userId}/watchlist/{movieId}")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> AddMovieToWatchlistAsync([FromRoute] int userId, [FromRoute] int movieId)
@@ -22,6 +27,11 @@ public class WatchListController(IWatchlistService watchlistService, IMapper map
         return Ok();
     }
 
+    /// <summary>
+    /// Removes a movie from the user's watchlist
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
+    /// <param name="movieId">The ID of the movie</param>
     [HttpDelete("{userId}/watchlist/{movieId}")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> RemoveMovieFromWatchlistAsync([FromRoute] int userId, [FromRoute] int movieId)
@@ -32,6 +42,10 @@ public class WatchListController(IWatchlistService watchlistService, IMapper map
         return Ok();
     }
 
+    /// <summary>
+    /// Retrieves the watchlist of a user
+    /// </summary>
+    /// <param name="userId">The ID of the user</param>
     [HttpGet("{userId}")]
     [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
     public async Task<IActionResult> FindUserWatchlistAsync([FromRoute] int userId)
