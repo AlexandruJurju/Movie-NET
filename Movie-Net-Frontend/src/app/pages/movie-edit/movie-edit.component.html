@@ -1,42 +1,41 @@
-<mat-card>
-  <div class="flex-container">
-
+<div class="container">
+  <div class="movie-info">
     <div class="image-container">
       <img [src]="movie.posterUrl" alt="{{ movie.title }} Poster" [width]="400" [height]="600">
     </div>
-
     <div class="form-container">
       <h1>
-        <mat-form-field appearance="fill" class="wide-input">
+        <mat-form-field appearance="fill">
           <mat-label>Title</mat-label>
           <input matInput type="text" [(ngModel)]="movie.title" name="title" id="title" placeholder="Title" required>
         </mat-form-field>
       </h1>
 
       <p>
-        <mat-form-field appearance="fill" class="wide-input">
+        <mat-form-field appearance="fill">
           <mat-label>Release Date</mat-label>
           <input matInput type="date" [(ngModel)]="movie.releaseDate" name="releaseDate" id="releaseDate" required>
         </mat-form-field>
       </p>
 
       <p>
-        <mat-form-field appearance="fill" class="wide-input">
+        <mat-form-field appearance="fill">
           <mat-label>Headline</mat-label>
           <input matInput type="text" [(ngModel)]="movie.headline" name="headline" id="headline" placeholder="Headline" required>
         </mat-form-field>
       </p>
       <p>
-        <mat-form-field appearance="fill" class="wide-input">
+        <mat-form-field appearance="fill">
           <mat-label>Overview</mat-label>
           <textarea matInput [(ngModel)]="movie.overview" name="overview" id="overview" placeholder="Overview" required rows="5"></textarea>
         </mat-form-field>
       </p>
 
-      <button mat-raised-button color="warn" (click)="openDeleteDialog('0ms','0ms')">Delete Movie</button>
-      <button mat-raised-button color="accent" (click)="resetForm()">Reset</button>
-      <button mat-raised-button color="primary" (click)="update()">Update</button>
+      <div class="button-container">
+        <button mat-raised-button color="warn" (click)="openDeleteDialog('0ms','0ms')">Delete Movie</button>
+        <button mat-raised-button color="accent" (click)="resetForm()">Reset</button>
+        <button mat-raised-button color="primary" (click)="update()">Update</button>
+      </div>
     </div>
-
   </div>
-</mat-card>
+</div>

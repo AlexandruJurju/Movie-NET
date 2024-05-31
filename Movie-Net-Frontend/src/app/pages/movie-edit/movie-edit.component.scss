@@ -1,16 +1,23 @@
-.flex-container {
+.container {
   display: flex;
-  flex-direction: row;
+  margin-top: 50px;
+  flex-direction: column;
   justify-content: center; /* center horizontally */
   align-items: center; /* center vertically */
-  flex: 1; /* allow the form container to grow and take remaining space */
 }
 
-.image-container {
-  flex: 0 0 20%;
-  margin-right: 20px; /* add spacing between image and form */
+.movie-info {
+  display: flex;
+  flex-direction: row;
+  gap: 30px
 }
 
-.wide-input {
-  width: 100%;
+mat-form-field {
+  width: 600px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
