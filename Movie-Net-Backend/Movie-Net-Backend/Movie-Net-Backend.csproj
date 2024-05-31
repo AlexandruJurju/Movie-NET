@@ -6,6 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Movie_Net_Backend</RootNamespace>
         <UserSecretsId>0073e457-733c-433f-bb09-8218659a8b45</UserSecretsId>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

@@ -86,4 +86,19 @@ public class MovieController(IMovieService movieService, IMapper mapper) : Contr
 
         return Ok();
     }
+
+    /// <summary>
+    /// Find movies with a specific genre
+    /// </summary>
+    /// <param name="genreId">The ID of the genre to filter movies by</param>
+    /// <returns>A list of movies belonging to the specified genre</returns>
+    /// <response code="200">Successful response</response>
+    [HttpGet("genre/{genreId}")]
+    [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
+    public async Task<IActionResult> FindMoviesWithGenre([FromRoute] int genreId)
+    {
+        var moviesWithGenre = await _movieService.FindMoviesWithGenreAsync(genreId);
+
+        return Ok(_mapper.Map<List<MovieDto>>(moviesWithGenre));
+    }
 }

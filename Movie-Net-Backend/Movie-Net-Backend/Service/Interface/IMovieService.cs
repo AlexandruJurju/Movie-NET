@@ -10,10 +10,5 @@ public interface IMovieService
     Task<Result> DeleteMovieAsync(int movieId);
     Task<Result> UpdateMovieAsync(int movieId, Movie updatedMovie);
     Task<Movie> SaveMovieAsync(Movie movie);
-    Result AddGenreToMovie(int movieId, int genreId);
-    Result<ICollection<Genre>> GetGenresOfMovie(int movieId);
-    Result RemoveGenreFromMovie(int movieId, int genreId);
-    Result<IEnumerable<MovieActor>> GetActorsOfMovie(int movieId);
-    Result RemoveActorFromMovie(int movieId, int actorId);
-    Result AddActorToMovie(MovieActor movieActor);
+    Task<List<Movie>> FindMoviesWithGenreAsync(int genreId);
 }

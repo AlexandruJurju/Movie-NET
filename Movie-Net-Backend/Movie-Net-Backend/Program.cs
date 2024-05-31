@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ using Movie_Net_Backend.Service.Interface;
 // todo: remove useless dtos
 // todo: add crew with directors, producers ...
 // todo: advanced search
- 
+
 var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
@@ -50,7 +51,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie-Net-Backend", Version = "1.0" });
+    
+    // rename methods in swagger doc to start with controller name
     options.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
+
+    // add options for xml documentation for methods
+    var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+
+    // configure bearer authentication for swagger ui
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
