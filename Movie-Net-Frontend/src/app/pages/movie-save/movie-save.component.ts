@@ -26,7 +26,7 @@ import {NgIf} from "@angular/common";
   styleUrl: './movie-save.component.scss'
 })
 export class MovieSaveComponent {
-  saveForm: FormGroup = this.formBuilder.group(
+  form: FormGroup = this.formBuilder.group(
     {
       title: new FormControl('', [Validators.required]),
       headline: new FormControl('', [Validators.required]),
@@ -43,7 +43,7 @@ export class MovieSaveComponent {
   }
 
   saveMovie() {
-    const movie = this.saveForm.value;
+    const movie = this.form.value;
 
     this.movieService.saveMovie(movie).subscribe({
       next: (response) => {

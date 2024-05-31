@@ -1,12 +1,13 @@
+<!--todo: select genre when saving movies from available genres-->
 <mat-card>
   <div class="flex-container">
-    <form [formGroup]="saveForm" (ngSubmit)="saveMovie()">
+    <form [formGroup]="form" (ngSubmit)="saveMovie()">
       <p>
         <mat-form-field appearance="fill">
           <mat-label>Title</mat-label>
-          <input matInput type="text" name="title" id="title" required>
+          <input matInput type="text" name="title" id="title" formControlName="title">
 
-          <mat-error *ngIf="this.saveForm.get('title')?.touched && this.saveForm.get('titles')?.hasError('required')">
+          <mat-error *ngIf="this.form.get('title')?.touched && this.form.get('titles')?.hasError('required')">
             Title is required
           </mat-error>
         </mat-form-field>
@@ -15,9 +16,9 @@
       <p>
         <mat-form-field appearance="fill">
           <mat-label>Headline</mat-label>
-          <input matInput type="text" name="headline" id="headline" required>
+          <input matInput type="text" name="headline" id="headline" formControlName="headline">
 
-          <mat-error *ngIf="this.saveForm.get('headline')?.touched && this.saveForm.get('headline')?.hasError('required')">
+          <mat-error *ngIf="this.form.get('headline')?.touched && this.form.get('headline')?.hasError('required')">
             Headline is required
           </mat-error>
         </mat-form-field>
@@ -26,9 +27,9 @@
       <p>
         <mat-form-field appearance="fill">
           <mat-label>Overview</mat-label>
-          <input matInput type="text" name="overview" id="overview" required>
+          <input matInput type="text" name="overview" id="overview" formControlName="overview">
 
-          <mat-error *ngIf="this.saveForm.get('overview')?.touched && this.saveForm.get('overview')?.hasError('required')">
+          <mat-error *ngIf="this.form.get('overview')?.touched && this.form.get('overview')?.hasError('required')">
             Overview is required
           </mat-error>
         </mat-form-field>
@@ -37,9 +38,13 @@
       <p>
         <mat-form-field appearance="fill">
           <mat-label>Release Date</mat-label>
-          <input matInput type="date" name="releaseDate" id="releaseDate">
+          <input matInput
+                 type="date"
+                 formControlName="releaseDate"
+                 name="releaseDate"
+                 id="releaseDate">
 
-          <mat-error *ngIf="this.saveForm.get('releaseDate')?.touched && this.saveForm.get('releaseDate')?.hasError('required')">
+          <mat-error *ngIf="this.form.get('releaseDate')?.touched && this.form.get('releaseDate')?.hasError('required')">
             Release Date is required
           </mat-error>
         </mat-form-field>
@@ -49,17 +54,18 @@
         <!--        todo: use a poster upload instead of url upload-->
         <mat-form-field appearance="fill">
           <mat-label>Poster Url</mat-label>
-          <input matInput type="text" name="posterUrl" id="posterUrl">
+          <input matInput type="text" name="posterUrl" id="posterUrl" formControlName="posterUrl">
 
-          <mat-error *ngIf="this.saveForm.get('posterUrl')?.touched && this.saveForm.get('posterUrl')?.hasError('required')">
+          <mat-error *ngIf="this.form.get('posterUrl')?.touched && this.form.get('posterUrl')?.hasError('required')">
             Poster is required
           </mat-error>
         </mat-form-field>
       </p>
-    </form>
 
-    <div>
-      <button type="submit" mat-raised-button [disabled]="!saveForm.valid">Save Movie</button>
-    </div>
+      <div>
+        <button type="submit" mat-raised-button>Save Movie</button>
+      </div>
+
+    </form>
   </div>
 </mat-card>
