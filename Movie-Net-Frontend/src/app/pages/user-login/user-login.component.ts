@@ -35,17 +35,17 @@ export class UserLoginComponent {
     private formBuilder: FormBuilder) {
   }
 
-  loginForm = this.formBuilder.nonNullable.group({
+  form = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(1)]],
   })
 
   login() {
     console.log("login")
-    if (this.loginForm.valid) {
+    if (this.form.valid) {
       const loginRequestDto: LoginRequestDto = {
-        email: this.loginForm.value.email!,
-        password: this.loginForm.value.password!,
+        email: this.form.value.email!,
+        password: this.form.value.password!,
       }
 
       this.authenticationService.loginUser(loginRequestDto).subscribe({

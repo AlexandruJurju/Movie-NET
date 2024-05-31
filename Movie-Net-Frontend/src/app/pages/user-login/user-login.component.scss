@@ -24,3 +24,8 @@
 .form-container mat-form-field {
   width: 600px;
 }
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+}

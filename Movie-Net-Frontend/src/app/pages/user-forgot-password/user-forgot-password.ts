@@ -1,13 +1,28 @@
 import {Component} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {AuthenticationService, ForgotPasswordDto, UserDto} from "../../services/swagger";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {MatError, MatFormField} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {NgIf} from "@angular/common";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-user-forgot-password',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+    MatCardHeader,
+    MatFormField,
+    MatInput,
+    MatError,
+    NgIf,
+    MatButton,
+    RouterLink
   ],
   templateUrl: './user-forgot-password.html',
   styleUrl: './user-forgot-password.scss'

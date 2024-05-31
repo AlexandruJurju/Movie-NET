@@ -2,20 +2,35 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthenticationService, ResetPasswordDto, UserDto, UserService} from "../../services/swagger";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {MatFormField} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-user-reset-password',
   standalone: true,
   imports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCardHeader,
+    MatCard,
+    MatCardContent,
+    MatFormField,
+    MatInput,
+    MatButton,
+    MatCardTitle
   ],
   templateUrl: './user-reset-password.html',
   styleUrls: ['./user-reset-password.scss']
 })
 export class UserResetPassword implements OnInit {
   userDto = {} as UserDto;
-  form: FormGroup;
+  // todo: validator for password match
+  form = this.formBuilder.group({
+    password: ['', [Validators.required]],
+    confirmPassword: ['', Validators.required]
+  })
 
   constructor(
     private router: Router,
@@ -24,10 +39,6 @@ export class UserResetPassword implements OnInit {
     private userService: UserService,
     private authenticationService: AuthenticationService
   ) {
-    this.form = this.formBuilder.group({
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]]
-    }, {validator: this.passwordMatchValidator});
   }
 
   ngOnInit(): void {
@@ -57,11 +68,13 @@ export class UserResetPassword implements OnInit {
     return password === confirmPassword ? null : {mismatch: true};
   }
 
-  onResetPassword() {
+  resetPassword() {
+    // todo: make this better, separate into 2 pages
     if (this.form.valid) {
       const resetPasswordDto: ResetPasswordDto = {
         userId: this.userDto.id,
-        newPassword: this.form.value.password
+        newPassword: this.form.value.password!,
+        code: "test"
       };
       this.authenticationService.changePassword(resetPasswordDto).subscribe({
         next: () => {
