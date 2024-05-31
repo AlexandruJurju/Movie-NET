@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
-import {MovieDto, MovieDtoPageResponse, MovieService, WatchListService} from "../../services/swagger";
+import {MovieDtoPageResponse, MovieService, WatchListService} from "../../services/swagger";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {faHeart, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {MatSidenavContainer} from "@angular/material/sidenav";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatCard, MatCardContent} from "@angular/material/card";
@@ -38,11 +37,13 @@ export class MovieListComponent implements OnInit {
   size = 6;
   pages: any = [];
   watchlist: number[] = [];
+  iconStates: { [movieId: number]: boolean } = {};
 
   constructor(
     private movieService: MovieService,
     private router: Router,
-    private watchlistService: WatchListService) {
+    private watchlistService: WatchListService
+  ) {
   }
 
   ngOnInit() {
@@ -55,8 +56,12 @@ export class MovieListComponent implements OnInit {
     this.watchlistService.findUserWatchlist(userId).subscribe({
       next: (result) => {
         this.watchlist = result.map(movie => movie.id);
+        // Initialize icon states to true if they are in watchlist
+        this.watchlist.forEach(movieId => {
+          this.iconStates[movieId] = true;
+        });
       }
-    })
+    });
   }
 
   private findMoviesPaged() {
@@ -84,12 +89,12 @@ export class MovieListComponent implements OnInit {
 
   private addToWatchlist(movieId: number) {
     const userId = Number(localStorage.getItem('userId'));
-    this.watchlistService.addMovieToWatchlist(userId, movieId).subscribe({})
+    this.watchlistService.addMovieToWatchlist(userId, movieId).subscribe({});
   }
 
   private removeFromWatchlist(movieId: number) {
     const userId = Number(localStorage.getItem('userId'));
-    this.watchlistService.removeMovieFromWatchlist(userId, movieId).subscribe({})
+    this.watchlistService.removeMovieFromWatchlist(userId, movieId).subscribe({});
   }
 
   public watchlistContainsMovie(movieId: number) {
@@ -102,5 +107,6 @@ export class MovieListComponent implements OnInit {
     } else {
       this.addToWatchlist(movieId);
     }
+    this.iconStates[movieId] = !this.iconStates[movieId]; // Toggle icon state
   }
 }

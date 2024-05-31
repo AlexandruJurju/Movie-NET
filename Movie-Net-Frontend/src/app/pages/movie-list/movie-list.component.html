@@ -1,8 +1,7 @@
 <div class="container">
   <div class="movie-grid">
     <div *ngFor="let movie of movieResponse.content"
-         class="movie-card"
-         (click)="goToMovieDetails(movie.id)">
+         class="movie-card">
       <mat-card>
         <img
           [src]="movie.posterUrl"
@@ -10,13 +9,10 @@
           [height]="400"
           alt="{{ movie.title }} Poster"
           class="movie-image"
+          (click)="goToMovieDetails(movie.id)"
         />
-        <button
-          mat-mini-fab
-          color="primary"
-          (click)="toggleWatchlist(movie.id)"
-        >
-          <mat-icon>{{ watchlistContainsMovie(movie.id) ? 'remove' : 'add' }}</mat-icon>
+        <button mat-mini-fab color="primary" (click)="toggleWatchlist(movie.id)">
+          <mat-icon>{{ iconStates[movie.id] ? 'remove' : 'add' }}</mat-icon>
         </button>
         <mat-card-content>
           <p class="movie-title">{{ movie.title }}</p>
@@ -29,6 +25,8 @@
     [length]="movieResponse.totalElements"
     [pageSize]="size"
     [pageIndex]="page - 1"
+    [showFirstLastButtons]="true"
+    aria-label="Select Page"
     (page)="goToPage($event.pageIndex + 1)"
   >
   </mat-paginator>
