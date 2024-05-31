@@ -5,10 +5,10 @@ namespace Movie_Net_Backend.Service.Interface;
 
 public interface IGenreService
 {
-    IEnumerable<Genre> GetAllGenres();
-    Result<Genre> GetGenreById(int id);
-    Result DeleteGenre(int id);
-    Result UpdateGenre(int id, Genre updatedGenre);
-    Genre SaveGenre(Genre genre);
-    Result<ICollection<Movie>> GetMoviesWithGenre(int genreId);
+    Task<IEnumerable<Genre>> GetAllGenresAsync();
+    Task<Result<Genre>> GetGenreByIdAsync(int id);
+    Task<Result> DeleteGenreAsync(int id);
+    Task<Result> UpdateGenreAsync(int id, Genre updatedGenre);
+    Task<Genre> SaveGenreAsync(Genre genre);
+    Task<Result<ICollection<Movie>>> GetMoviesWithGenreAsync(int genreId);
 }

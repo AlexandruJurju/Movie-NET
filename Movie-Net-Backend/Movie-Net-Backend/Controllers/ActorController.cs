@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
@@ -9,60 +8,53 @@ namespace Movie_Net_Backend.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class ActorController : ControllerBase
+public class ActorController(IActorService actorService, IMapper mapper) : ControllerBase
 {
-    private readonly IActorService _actorService;
-    private readonly IMapper _mapper;
-
-    public ActorController(IActorService actorService, IMapper mapper)
-    {
-        _actorService = actorService ?? throw new ArgumentNullException(nameof(actorService));
-        _mapper = mapper;
-    }
+    private readonly IActorService _actorService = actorService ?? throw new ArgumentNullException(nameof(actorService));
 
     [HttpGet]
-    public IActionResult FindAllActors()
+    public async Task<IActionResult> FindAllActorsAsync()
     {
-        var actors = _mapper.Map<List<ActorDto>>(_actorService.GetAllActors());
+        var actors = mapper.Map<List<ActorDto>>(await _actorService.GetAllActorsAsync());
         return Ok(actors);
     }
 
     [HttpGet("{actorId}")]
-    public IActionResult FindActorById([FromRoute] int actorId)
+    public async Task<IActionResult> FindActorByIdAsync([FromRoute] int actorId)
     {
-        var actorResult = _actorService.GetActorById(actorId);
+        var actorResult = await _actorService.GetActorByIdAsync(actorId);
         if (actorResult.IsFailed) return NotFound();
 
-        var actor = _mapper.Map<ActorDto>(actorResult.Value);
+        var actor = mapper.Map<ActorDto>(actorResult.Value);
 
         return Ok(actor);
     }
 
     [HttpPost]
-    public IActionResult SaveActor([FromBody] ActorDto actorDto)
+    public async Task<IActionResult> SaveActorAsync([FromBody] ActorDto actorDto)
     {
-        var actor = _mapper.Map<Actor>(actorDto);
-        var actorCreated = _actorService.SaveActor(actor);
-        return CreatedAtAction(nameof(SaveActor), actorDto);
+        var actor = mapper.Map<Actor>(actorDto);
+        var actorCreated = await _actorService.SaveActorAsync(actor);
+        return CreatedAtAction(nameof(SaveActorAsync), new { actorId = actorCreated.Id }, actorDto);
     }
 
     [HttpDelete("{actorId}")]
-    public IActionResult DeleteActor([FromRoute] int actorId)
+    public async Task<IActionResult> DeleteActorAsync([FromRoute] int actorId)
     {
-        var deleteResult = _actorService.DeleteActor(actorId);
+        var deleteResult = await _actorService.DeleteActorAsync(actorId);
         if (deleteResult.IsFailed) return NotFound();
 
         return Ok();
     }
 
     [HttpPut("{actorId}")]
-    public IActionResult UpdateActor([FromRoute] int actorId, [FromBody] ActorDto updatedActor)
+    public async Task<IActionResult> UpdateActorAsync([FromRoute] int actorId, [FromBody] ActorDto updatedActor)
     {
         if (actorId != updatedActor.Id) return BadRequest();
 
-        var actor = _mapper.Map<Actor>(updatedActor);
+        var actor = mapper.Map<Actor>(updatedActor);
 
-        var updateResult = _actorService.UpdateActor(actorId, actor);
+        var updateResult = await _actorService.UpdateActorAsync(actorId, actor);
         if (updateResult.IsFailed) return NotFound();
 
         return Ok();

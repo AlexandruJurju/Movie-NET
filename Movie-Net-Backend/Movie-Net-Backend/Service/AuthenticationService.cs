@@ -5,25 +5,17 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService(IUserService userService, IJwtService jwtService, IPasswordCodeService passwordCodeService)
+    : IAuthenticationService
 {
-    private readonly IUserService _userService;
-    private readonly IJwtService _jwtService;
-    private readonly IPasswordCodeService _passwordCodeService;
+    private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
-    public AuthenticationService(IUserService userService, IJwtService jwtService, IPasswordCodeService passwordCodeService)
+    public async Task<Result<User>> RegisterUserAsync(RegisterRequestDto registerRequest)
     {
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-        _jwtService = jwtService;
-        _passwordCodeService = passwordCodeService;
-    }
-
-    public Result<User> RegisterUser(RegisterRequestDto registerRequest)
-    {
-        var findByUsernameResult = _userService.FindUserByUsername(registerRequest.Username);
+        var findByUsernameResult = await _userService.FindUserByUsernameAsync(registerRequest.Username);
         if (!findByUsernameResult.IsFailed) return Result.Fail("Username already exists");
 
-        var findByEmailResult = _userService.FindUserByEmail(registerRequest.Email);
+        var findByEmailResult = await _userService.FindUserByEmailAsync(registerRequest.Email);
         if (!findByEmailResult.IsFailed) return Result.Fail("Email already exists");
 
         var user = new User
@@ -36,12 +28,12 @@ public class AuthenticationService : IAuthenticationService
 
         // _emailService.Send(user.Email, "Register", "Registered to website");
 
-        return _userService.SaveUser(user);
+        return await _userService.SaveUserAsync(user);
     }
 
-    public Result<AuthenticationResponse> LoginUser(LoginRequestDto loginRequest)
+    public async Task<Result<AuthenticationResponse>> LoginUserAsync(LoginRequestDto loginRequest)
     {
-        var userResult = _userService.FindUserByEmail(loginRequest.Email);
+        var userResult = await _userService.FindUserByEmailAsync(loginRequest.Email);
         if (userResult.IsFailed) return userResult.ToResult();
 
         if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, userResult.Value.Password))
@@ -49,22 +41,22 @@ public class AuthenticationService : IAuthenticationService
 
         return Result.Ok(new AuthenticationResponse
         {
-            Token = _jwtService.GenerateToken(loginRequest),
+            Token = await jwtService.GenerateToken(loginRequest),
             UserId = userResult.Value.Id
         });
     }
 
-    public Result<User> ChangePassword(ResetPasswordDto changePasswordDto)
+    public async Task<Result<User>> ChangePasswordAsync(ResetPasswordDto changePasswordDto)
     {
-        var userResult = _userService.FindUserById(changePasswordDto.UserId);
+        var userResult = await _userService.FindUserByIdAsync(changePasswordDto.UserId);
         if (userResult.IsFailed) return Result.Fail<User>("User not found");
 
-        var matchResult = _passwordCodeService.CodesMatch(userResult.Value, changePasswordDto.Code);
+        var matchResult = passwordCodeService.CodesMatch(userResult.Value, changePasswordDto.Code);
         if (matchResult.IsFailed) return matchResult.ToResult();
 
-        _passwordCodeService.DeleteCode(userResult.Value);
+        await passwordCodeService.DeleteCodeAsync(userResult.Value);
         userResult.Value.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
 
-        return _userService.UpdateUser(changePasswordDto.UserId, userResult.Value);
+        return await _userService.UpdateUserAsync(changePasswordDto.UserId, userResult.Value);
     }
 }

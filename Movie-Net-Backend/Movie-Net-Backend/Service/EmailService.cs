@@ -8,16 +8,10 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class EmailService : IEmailService
+public class EmailService(IOptions<SmtpSettings> smtpSettings) : IEmailService
 {
-    private readonly SmtpSettings _smtpSettings;
-
-    public EmailService(IOptions<SmtpSettings> smtpSettings)
-    {
-        _smtpSettings = smtpSettings.Value;
-    }
-
-
+    private readonly SmtpSettings _smtpSettings = smtpSettings.Value;
+    
     public void Send(string to, string subject, string text)
     {
         var email = new MimeMessage();

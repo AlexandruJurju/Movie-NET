@@ -1,70 +1,64 @@
 ﻿using FluentResults;
 using Microsoft.EntityFrameworkCore;
-using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Data;
+using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class GenreService : IGenreService
+public class GenreService(AppDbContext appDbContext) : IGenreService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly AppDbContext _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
 
-    public GenreService(AppDbContext appDbContext)
+    public async Task<IEnumerable<Genre>> GetAllGenresAsync()
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
+        return await _appDbContext.Genres.ToListAsync();
     }
 
-    public IEnumerable<Genre> GetAllGenres()
+    public async Task<Result<Genre>> GetGenreByIdAsync(int id)
     {
-        return _appDbContext.Genres.ToList();
-    }
-
-    public Result<Genre> GetGenreById(int id)
-    {
-        var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
+        var genre = await _appDbContext.Genres.FirstOrDefaultAsync(g => g.Id == id);
 
         if (genre == null) return Result.Fail($"Genre with id {id} not found");
 
         return Result.Ok(genre);
     }
 
-    public Result DeleteGenre(int id)
+    public async Task<Result> DeleteGenreAsync(int id)
     {
-        var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
+        var genre = await _appDbContext.Genres.FirstOrDefaultAsync(g => g.Id == id);
 
         if (genre == null) return Result.Fail($"Genre with id {id} not found");
 
         _appDbContext.Genres.Remove(genre);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public Result UpdateGenre(int id, Genre updatedGenre)
+    public async Task<Result> UpdateGenreAsync(int id, Genre updatedGenre)
     {
-        var genre = _appDbContext.Genres.FirstOrDefault(g => g.Id == id);
+        var genre = await _appDbContext.Genres.FirstOrDefaultAsync(g => g.Id == id);
 
         if (genre == null) return Result.Fail($"Genre with id {id} not found");
 
         genre.Name = updatedGenre.Name;
         _appDbContext.Genres.Update(genre);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public Genre SaveGenre(Genre genre)
+    public async Task<Genre> SaveGenreAsync(Genre genre)
     {
-        _appDbContext.Genres.Add(genre);
-        _appDbContext.SaveChanges();
+        await _appDbContext.Genres.AddAsync(genre);
+        await _appDbContext.SaveChangesAsync();
         return genre;
     }
 
-    public Result<ICollection<Movie>> GetMoviesWithGenre(int genreId)
+    public async Task<Result<ICollection<Movie>>> GetMoviesWithGenreAsync(int genreId)
     {
-        // use include for loading
-        var genre = _appDbContext.Genres
+        var genre = await _appDbContext.Genres
             .Include(g => g.Movies)
-            .FirstOrDefault(g => g.Id == genreId);
+            .FirstOrDefaultAsync(g => g.Id == genreId);
 
         if (genre == null) return Result.Fail<ICollection<Movie>>(new Error("Genre not found"));
 

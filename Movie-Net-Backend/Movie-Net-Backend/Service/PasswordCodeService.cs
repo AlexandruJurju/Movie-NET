@@ -6,56 +6,45 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class PasswordCodeService : IPasswordCodeService
+public class PasswordCodeService(IEmailService emailService, IUserService userService, AppDbContext appDbContext) : IPasswordCodeService
 {
-    private readonly IUserService _userService;
-    private readonly IEmailService _emailService;
-    private readonly AppDbContext _appDbContext;
-
-    public PasswordCodeService(IEmailService emailService, IUserService userService, AppDbContext appDbContext)
+    public async Task<Result<User>> ForgotPasswordRequestAsync(ForgotPasswordDto forgotPasswordDto)
     {
-        _emailService = emailService;
-        _userService = userService;
-        _appDbContext = appDbContext;
-    }
-
-    public Result<User> ForgotPasswordRequest(ForgotPasswordDto forgotPasswordDto)
-    {
-        var userResult = _userService.FindUserByEmail(forgotPasswordDto.Email);
+        var userResult = await userService.FindUserByEmailAsync(forgotPasswordDto.Email);
 
         if (userResult.IsFailed) return userResult.ToResult();
 
         string code = GenerateResetCode(16);
-        SendResetRequestEmail(forgotPasswordDto, code);
-        SaveCode(userResult.Value, code);
+        SendResetRequestEmailAsync(forgotPasswordDto, code);
+        await SaveCodeAsync(userResult.Value, code);
 
         return Result.Ok(userResult.Value);
     }
 
-    public void DeleteCode(User user)
+    public async Task DeleteCodeAsync(User user)
     {
-        var codeResult = _appDbContext.PasswordCodes.FirstOrDefault(pc => pc.UserId == user.Id);
-        _appDbContext.PasswordCodes.Remove(codeResult);
-        _appDbContext.SaveChanges();
+        var codeResult = appDbContext.PasswordCodes.FirstOrDefault(pc => pc.UserId == user.Id);
+        appDbContext.PasswordCodes.Remove(codeResult);
+        await appDbContext.SaveChangesAsync();
     }
 
     public Result<bool> CodesMatch(User user, string code)
     {
-        var passwordCode = _appDbContext.PasswordCodes.FirstOrDefault(pc => pc.UserId == user.Id);
+        var passwordCode = appDbContext.PasswordCodes.FirstOrDefault(pc => pc.UserId == user.Id);
         if (passwordCode == null) return Result.Fail($"User {user.Id} has no codes");
 
         if (code != passwordCode.Code) return Result.Fail("Codes don't match");
 
-        return true;
+        return Result.Ok(true);
     }
 
-    private void SaveCode(User user, string code)
+    private async Task SaveCodeAsync(User user, string code)
     {
-        var existingCode = _appDbContext.PasswordCodes.FirstOrDefault(pc => pc.UserId == user.Id);
+        var existingCode = appDbContext.PasswordCodes.FirstOrDefault(pc => pc.UserId == user.Id);
         if (existingCode != null)
         {
             existingCode.Code = code;
-            _appDbContext.SaveChanges();
+            await appDbContext.SaveChangesAsync();
         }
         else
         {
@@ -65,15 +54,15 @@ public class PasswordCodeService : IPasswordCodeService
                 User = user
             };
 
-            _appDbContext.PasswordCodes.Add(passwordCode);
-            _appDbContext.SaveChanges();
+            await appDbContext.PasswordCodes.AddAsync(passwordCode);
+            await appDbContext.SaveChangesAsync();
         }
     }
 
-    private void SendResetRequestEmail(ForgotPasswordDto forgotPasswordDto, string code)
+    private void SendResetRequestEmailAsync(ForgotPasswordDto forgotPasswordDto, string code)
     {
         string message = "Please enter this code to reset your password: \n" + code;
-        _emailService.Send(forgotPasswordDto.Email, "Password Reset", message);
+        emailService.Send(forgotPasswordDto.Email, "Password Reset", message);
     }
 
     private string GenerateResetCode(int length)

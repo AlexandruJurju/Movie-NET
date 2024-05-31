@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(x =>
     {
         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey!)),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -84,11 +84,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.Configure<SmtpSettings>(options =>
 {
-    options.Host = Environment.GetEnvironmentVariable("SMTP_HOST");
-    options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT"));
-    options.User = Environment.GetEnvironmentVariable("SMTP_EMAIL");
-    options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
-    options.EmailFrom = Environment.GetEnvironmentVariable("SMTP_EMAIL_FROM");
+    options.Host = Environment.GetEnvironmentVariable("SMTP_HOST")!;
+    options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT")!);
+    options.User = Environment.GetEnvironmentVariable("SMTP_EMAIL")!;
+    options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD")!;
+    options.EmailFrom = Environment.GetEnvironmentVariable("SMTP_EMAIL_FROM")!;
 });
 
 // add services to DI

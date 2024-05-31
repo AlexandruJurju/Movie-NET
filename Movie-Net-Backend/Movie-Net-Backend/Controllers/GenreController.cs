@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
@@ -9,50 +8,43 @@ namespace Movie_Net_Backend.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class GenreController : ControllerBase
+public class GenreController(IGenreService genreService, IMapper mapper) : ControllerBase
 {
-    private readonly IGenreService _genreService;
-    private readonly IMapper _mapper;
-
-    public GenreController(IGenreService genreService, IMapper mapper)
-    {
-        _genreService = genreService ?? throw new ArgumentNullException(nameof(genreService));
-        _mapper = mapper;
-    }
+    private readonly IGenreService _genreService = genreService ?? throw new ArgumentNullException(nameof(genreService));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<GenreDto>))]
-    public IActionResult FindAllGenres()
+    public async Task<IActionResult> FindAllGenresAsync()
     {
-        var genres = _mapper.Map<List<GenreDto>>(_genreService.GetAllGenres());
+        var genres = _mapper.Map<List<GenreDto>>(await _genreService.GetAllGenresAsync());
         return Ok(genres);
     }
 
     [HttpGet("{genreId}")]
     [ProducesResponseType(200, Type = typeof(GenreDto))]
-    public IActionResult FindGenreById([FromRoute] int genreId)
+    public async Task<IActionResult> FindGenreByIdAsync([FromRoute] int genreId)
     {
-        var genreResult = _genreService.GetGenreById(genreId);
+        var genreResult = await _genreService.GetGenreByIdAsync(genreId);
         if (genreResult.IsFailed) return NotFound();
 
         var genre = _mapper.Map<GenreDto>(genreResult.Value);
-
         return Ok(genre);
     }
 
     [HttpPost]
     [ProducesResponseType(200)]
-    public IActionResult SaveGenre([FromBody] GenreDto genreDto)
+    public async Task<IActionResult> SaveGenreAsync([FromBody] GenreDto genreDto)
     {
         var genre = _mapper.Map<Genre>(genreDto);
-        var createdGenre = _genreService.SaveGenre(genre);
-        return CreatedAtAction(nameof(SaveGenre), new { id = createdGenre.Id });
+        var createdGenre = await _genreService.SaveGenreAsync(genre);
+        return CreatedAtAction(nameof(SaveGenreAsync), new { id = createdGenre.Id });
     }
 
     [HttpDelete("{genreId}")]
-    public IActionResult DeleteGenre([FromRoute] int genreId)
+    public async Task<IActionResult> DeleteGenreAsync([FromRoute] int genreId)
     {
-        var deleteResult = _genreService.DeleteGenre(genreId);
+        var deleteResult = await _genreService.DeleteGenreAsync(genreId);
         if (deleteResult.IsFailed) return NotFound();
 
         return Ok();
@@ -60,13 +52,13 @@ public class GenreController : ControllerBase
 
     [HttpPut("{genreId}")]
     [ProducesResponseType(200)]
-    public IActionResult UpdateGenre([FromRoute] int genreId, [FromBody] GenreDto updatedGenre)
+    public async Task<IActionResult> UpdateGenreAsync([FromRoute] int genreId, [FromBody] GenreDto updatedGenre)
     {
-        if (genreId != updatedGenre.Id) return BadRequest(ModelState);
+        if (genreId != updatedGenre.Id) return BadRequest();
 
         var genre = _mapper.Map<Genre>(updatedGenre);
 
-        var updateResult = _genreService.UpdateGenre(genreId, genre);
+        var updateResult = await _genreService.UpdateGenreAsync(genreId, genre);
         if (updateResult.IsFailed) return NotFound();
 
         return Ok();
@@ -74,9 +66,9 @@ public class GenreController : ControllerBase
 
     [HttpGet("{genreId}/movies")]
     [ProducesResponseType(200, Type = typeof(List<MovieDto>))]
-    public IActionResult GetMoviesWithGenre([FromRoute] int genreId)
+    public async Task<IActionResult> GetMoviesWithGenreAsync([FromRoute] int genreId)
     {
-        var moviesResult = _genreService.GetMoviesWithGenre(genreId);
+        var moviesResult = await _genreService.GetMoviesWithGenreAsync(genreId);
         if (moviesResult.IsFailed) return NotFound();
 
         var movies = _mapper.Map<List<MovieDto>>(moviesResult.Value);

@@ -6,7 +6,7 @@ namespace Movie_Net_Backend.Service.Interface;
 
 public interface IAuthenticationService
 {
-    Result<User> RegisterUser(RegisterRequestDto registerRequest);
-    Result<AuthenticationResponse> LoginUser(LoginRequestDto loginRequest);
-    Result<User> ChangePassword(ResetPasswordDto changePasswordDto);
+    Task<Result<User>> RegisterUserAsync(RegisterRequestDto registerRequest);
+    Task<Result<AuthenticationResponse>> LoginUserAsync(LoginRequestDto loginRequest);
+    Task<Result<User>> ChangePasswordAsync(ResetPasswordDto changePasswordDto);
 }

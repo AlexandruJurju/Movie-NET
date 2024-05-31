@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Service.Interface;
@@ -8,30 +7,24 @@ namespace Movie_Net_Backend.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class UserController : ControllerBase
+public class UserController(IUserService userService, IMapper mapper) : ControllerBase
 {
-    private readonly IUserService _userService;
-    private readonly IMapper _mapper;
-
-    public UserController(IUserService userService, IMapper mapper, IWatchlistService watchlistService)
-    {
-        _userService = userService;
-        _mapper = mapper;
-    }
+    private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(List<UserDto>))]
-    public IActionResult FindAllUsers()
+    public async Task<IActionResult> FindAllUsersAsync()
     {
-        var users = _mapper.Map<List<UserDto>>(_userService.FindAllUsers());
+        var users = _mapper.Map<List<UserDto>>(await _userService.FindAllUsersAsync());
         return Ok(users);
     }
 
     [HttpGet("{userId}")]
     [ProducesResponseType(200, Type = typeof(UserDto))]
-    public IActionResult FindUserById([FromRoute] int userId)
+    public async Task<IActionResult> FindUserByIdAsync([FromRoute] int userId)
     {
-        var result = _userService.FindUserById(userId);
+        var result = await _userService.FindUserByIdAsync(userId);
         if (result.IsFailed) return BadRequest(result.Errors);
 
         var user = _mapper.Map<UserDto>(result.Value);
@@ -41,10 +34,9 @@ public class UserController : ControllerBase
 
     [HttpDelete("{userId}")]
     [ProducesResponseType(200)]
-    public IActionResult DeleteUserById([FromRoute] int userId)
+    public async Task<IActionResult> DeleteUserByIdAsync([FromRoute] int userId)
     {
-        var result = _userService.DeleteUserById(userId);
-
+        var result = await _userService.DeleteUserByIdAsync(userId);
         if (result.IsFailed) return BadRequest(result.Errors);
 
         return Ok();

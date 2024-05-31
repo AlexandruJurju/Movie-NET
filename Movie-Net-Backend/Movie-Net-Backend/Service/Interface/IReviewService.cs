@@ -5,10 +5,10 @@ namespace Movie_Net_Backend.Service.Interface;
 
 public interface IReviewService
 {
-    IEnumerable<Review> FindAllReviews();
-    Result<Review> FindReviewById(int userId, int movieId);
-    Result DeleteReview(int userId, int movieId);
-    Review SaveReview(Review review);
-    Result<List<Review>> FindReviewsOfUser(int userId);
-    Result<Review> FindReviewOfUserForMovie(int userId, int movieId);
+    Task<IEnumerable<Review>> FindAllReviewsAsync();
+    Task<Result<Review>> FindReviewByIdAsync(int userId, int movieId);
+    Task<Result> DeleteReviewAsync(int userId, int movieId);
+    Task<Review> SaveReviewAsync(Review review);
+    Task<Result<List<Review>>> FindReviewsOfUserAsync(int userId);
+    Task<Result<Review>> FindReviewOfUserForMovieAsync(int userId, int movieId);
 }

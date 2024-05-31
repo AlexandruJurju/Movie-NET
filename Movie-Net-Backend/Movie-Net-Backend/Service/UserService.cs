@@ -1,67 +1,62 @@
 ﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using Movie_Net_Backend.Data;
-using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class UserService : IUserService
+public class UserService(AppDbContext appDbContext) : IUserService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly AppDbContext _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
 
-    public UserService(AppDbContext appDbContext)
+    public async Task<Result<User>> FindUserByUsernameAsync(string username)
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
-    }
-
-    public Result<User> FindUserByUsername(string username)
-    {
-        var user = _appDbContext.Users.FirstOrDefault(u => u.Username == username);
+        var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
 
         if (user == null) return Result.Fail<User>($"User with username {username} not found");
 
         return user;
     }
 
-    public Result<User> FindUserByEmail(string email)
+    public async Task<Result<User>> FindUserByEmailAsync(string email)
     {
-        var user = _appDbContext.Users.FirstOrDefault(u => u.Email == email);
+        var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
 
         if (user == null) return Result.Fail<User>($"User with email {email} not found");
 
         return user;
     }
 
-    public Result<User> FindUserById(int userId)
+    public async Task<Result<User>> FindUserByIdAsync(int userId)
     {
-        var user = _appDbContext.Users.FirstOrDefault(u => u.Id == userId);
+        var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null) return Result.Fail($"User with id {userId} not found");
 
         return user;
     }
 
-    public Result DeleteUserById(int userId)
+    public async Task<Result> DeleteUserByIdAsync(int userId)
     {
-        var userResult = FindUserById(userId);
+        var userResult = await FindUserByIdAsync(userId);
         if (userResult.IsFailed) return userResult.ToResult();
 
         _appDbContext.Users.Remove(userResult.Value);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public User SaveUser(User user)
+    public async Task<User> SaveUserAsync(User user)
     {
-        _appDbContext.Users.Add(user);
-        _appDbContext.SaveChanges();
+        await _appDbContext.Users.AddAsync(user);
+        await _appDbContext.SaveChangesAsync();
         return user;
     }
 
-    public Result<User> UpdateUser(int userId, User user)
+    public async Task<Result<User>> UpdateUserAsync(int userId, User user)
     {
-        var userResult = FindUserById(userId);
+        var userResult = await FindUserByIdAsync(userId);
 
         if (userResult.IsFailed) return userResult.ToResult();
 
@@ -71,13 +66,13 @@ public class UserService : IUserService
         existingUser.Email = user.Email ?? existingUser.Email;
         existingUser.Password = user.Password ?? existingUser.Password;
 
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
 
         return existingUser;
     }
 
-    public IEnumerable<User> FindAllUsers()
+    public async Task<IEnumerable<User>> FindAllUsersAsync()
     {
-        return _appDbContext.Users.ToList();
+        return await _appDbContext.Users.ToListAsync();
     }
 }

@@ -5,9 +5,9 @@ namespace Movie_Net_Backend.Service.Interface;
 
 public interface IActorService
 {
-    IEnumerable<Actor> GetAllActors();
-    Result<Actor> GetActorById(int id);
-    Result DeleteActor(int id);
-    Result UpdateActor(int id, Actor updatedActor);
-    Actor SaveActor(Actor actor);
+    Task<IEnumerable<Actor>> GetAllActorsAsync();
+    Task<Result<Actor>> GetActorByIdAsync(int id);
+    Task<Result> DeleteActorAsync(int id);
+    Task<Result> UpdateActorAsync(int id, Actor updatedActor);
+    Task<Actor> SaveActorAsync(Actor actor);
 }

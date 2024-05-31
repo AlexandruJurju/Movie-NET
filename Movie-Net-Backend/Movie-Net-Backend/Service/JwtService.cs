@@ -4,29 +4,21 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Movie_Net_Backend.Dto;
 using Movie_Net_Backend.Service.Interface;
-using Org.BouncyCastle.Pqc.Crypto.Saber;
 
 namespace Movie_Net_Backend.Service;
 
-public class JwtService : IJwtService
+public class JwtService(IConfiguration configuration, IUserService userService) : IJwtService
 {
     private static readonly TimeSpan TokenLifeSpan = TimeSpan.FromHours(4);
 
-    private readonly IConfiguration _configuration;
-    private readonly IUserService _userService;
-
-    public JwtService(IConfiguration configuration, IUserService userService)
+    public async Task<string> GenerateToken(LoginRequestDto loginRequest)
     {
-        _configuration = configuration;
-        _userService = userService;
-    }
+        var userResult = await userService.FindUserByEmailAsync(loginRequest.Email);
+        if (userResult.IsFailed) throw new Exception(userResult.Errors.ToString());
 
-    public string GenerateToken(LoginRequestDto loginRequest)
-    {
-        var user = _userService.FindUserByEmail(loginRequest.Email).Value;
-
+        var user = userResult.Value;
         var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!);
-        
+
         var claims = new List<Claim>()
         {
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -41,12 +33,11 @@ public class JwtService : IJwtService
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.Add(TokenLifeSpan),
-            Issuer = _configuration["JwtSettings:Issuer"],
-            Audience = _configuration["JwtSettings:Audience"],
+            Issuer = configuration["JwtSettings:Issuer"],
+            Audience = configuration["JwtSettings:Audience"],
             SigningCredentials = new SigningCredentials
                 (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
-
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);

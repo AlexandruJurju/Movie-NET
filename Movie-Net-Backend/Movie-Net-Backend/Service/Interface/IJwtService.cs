@@ -6,5 +6,5 @@ namespace Movie_Net_Backend.Service.Interface;
 
 public interface IJwtService
 {
-    string GenerateToken(LoginRequestDto loginRequest);
+    Task<string> GenerateToken(LoginRequestDto loginRequest);
 }

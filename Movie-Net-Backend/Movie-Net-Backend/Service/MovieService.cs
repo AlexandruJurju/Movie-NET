@@ -6,42 +6,37 @@ using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class MovieService : IMovieService
+public class MovieService(AppDbContext appDbContext) : IMovieService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly AppDbContext _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
 
-    public MovieService(AppDbContext appDbContext)
+    public async Task<IEnumerable<Movie>> FindAllMoviesAsync()
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
+        return await _appDbContext.Movies.ToListAsync();
     }
 
-    public IEnumerable<Movie> FindAllMovies()
+    public async Task<Result<Movie>> FindMovieByIdAsync(int movieId)
     {
-        return _appDbContext.Movies.ToList();
-    }
-
-    public Result<Movie> FindMovieById(int movieId)
-    {
-        var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
+        var movie = await _appDbContext.Movies.FirstOrDefaultAsync(m => m.Id == movieId);
 
         if (movie == null) return Result.Fail($"Movie with movieId {movieId} not found");
 
         return Result.Ok(movie);
     }
-
-    public Result DeleteMovie(int movieId)
+    
+    public async Task<Result> DeleteMovieAsync(int movieId)
     {
-        var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
+        var movie = await _appDbContext.Movies.FirstOrDefaultAsync(m => m.Id == movieId);
         if (movie == null) return Result.Fail($"Movie with movieId {movieId} not found");
 
         _appDbContext.Movies.Remove(movie);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public Result UpdateMovie(int movieId, Movie updatedMovie)
+    public async Task<Result> UpdateMovieAsync(int movieId, Movie updatedMovie)
     {
-        var movie = _appDbContext.Movies.FirstOrDefault(m => m.Id == movieId);
+        var movie = await _appDbContext.Movies.FirstOrDefaultAsync(m => m.Id == movieId);
         if (movie == null) return Result.Fail($"Movie with movieId {movieId} not found");
 
         var existingMovie = movie;
@@ -52,14 +47,15 @@ public class MovieService : IMovieService
         existingMovie.PosterUrl = updatedMovie.PosterUrl;
 
         _appDbContext.Movies.Update(existingMovie);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public Movie SaveMovie(Movie movie)
+
+    public async Task<Movie> SaveMovieAsync(Movie movie)
     {
-        _appDbContext.Movies.Add(movie);
-        _appDbContext.SaveChanges();
+        await _appDbContext.Movies.AddAsync(movie);
+        await _appDbContext.SaveChangesAsync();
         return movie;
     }
 

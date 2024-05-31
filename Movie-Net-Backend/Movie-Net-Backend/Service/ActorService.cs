@@ -1,65 +1,60 @@
 ﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class ActorService : IActorService
+public class ActorService(AppDbContext appDbContext) : IActorService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly AppDbContext _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
 
-    public ActorService(AppDbContext appDbContext)
+    public async Task<IEnumerable<Actor>> GetAllActorsAsync()
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
+        return await _appDbContext.Actors.ToListAsync();
     }
 
-    public IEnumerable<Actor> GetAllActors()
+    public async Task<Result<Actor>> GetActorByIdAsync(int id)
     {
-        return _appDbContext.Actors.ToList();
-    }
-
-    public Result<Actor> GetActorById(int id)
-    {
-        var actor = _appDbContext.Actors.FirstOrDefault(a => a.Id == id);
+        var actor = await _appDbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
 
         if (actor == null) return Result.Fail($"Actor with id {id} not found");
 
         return Result.Ok(actor);
     }
 
-    public Result DeleteActor(int id)
+    public async Task<Result> DeleteActorAsync(int id)
     {
-        var actor = _appDbContext.Actors.FirstOrDefault(a => a.Id == id);
+        var actor = await _appDbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
 
         if (actor == null) return Result.Fail($"Actor with id {id} not found");
 
         _appDbContext.Actors.Remove(actor);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public Result UpdateActor(int id, Actor updatedActor)
+    public async Task<Result> UpdateActorAsync(int id, Actor updatedActor)
     {
-        var actor = _appDbContext.Actors.FirstOrDefault(a => a.Id == id);
+        var actor = await _appDbContext.Actors.FirstOrDefaultAsync(a => a.Id == id);
         if (actor == null) return Result.Fail($"Actor with id {id} not found");
 
-        var existingActor = actor;
-        existingActor.FirstName = updatedActor.FirstName;
-        existingActor.LastName = updatedActor.LastName;
-        existingActor.BirthDate = updatedActor.BirthDate;
-        existingActor.Biography = updatedActor.Biography;
-        existingActor.ProfilePictureUrl = updatedActor.ProfilePictureUrl;
+        actor.FirstName = updatedActor.FirstName;
+        actor.LastName = updatedActor.LastName;
+        actor.BirthDate = updatedActor.BirthDate;
+        actor.Biography = updatedActor.Biography;
+        actor.ProfilePictureUrl = updatedActor.ProfilePictureUrl;
 
-        _appDbContext.Actors.Update(existingActor);
-        _appDbContext.SaveChanges();
+        _appDbContext.Actors.Update(actor);
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public Actor SaveActor(Actor actor)
+    public async Task<Actor> SaveActorAsync(Actor actor)
     {
-        _appDbContext.Actors.Add(actor);
-        _appDbContext.SaveChanges();
+        await _appDbContext.Actors.AddAsync(actor);
+        await _appDbContext.SaveChangesAsync();
         return actor;
     }
 }

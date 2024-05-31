@@ -1,51 +1,43 @@
 using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using Movie_Net_Backend.Data;
 using Movie_Net_Backend.Model;
 using Movie_Net_Backend.Service.Interface;
 
 namespace Movie_Net_Backend.Service;
 
-public class ReviewService : IReviewService
+public class ReviewService(AppDbContext appDbContext, IUserService userService, IMovieService movieService) : IReviewService
 {
-    private readonly AppDbContext _appDbContext;
-    private readonly IUserService _userService;
-    private readonly IMovieService _movieService;
+    private readonly AppDbContext _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
 
-    public ReviewService(AppDbContext appDbContext, IUserService userService, IMovieService movieService)
+    public async Task<IEnumerable<Review>> FindAllReviewsAsync()
     {
-        _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
-        _userService = userService;
-        _movieService = movieService;
+        return await _appDbContext.Reviews.ToListAsync();
     }
 
-    public IEnumerable<Review> FindAllReviews()
+    public async Task<Result<Review>> FindReviewByIdAsync(int userId, int movieId)
     {
-        return _appDbContext.Reviews.ToList();
-    }
-
-    public Result<Review> FindReviewById(int userId, int movieId)
-    {
-        var review = _appDbContext.Reviews.FirstOrDefault(r => r.UserId == userId && r.MovieId == movieId);
+        var review = await _appDbContext.Reviews.FirstOrDefaultAsync(r => r.UserId == userId && r.MovieId == movieId);
 
         if (review == null) return Result.Fail($"Review not found");
 
         return Result.Ok(review);
     }
 
-    public Result DeleteReview(int userId, int movieId)
+    public async Task<Result> DeleteReviewAsync(int userId, int movieId)
     {
-        var review = _appDbContext.Reviews.FirstOrDefault(r => r.UserId == userId && r.MovieId == movieId);
+        var review = await _appDbContext.Reviews.FirstOrDefaultAsync(r => r.UserId == userId && r.MovieId == movieId);
 
         if (review == null) return Result.Fail($"Review not found");
 
         _appDbContext.Reviews.Remove(review);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
         return Result.Ok();
     }
 
-    public Review SaveReview(Review review)
+    public async Task<Review> SaveReviewAsync(Review review)
     {
-        var reviewResult = FindReviewById(review.UserId, review.MovieId);
+        var reviewResult = await FindReviewByIdAsync(review.UserId, review.MovieId);
 
         // update existing review
         if (!reviewResult.IsFailed)
@@ -53,33 +45,33 @@ public class ReviewService : IReviewService
             var existingReview = reviewResult.Value;
             existingReview.Text = review.Text;
             existingReview.Score = review.Score;
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
             return existingReview;
         }
 
-        _appDbContext.Reviews.Add(review);
-        _appDbContext.SaveChanges();
+        await _appDbContext.Reviews.AddAsync(review);
+        await _appDbContext.SaveChangesAsync();
         return review;
     }
 
-    public Result<List<Review>> FindReviewsOfUser(int userId)
+    public async Task<Result<List<Review>>> FindReviewsOfUserAsync(int userId)
     {
-        var userResult = _userService.FindUserById(userId);
+        var userResult = await userService.FindUserByIdAsync(userId);
 
         if (userResult.IsFailed) return userResult.ToResult();
 
         return userResult.Value.Reviews.ToList();
     }
 
-    public Result<Review> FindReviewOfUserForMovie(int userId, int movieId)
+    public async Task<Result<Review>> FindReviewOfUserForMovieAsync(int userId, int movieId)
     {
-        var userResult = _userService.FindUserById(userId);
+        var userResult = await userService.FindUserByIdAsync(userId);
         if (userResult.IsFailed) return userResult.ToResult();
 
-        var movieResult = _movieService.FindMovieById(movieId);
+        var movieResult = await movieService.FindMovieByIdAsync(movieId);
         if (movieResult.IsFailed) return movieResult.ToResult();
 
-        var result = _appDbContext.Reviews.FirstOrDefault(review => review.UserId == userId && review.MovieId == movieId);
+        var result = await _appDbContext.Reviews.FirstOrDefaultAsync(review => review.UserId == userId && review.MovieId == movieId);
         if (result == null) return Result.Fail($"Movie {movieId} has no review for user {userId}");
 
         return Result.Ok(result);

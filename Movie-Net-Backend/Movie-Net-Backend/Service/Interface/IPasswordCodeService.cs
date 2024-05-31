@@ -6,7 +6,7 @@ namespace Movie_Net_Backend.Service.Interface;
 
 public interface IPasswordCodeService
 {
-    Result<User> ForgotPasswordRequest(ForgotPasswordDto forgotPasswordDto);
-    void DeleteCode(User user);
+    Task<Result<User>> ForgotPasswordRequestAsync(ForgotPasswordDto forgotPasswordDto);
+    Task DeleteCodeAsync(User user);
     Result<bool> CodesMatch(User user, string code);
 }
