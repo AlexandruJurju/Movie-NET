@@ -52,10 +52,8 @@
     <div class="button-container">
       <button mat-raised-button color="warn" (click)="openDeleteDialog('0ms', '0ms')">Delete Movie</button>
       <button mat-raised-button color="primary" (click)="navigateToUpdateMovie()">Update Movie</button>
-      <!-- todo: make it so changing the icons doesnt need to reload the page-->
-      <button mat-raised-button
-              [color]="isMovieInWatchlist() ? 'warn' : 'primary'" (click)="toggleWatchlist()">
-        {{ isMovieInWatchlist() ? 'Remove from Watchlist' : 'Add to Watchlist' }}
+      <button mat-raised-button [color]="isInWatchlist ? 'warn' : 'primary'"
+              (click)="toggleWatchlist()">{{ isInWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist' }}
       </button>
     </div>
   </div>

@@ -42,6 +42,7 @@ import {MatTab, MatTabGroup} from "@angular/material/tabs";
 export class MovieDetailsComponent implements OnInit {
   movie: DetailedMovieDto = {} as DetailedMovieDto;
   watchlist: MovieDto[] = [];
+  isInWatchlist: boolean = false
   form: FormGroup;
 
   constructor(
@@ -112,6 +113,7 @@ export class MovieDetailsComponent implements OnInit {
 
       this.reviewService.saveReview(reviewRequest).subscribe({
         next: review => {
+          // todo: remove this reload
           window.location.reload();
         },
         error: error => {
@@ -121,16 +123,14 @@ export class MovieDetailsComponent implements OnInit {
     }
   }
 
-  addToWatchlist() {
-    console.log("add to watchlist")
+  private addToWatchlist() {
     this.watchlistService.addMovieToWatchlist(Number(localStorage.getItem('userId')), this.movie.id).subscribe({})
-    window.location.reload();
+    this.isInWatchlist = true;
   }
 
-  removeFromWatchlist() {
-    console.log("remove from watchlist")
+  private removeFromWatchlist() {
     this.watchlistService.removeMovieFromWatchlist(Number(localStorage.getItem('userId')), this.movie.id).subscribe({})
-    window.location.reload();
+    this.isInWatchlist = false;
   }
 
   private loadUserWatchlist() {
@@ -138,6 +138,7 @@ export class MovieDetailsComponent implements OnInit {
     this.watchlistService.findUserWatchlist(userId).subscribe({
       next: movies => {
         this.watchlist = movies;
+        this.isInWatchlist = this.isMovieInWatchlist()
       },
       error: error => {
         console.error('Error loading watchlist', error);
@@ -145,14 +146,13 @@ export class MovieDetailsComponent implements OnInit {
     })
   }
 
-  isMovieInWatchlist(): boolean {
+  private isMovieInWatchlist(): boolean {
     const movieId = this.movie.id;
     return this.watchlist.some(movie => movie.id === movieId);
   }
 
-
   toggleWatchlist() {
-    if (this.isMovieInWatchlist()) {
+    if (this.isInWatchlist) {
       this.removeFromWatchlist();
     } else {
       this.addToWatchlist();
